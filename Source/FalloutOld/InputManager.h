@@ -17,10 +17,8 @@ class FALLOUTOLD_API UInputManager : public UObject
 	GENERATED_BODY()
 	UInputManager(const FObjectInitializer& initializer);
 	
-public:
+public:	
 	
-	UPROPERTY()
-	UEnhancedInputComponent* inputComponent;
 	UPROPERTY()
 	UInputAction* MoveCamera;
 	UPROPERTY()

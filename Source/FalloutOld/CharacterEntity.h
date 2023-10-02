@@ -3,17 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Movement.h"
 #include "GameFramework/Pawn.h"
-#include "PlayerCharacter.generated.h"
+#include "CharacterEntity.generated.h"
 
-UCLASS()
-class FALLOUTOLD_API APlayerCharacter : public APawn
+UCLASS(Blueprintable)
+class FALLOUTOLD_API ACharacterEntity : public APawn
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
-	APlayerCharacter();
+	ACharacterEntity();
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,7 +27,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-
-	void Move(TArray<FVector2D> path);
-	void Move(FVector2D targetPoint);
+protected:
+	UPROPERTY(BlueprintReadWrite)
+	UMovement* movementComponent;
+	
 };

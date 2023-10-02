@@ -2,7 +2,6 @@
 
 
 #include "MyPlayerController.h"
-
 #include "EnhancedInputComponent.h"
 #include "InputManager.h"
 #include "EnhancedInputSubsystems.h"
@@ -19,8 +18,6 @@ void AMyPlayerController::BeginPlay()
 	SetViewTarget(PlayerView);
 	SetupInputSubsystem();	
 }
-
-
 
 void AMyPlayerController::SetupInputSubsystem()
 {		
