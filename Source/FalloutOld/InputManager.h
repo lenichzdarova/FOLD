@@ -24,5 +24,7 @@ public:
 	UPROPERTY()
 	UInputAction* RotateCamera;
 	UPROPERTY()
+	UInputAction* Move;
+	UPROPERTY()
 	UInputMappingContext* InputMapping;	
 };

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "InputManager.h"
 #include "PlayerView.h"
+#include "CharacterEntity.h"
 #include "GameFramework/PlayerController.h"
 #include "MyPlayerController.generated.h"
 
@@ -27,10 +28,12 @@ class FALLOUTOLD_API AMyPlayerController : public APlayerController
 	//Input settings
 private:
 	UInputManager* inputManager;
+	ACharacterEntity* playerCharater;
 	
-	void SetupInputSubsystem();	
-	
+	void SetupInputSubsystem();		
 	void SetupCameraInput(UEnhancedInputComponent* inputComponent);
+	void OnMoveInput();
+	void SetupMoveInput(UEnhancedInputComponent* InputComponent);
 
 public:
 	FORCEINLINE UInputManager* GetInputManager() const {return inputManager;}

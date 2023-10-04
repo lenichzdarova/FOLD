@@ -11,17 +11,24 @@ UInputManager::UInputManager(const FObjectInitializer& initializer)
     if(moveInput.Succeeded())
     {
         MoveCamera = moveInput.Object.Get();
-    }
+    }    
     static ConstructorHelpers::FObjectFinder<UInputAction> rotateInput(TEXT("/Script/EnhancedInput.InputAction'/Game/Blueprints/Input/IA_CameraRotate.IA_CameraRotate'"));
     if(rotateInput.Succeeded())
     {
         RotateCamera = rotateInput.Object.Get();
+    }
+    static ConstructorHelpers::FObjectFinder<UInputAction> LMBInput(TEXT("/Script/EnhancedInput.InputAction'/Game/Blueprints/Input/IA_Move.IA_Move'"));
+    if(LMBInput.Succeeded())
+    {
+        RotateCamera = LMBInput.Object.Get();
     }
     static ConstructorHelpers::FObjectFinder<UInputMappingContext> inputMappingContext(TEXT("/Script/EnhancedInput.InputMappingContext'/Game/Blueprints/Input/IMC_InputMapping.IMC_InputMapping'"));
     if(inputMappingContext.Succeeded())
     {
         InputMapping = inputMappingContext.Object.Get();
     }
+
+    
     
 }
 
