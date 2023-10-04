@@ -5,6 +5,8 @@
 #include "EnhancedInputComponent.h"
 #include "InputManager.h"
 #include "EnhancedInputSubsystems.h"
+#include "Grid.h"
+#include "MoveCommand.h"
 #include "PlayerView.h"
 
 AMyPlayerController::AMyPlayerController()
@@ -27,6 +29,7 @@ void AMyPlayerController::SetupInputSubsystem()
 	inputSubsystem->AddMappingContext(inputManager->InputMapping,0);	
 	UEnhancedInputComponent* enhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent);
 	SetupCameraInput(enhancedInputComponent);
+	
 }
 
 void AMyPlayerController::SetupCameraInput(UEnhancedInputComponent* inputComponent)
@@ -35,6 +38,20 @@ void AMyPlayerController::SetupCameraInput(UEnhancedInputComponent* inputCompone
 	inputComponent->BindAction(inputManager->MoveCamera,ETriggerEvent::Triggered, PlayerView, &APlayerView::OnMoveInput);
 	inputComponent->BindAction(inputManager->RotateCamera,ETriggerEvent::Triggered,PlayerView,&APlayerView::OnRotateInput);
 }
+
+void AMyPlayerController::OnMoveInput()
+{
+	FVector mousePosition, mouseRotation;
+	DeprojectMousePositionToWorld(mousePosition,mouseRotation);
+	FVector2D gridCoordinates = Grid::ConvertFVectorToGrid(mousePosition);	
+	MoveCommand command{playerCharater,gridCoordinates};
+	command.Execute();
+}
+void AMyPlayerController::SetupMoveInput(UEnhancedInputComponent* inputComponent)
+{
+	inputComponent->BindAction(inputManager->Move,ETriggerEvent::Triggered, this,&AMyPlayerController::OnMoveInput);
+}
+
 
 
 
