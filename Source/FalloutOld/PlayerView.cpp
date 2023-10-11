@@ -62,7 +62,7 @@ void APlayerView::OnMoveInput(const FInputActionValue& inputValue)
 
 
 void APlayerView::OnRotateInput(const FInputActionValue& inputValue)
-{	
+{
 	if(RotationDelta == 0)
 	{
 		auto input = inputValue.Get<float>();
