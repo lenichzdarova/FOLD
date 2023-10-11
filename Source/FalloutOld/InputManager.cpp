@@ -20,7 +20,7 @@ UInputManager::UInputManager(const FObjectInitializer& initializer)
     static ConstructorHelpers::FObjectFinder<UInputAction> LMBInput(TEXT("/Script/EnhancedInput.InputAction'/Game/Blueprints/Input/IA_Move.IA_Move'"));
     if(LMBInput.Succeeded())
     {
-        RotateCamera = LMBInput.Object.Get();
+        Move = LMBInput.Object.Get();
     }
     static ConstructorHelpers::FObjectFinder<UInputMappingContext> inputMappingContext(TEXT("/Script/EnhancedInput.InputMappingContext'/Game/Blueprints/Input/IMC_InputMapping.IMC_InputMapping'"));
     if(inputMappingContext.Succeeded())

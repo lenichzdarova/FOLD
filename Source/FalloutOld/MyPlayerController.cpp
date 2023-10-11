@@ -5,8 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "InputManager.h"
 #include "EnhancedInputSubsystems.h"
-#include "Grid.h"
-#include "MoveCommand.h"
+#include "ActionMove.h"
 #include "PlayerView.h"
 
 AMyPlayerController::AMyPlayerController()
@@ -43,9 +42,9 @@ void AMyPlayerController::OnMoveInput()
 {
 	FVector mousePosition, mouseRotation;
 	DeprojectMousePositionToWorld(mousePosition,mouseRotation);
-	FVector2D gridCoordinates = Grid::ConvertFVectorToGrid(mousePosition);	
-	MoveCommand command{playerCharater,gridCoordinates};
-	command.Execute();
+	//FVector gridCoordinates = Grid::GetGridPointFromFVector(mousePosition);	
+//	ActionMove command{playerCharater,gridCoordinates};
+	//command.Execute();
 }
 void AMyPlayerController::SetupMoveInput(UEnhancedInputComponent* inputComponent)
 {

@@ -41,7 +41,7 @@ protected:
 	const float RotationValue = 90.f;
 	float MinRotationValueAbs = 1.f;
 	//move properties	
-	float MoveSensitivity = 5.f;
+	float MoveSensitivity = 50.f;
 	FVector2d MinBorder;
 	FVector2d MaxBorder;
 
