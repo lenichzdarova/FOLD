@@ -6,6 +6,7 @@
 #include "InputManager.h"
 #include "EnhancedInputSubsystems.h"
 #include "ActionMove.h"
+#include "GridActor.h"
 #include "PlayerView.h"
 
 AMyPlayerController::AMyPlayerController()
@@ -28,7 +29,7 @@ void AMyPlayerController::SetupInputSubsystem()
 	inputSubsystem->AddMappingContext(inputManager->InputMapping,0);	
 	UEnhancedInputComponent* enhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent);
 	SetupCameraInput(enhancedInputComponent);
-	
+	SetupMoveInput(enhancedInputComponent);	
 }
 
 void AMyPlayerController::SetupCameraInput(UEnhancedInputComponent* inputComponent)
@@ -40,11 +41,16 @@ void AMyPlayerController::SetupCameraInput(UEnhancedInputComponent* inputCompone
 
 void AMyPlayerController::OnMoveInput()
 {
-	FVector mousePosition, mouseRotation;
-	DeprojectMousePositionToWorld(mousePosition,mouseRotation);
-	//FVector gridCoordinates = Grid::GetGridPointFromFVector(mousePosition);	
-//	ActionMove command{playerCharater,gridCoordinates};
-	//command.Execute();
+		FHitResult hit;
+	if(GetHitResultUnderCursor(ECC_Visibility, true, hit))
+	{
+		auto actor = hit.GetActor();
+		if(auto grid = Cast<AGridActor>(actor) )
+		{
+			auto moveDestination = grid->GetGridVertexFromFVector(hit.Location);
+			GEngine->AddOnScreenDebugMessage(1,10,FColor::Emerald,moveDestination.ToString());
+		}
+	}	
 }
 void AMyPlayerController::SetupMoveInput(UEnhancedInputComponent* inputComponent)
 {
