@@ -17,6 +17,7 @@ AMyPlayerController::AMyPlayerController()
 void AMyPlayerController::BeginPlay()
 {	
 	PlayerView = GetWorld()->SpawnActor<APlayerView>(FVector::Zero(),FRotator::ZeroRotator);
+	playerCharater = GetWorld()->SpawnActor<ACharacterEntity>(FVector::Zero(),FRotator::ZeroRotator);
 	SetViewTarget(PlayerView);
 	SetupInputSubsystem();	
 }
@@ -41,14 +42,20 @@ void AMyPlayerController::SetupCameraInput(UEnhancedInputComponent* inputCompone
 
 void AMyPlayerController::OnMoveInput()
 {
-		FHitResult hit;
+	FHitResult hit;
 	if(GetHitResultUnderCursor(ECC_Visibility, true, hit))
 	{
 		auto actor = hit.GetActor();
 		if(auto grid = Cast<AGridActor>(actor) )
 		{
-			auto moveDestination = grid->GetGridVertexFromFVector(hit.Location);
-			GEngine->AddOnScreenDebugMessage(1,10,FColor::Emerald,moveDestination.ToString());
+			auto characterLocation = playerCharater->GetActorLocation();
+			auto movePath = grid->GetMovePath(characterLocation,hit.Location);
+			ActionMove action{playerCharater, movePath};
+			actionHandler.AddAction(&action);
+			for (auto p : movePath)
+			{
+				DrawDebugSphere(GetWorld(),p, 50, 10, FColor::Cyan, false, 20);
+			}
 		}
 	}	
 }

@@ -22,10 +22,12 @@ protected:
 
 public:
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;	
+	virtual void Tick(float DeltaTime) override;
 
-protected:
 	UPROPERTY(BlueprintReadWrite)
 	UMovement* movementComponent;
-	
+
+protected:	
+	UPROPERTY(BlueprintReadWrite)
+	USkeletalMeshComponent* skeletalMesh;	
 };

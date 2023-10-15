@@ -43,7 +43,7 @@ void PathBuilder::BuildPath()
 	while(current != start)
 	{
 		auto next = GetClosestToStart(current);
-		current = next;
+		current = next;		
 		path.Insert(current, begin);
 	}		
 }
@@ -64,7 +64,9 @@ bool PathBuilder::HandleBest()
 	{
 		if(!opened.Contains(cell) && !closed.Contains(cell))
 		{
-			OpenCell(cell,distanceInfo.Find(closest)->fromStart + 1);
+			float fromStart = GetDistanceFromStart(cell);
+			//OpenCell(cell,distanceInfo.Find(closest)->fromStart + 1);
+			OpenCell(cell,fromStart);
 		}
 	}
 	CloseCell(closest);
@@ -73,9 +75,11 @@ bool PathBuilder::HandleBest()
 
 float PathBuilder::DistanceToEnd(Cell cell) const
 {
+	/*
 	auto verticalDistance =  FMath::Abs(end.X - cell.X);
 	auto horysontalDistance =  FMath::Abs(end.X - cell.X);
-	return FMath::Max(verticalDistance, horysontalDistance);	
+	return FMath::Max(verticalDistance, horysontalDistance);*/
+	return (end - cell).Length();
 }
 bool PathBuilder::Success() const
 {
@@ -88,6 +92,10 @@ void PathBuilder::CloseCell(Cell cell)
 }
 TArray<Cell> PathBuilder::GetPath() const
 {
+	for (auto p : path)
+	{
+		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 10, FColor::Blue, FString::FromInt(graph->Find(p)->edges.Num()));
+	}
 	return path;
 }
 Cell PathBuilder::GetClosestToEnd()
@@ -106,12 +114,45 @@ Cell PathBuilder::GetClosestToStart(Cell cell)
 		{
 			if(distance->fromStart < baseDistance)
 			{
-				return n;
+				result = n;
+				baseDistance = distance->fromStart;
 			}
 		}
 	}
 	return result;
 }
+
+float PathBuilder::GetDistanceFromStart(Cell cell)
+{
+	auto edges  = graph->Find(cell);
+	auto neibours = edges->edges;
+	
+	FVector bestCell;
+	Distance* bestFromStart = nullptr;
+	for (const auto& n : neibours)
+	{		
+		Distance* temp = distanceInfo.Find(n);		
+		if(temp != nullptr)
+		{
+			if(bestFromStart == nullptr)
+			{
+				bestFromStart = temp;
+				bestCell = n;
+			}
+			else
+			{
+				if(bestFromStart->fromStart > temp->fromStart)
+				{
+					bestFromStart = temp;
+					bestCell = n;
+				}
+			}
+		}		
+	}
+	float result = bestFromStart->fromStart + (cell-bestCell).Length();
+	return result;
+}
+
 
 
 

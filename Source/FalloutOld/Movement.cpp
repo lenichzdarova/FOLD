@@ -3,27 +3,20 @@
 
 #include "Movement.h"
 
-
 // Sets default values for this component's properties
 UMovement::UMovement()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
 	// ...
 }
-
 
 // Called when the game starts
 void UMovement::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
 }
-
 
 // Called every frame
 void UMovement::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -36,10 +29,10 @@ void UMovement::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	}
 }
 
-void UMovement::SetDestination(const FVector& destination)
+void UMovement::SetDestination(const FVector destination)
 {
 	Destination = destination;
-	IsMoving = true;
+	IsMoving = true;	
 }
 void UMovement::Move(float deltaTime)
 {	
@@ -53,7 +46,8 @@ void UMovement::Move(float deltaTime)
 	{
 		moveVector = destinationVector;
 		owner->AddActorWorldOffset(moveVector);
-		IsMoving = false;		
+		IsMoving = false;
+		DestinationReached.Broadcast();
 	}
 	else
 	{

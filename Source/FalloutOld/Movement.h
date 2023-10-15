@@ -32,5 +32,8 @@ private:
 	void Move(float deltaTime);
 public:
 	UFUNCTION(BlueprintCallable)
-	void SetDestination(const FVector& destination);
+	void SetDestination(const FVector destination);
+
+	DECLARE_MULTICAST_DELEGATE(FStaticDelegade)
+	FStaticDelegade DestinationReached;
 };

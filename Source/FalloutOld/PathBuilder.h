@@ -32,6 +32,7 @@ class PathBuilder
 	Cell GetClosestToStart(Cell cell);
 	void BuildPath();
 	void InsertByDistanceToEnd(Cell cell,Distance distanceInfo);
+	float GetDistanceFromStart(Cell cell);
 	
 public:
 	PathBuilder(const TMap<Cell, FGridVertexEdges>* graph, FVector actorLocation, FVector targetPoint);

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ActionHandler.h"
 #include "InputManager.h"
 #include "PlayerView.h"
 #include "CharacterEntity.h"
@@ -27,8 +28,11 @@ class FALLOUTOLD_API AMyPlayerController : public APlayerController
 	
 	//Input settings
 private:
+	UPROPERTY()
 	UInputManager* inputManager;
-	ACharacterEntity* playerCharater;
+	UPROPERTY()
+	ACharacterEntity* playerCharater;	
+	ActionHandler actionHandler;
 	
 	void SetupInputSubsystem();		
 	void SetupCameraInput(UEnhancedInputComponent* inputComponent);
