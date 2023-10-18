@@ -5,19 +5,21 @@
 #include "EnhancedInputComponent.h"
 #include "InputManager.h"
 #include "EnhancedInputSubsystems.h"
-#include "ActionMove.h"
+#include "ActionMoveToPoint.h"
 #include "GridActor.h"
 #include "PlayerView.h"
 
 AMyPlayerController::AMyPlayerController()
 {
-	inputManager = CreateDefaultSubobject<UInputManager>("Input manager");
+	
+	inputManager = CreateDefaultSubobject<UInputManager>("Input manager");	
+	actionHandler = new ActionHandler();	
 }
 
 void AMyPlayerController::BeginPlay()
 {	
 	PlayerView = GetWorld()->SpawnActor<APlayerView>(FVector::Zero(),FRotator::ZeroRotator);
-	playerCharater = GetWorld()->SpawnActor<ACharacterEntity>(FVector::Zero(),FRotator::ZeroRotator);
+	playerCharacter = GetWorld()->SpawnActor<ACharacterEntity>(FVector{50,50,0},FRotator::ZeroRotator);
 	SetViewTarget(PlayerView);
 	SetupInputSubsystem();	
 }
@@ -47,15 +49,10 @@ void AMyPlayerController::OnMoveInput()
 	{
 		auto actor = hit.GetActor();
 		if(auto grid = Cast<AGridActor>(actor) )
-		{
-			auto characterLocation = playerCharater->GetActorLocation();
-			auto movePath = grid->GetMovePath(characterLocation,hit.Location);
-			ActionMove action{playerCharater, movePath};
-			actionHandler.AddAction(&action);
-			for (auto p : movePath)
-			{
-				DrawDebugSphere(GetWorld(),p, 50, 10, FColor::Cyan, false, 20);
-			}
+		{						
+			auto action = NewObject<UActionMoveToPoint>();
+			action->SetupAction(playerCharacter, grid, hit.Location);
+			actionHandler->AddAction(action);			
 		}
 	}	
 }
@@ -63,6 +60,16 @@ void AMyPlayerController::SetupMoveInput(UEnhancedInputComponent* inputComponent
 {
 	inputComponent->BindAction(inputManager->Move,ETriggerEvent::Triggered, this,&AMyPlayerController::OnMoveInput);
 }
+void AMyPlayerController::BindInputs()
+{
+	
+}
+void AMyPlayerController::Initialize(UInputManager* InputManager)
+{
+	
+}
+
+
 
 
 

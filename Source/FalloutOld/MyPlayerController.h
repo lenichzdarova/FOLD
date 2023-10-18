@@ -29,12 +29,13 @@ class FALLOUTOLD_API AMyPlayerController : public APlayerController
 	//Input settings
 private:
 	UPROPERTY()
-	UInputManager* inputManager;
+	UInputManager* inputManager = nullptr;
 	UPROPERTY()
-	ACharacterEntity* playerCharater;	
-	ActionHandler actionHandler;
-	
-	void SetupInputSubsystem();		
+	ACharacterEntity* playerCharacter = nullptr;	
+	ActionHandler* actionHandler = nullptr;
+	void Initialize(UInputManager* InputManager);
+	void SetupInputSubsystem();
+	void BindInputs();
 	void SetupCameraInput(UEnhancedInputComponent* inputComponent);
 	void OnMoveInput();
 	void SetupMoveInput(UEnhancedInputComponent* InputComponent);

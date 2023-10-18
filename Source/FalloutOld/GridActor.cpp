@@ -86,6 +86,13 @@ void AGridActor::SetTestGrid()
 	}	
 }
 
+bool AGridActor::CheckGraphEdges(FVector startVertex, FVector vertexToCheck)
+{
+	auto edges = Graph.Find(startVertex);
+	return edges->edges.Contains(vertexToCheck);
+}
+
+
 
 
 

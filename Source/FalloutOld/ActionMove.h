@@ -1,16 +1,22 @@
 ﻿#pragma once
-#include "IAction.h"
+#include "Action.h"
+#include "GridActor.h"
+#include "ActionMove.generated.h"
 
-class ActionMove : public IAction
+UCLASS(abstract)
+class UActionMove : public UAction
 {
-public:
-	ActionMove(ACharacterEntity* receiver, TArray<FVector> path);
-	virtual void Execute() override;
-	 ~ActionMove();
+	GENERATED_BODY()
+public:	
+	virtual void Execute() override;		
 	
-protected:
-	TArray<FVector> path;
-	FDelegateHandle destinationReached;
-	void SetMovePoint();
-	void OnDestinationReached();
+protected:	
+	FDelegateHandle DestinationReached;
+	AGridActor* Grid;
+	FVector Destination;
+	void SetMovePath(FVector actorPosition, FVector movePoint);
+	//virtual void OnActionComplete() override;
+	void OnWaypointReached();
+	virtual void BindDelegates() override;
+	virtual void UnbindDelegates() override;	
 };

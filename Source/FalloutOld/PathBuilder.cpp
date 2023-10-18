@@ -91,11 +91,7 @@ void PathBuilder::CloseCell(Cell cell)
 	closed.Add(cell);
 }
 TArray<Cell> PathBuilder::GetPath() const
-{
-	for (auto p : path)
-	{
-		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 10, FColor::Blue, FString::FromInt(graph->Find(p)->edges.Num()));
-	}
+{	
 	return path;
 }
 Cell PathBuilder::GetClosestToEnd()

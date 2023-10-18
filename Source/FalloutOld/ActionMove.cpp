@@ -1,39 +1,43 @@
 ﻿#include "ActionMove.h"
 
-ActionMove::ActionMove(ACharacterEntity* receiver, TArray<FVector> path) : IAction(receiver)
+void UActionMove::Execute()
 {
-	this -> path = path;
+	Super::Execute();
+	SetMovePath(Receiver->GetActorLocation(),Destination);
 }
 
-void ActionMove::Execute()
+void UActionMove::SetMovePath(FVector actorLocation, FVector movePoint)
+{
+	auto movementComponent = Receiver->movementComponent;	
+	auto path = Grid->GetMovePath(actorLocation,movePoint);
+	movementComponent->SetPath(path);		
+}
+
+void UActionMove::OnWaypointReached()
 {
 	auto movementComponent = Receiver->movementComponent;
-	destinationReached = movementComponent->DestinationReached.AddRaw(this, &ActionMove::OnDestinationReached);
-	SetMovePoint();
-}
-
-void ActionMove::SetMovePoint()
-{
-	if(path.IsEmpty())
+	if(movementComponent->IsMoving())
 	{
-		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 5, FColor::Magenta, "reached end");
-		return;
+		auto currentLocation = Receiver->GetActorLocation();
+		auto currentDestination = movementComponent->GetMovePoint();
+		bool canMove = Grid->CheckGraphEdges(currentLocation,currentDestination);
+		if(!canMove)
+		{
+			SetMovePath(currentLocation, Destination);
+		}
 	}
-	auto dest = path[0];
-	Receiver->movementComponent->SetDestination(path.Pop());
-	path.RemoveAt(0,1,true);	
+	else
+	{
+		OnActionComplete();
+	}
 }
-void ActionMove::OnDestinationReached()
+void UActionMove::BindDelegates()
 {
-	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 5, FColor::Magenta, "reached dest");
-	SetMovePoint();
+	Receiver->movementComponent->PositionUpdate.AddUObject(this, &UActionMove::OnWaypointReached);
 }
-ActionMove::~ActionMove()
+void UActionMove::UnbindDelegates()
 {
-	Receiver->movementComponent->DestinationReached.Remove(destinationReached);
+	Receiver->movementComponent->PositionUpdate.RemoveAll(this);
 }
-
-
-
 
 

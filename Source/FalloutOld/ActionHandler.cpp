@@ -1,10 +1,30 @@
 ﻿#include "ActionHandler.h"
 
-void ActionHandler::AddAction(IAction* action)
+void ActionHandler::AddAction(UAction* action)
 {
-	if(actions.IsEmpty())
+	actions.Enqueue(action);
+	if(current == nullptr)
 	{
-		actions.Enqueue(action);	
-		(*actions.Peek())->Execute();
-	}	
+		ActionExecute();
+	}
 }
+void ActionHandler::ActionExecute()
+{	
+	actions.Dequeue(current);
+	current->ActionComplete.AddRaw(this, &ActionHandler::OnActionComplete);
+	current->Execute();	
+}
+
+void ActionHandler::OnActionComplete()
+{	
+	current->ActionComplete.RemoveAll(this);
+	if(!actions.IsEmpty())
+	{
+		ActionExecute();
+	}
+	else
+	{
+		current = nullptr;
+	}
+}
+

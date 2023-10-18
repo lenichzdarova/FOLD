@@ -1,9 +1,14 @@
 ﻿#pragma once
-#include "IAction.h"
+#include "Action.h"
 
 class ActionHandler
 {
-	TQueue<IAction*> actions;
+	TQueue<UAction*> actions;
+	UAction* current = nullptr;
 public:
-	void AddAction(IAction* action);	
+	void AddAction(UAction* action);	
+
+protected:
+	void OnActionComplete();
+	void ActionExecute();
 };
