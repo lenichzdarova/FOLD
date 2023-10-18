@@ -14,8 +14,7 @@ AGridActor::AGridActor()
 
 // Called when the game starts or when spawned
 void AGridActor::BeginPlay()
-{
-	
+{	
 	if(GridMesh != nullptr)
 	{
 		FVector bounds, origin;
@@ -52,7 +51,7 @@ TArray<FVector> AGridActor::GetMovePath(FVector start, FVector destination) cons
 }
 
 void AGridActor::SetTestGrid()
-{
+{	
 	float xPos = MinX + CellSize/2;
 	FVector location = GetActorLocation();
 	while (xPos < MaxX)
@@ -64,25 +63,35 @@ void AGridActor::SetTestGrid()
 			FGridVertexEdges edges;
 			for (float x = xPos - CellSize; x <= (xPos + CellSize); x += CellSize)
 			{
-				if (x != xPos && x > MinX && x < MaxX)
+				if (x > MinX && x < MaxX)
 				{
 					for(float y = yPos - CellSize; y <= (yPos + CellSize); y += CellSize)
 					{
-						if(y != yPos && y > MinY && y < MaxY)
+						if(y > MinY && y < MaxY)
 						{
-							edges.edges.Add(FVector{x,y,location.Z});
-							Graph.Add(gridVertex, edges);
-							
+							FVector edge{x,y,location.Z}; 
+							if(gridVertex != edge)
+							{
+								edges.edges.Add(FVector{x,y,location.Z});
+							}														
 						}
 					}
 				}				
 			}
-			DrawDebugSphere(GetWorld(),gridVertex, 50.f, 10, FColor::Red,false, 100);
+			Graph.Add(gridVertex, edges);
+			DrawDebugSphere(GetWorld(),gridVertex,50,edges.edges.Num(), FColor::Red, false , 20);
 			yPos += CellSize;
 		}		
 		xPos += CellSize;		
 	}	
 }
+
+bool AGridActor::CheckGraphEdges(FVector startVertex, FVector vertexToCheck)
+{
+	auto edges = Graph.Find(startVertex);
+	return edges->edges.Contains(vertexToCheck);
+}
+
 
 
 

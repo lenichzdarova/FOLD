@@ -51,5 +51,6 @@ public:
 
 	UFUNCTION()
 	TArray<FVector> GetMovePath(FVector start, FVector destination) const;
-	
+	UFUNCTION()
+	bool CheckGraphEdges(FVector startVertex, FVector vertexToCheck);	
 };

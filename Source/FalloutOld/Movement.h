@@ -26,11 +26,19 @@ public:
 	                           FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-	FVector Destination;
-	bool IsMoving = false;
+	TArray<FVector> Path;	
 	float MoveSpeed = 100.f;
 	void Move(float deltaTime);
+	void OnWaypointReach();
+	
+	
+	
 public:
 	UFUNCTION(BlueprintCallable)
-	void SetDestination(const FVector& destination);
+	void SetPath(TArray<FVector> path);
+	FVector GetMovePoint();
+	bool IsMoving() const;
+
+	DECLARE_MULTICAST_DELEGATE(FStaticMulticastDelegate)
+	FStaticMulticastDelegate PositionUpdate;
 };

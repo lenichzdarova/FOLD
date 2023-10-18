@@ -1,13 +1,43 @@
 ﻿#include "ActionMove.h"
 
-ActionMove::ActionMove(ACharacterEntity* receiver, TArray<FVector> path) : Action(receiver)
+void UActionMove::Execute()
 {
-	this -> path = path;
+	Super::Execute();
+	SetMovePath(Receiver->GetActorLocation(),Destination);
 }
 
-void ActionMove::Execute()
+void UActionMove::SetMovePath(FVector actorLocation, FVector movePoint)
 {
-	
+	auto movementComponent = Receiver->movementComponent;	
+	auto path = Grid->GetMovePath(actorLocation,movePoint);
+	movementComponent->SetPath(path);		
+}
+
+void UActionMove::OnWaypointReached()
+{
+	auto movementComponent = Receiver->movementComponent;
+	if(movementComponent->IsMoving())
+	{
+		auto currentLocation = Receiver->GetActorLocation();
+		auto currentDestination = movementComponent->GetMovePoint();
+		bool canMove = Grid->CheckGraphEdges(currentLocation,currentDestination);
+		if(!canMove)
+		{
+			SetMovePath(currentLocation, Destination);
+		}
+	}
+	else
+	{
+		OnActionComplete();
+	}
+}
+void UActionMove::BindDelegates()
+{
+	Receiver->movementComponent->PositionUpdate.AddUObject(this, &UActionMove::OnWaypointReached);
+}
+void UActionMove::UnbindDelegates()
+{
+	Receiver->movementComponent->PositionUpdate.RemoveAll(this);
 }
 
 

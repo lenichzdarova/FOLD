@@ -1,12 +1,28 @@
 ﻿#pragma once
 #include "CharacterEntity.h"
+#include "Action.generated.h"
 
-class Action
+UCLASS(Abstract)
+class UAction : public UObject
 {
-public:
-	Action(ACharacterEntity* receiver);
-	virtual void Execute() = 0;
+	GENERATED_BODY()
+public:	
+	virtual void Execute();	
 
 protected:
-	ACharacterEntity* Receiver;
+	UPROPERTY()
+	ACharacterEntity* Receiver = nullptr;
+	UFUNCTION()
+	virtual void OnActionComplete();	
+	UFUNCTION()
+	virtual void BindDelegates(){};
+	UFUNCTION()
+	virtual void UnbindDelegates(){};
+	
+
+public:
+	DECLARE_MULTICAST_DELEGATE(FMulticastDelegate)
+	FMulticastDelegate ActionComplete;
 };
+
+

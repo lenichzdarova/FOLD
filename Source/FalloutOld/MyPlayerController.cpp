@@ -5,18 +5,21 @@
 #include "EnhancedInputComponent.h"
 #include "InputManager.h"
 #include "EnhancedInputSubsystems.h"
-#include "ActionMove.h"
+#include "ActionMoveToPoint.h"
 #include "GridActor.h"
 #include "PlayerView.h"
 
 AMyPlayerController::AMyPlayerController()
 {
-	inputManager = CreateDefaultSubobject<UInputManager>("Input manager");
+	
+	inputManager = CreateDefaultSubobject<UInputManager>("Input manager");	
+	actionHandler = new ActionHandler();	
 }
 
 void AMyPlayerController::BeginPlay()
 {	
 	PlayerView = GetWorld()->SpawnActor<APlayerView>(FVector::Zero(),FRotator::ZeroRotator);
+	playerCharacter = GetWorld()->SpawnActor<ACharacterEntity>(FVector{50,50,0},FRotator::ZeroRotator);
 	SetViewTarget(PlayerView);
 	SetupInputSubsystem();	
 }
@@ -41,14 +44,15 @@ void AMyPlayerController::SetupCameraInput(UEnhancedInputComponent* inputCompone
 
 void AMyPlayerController::OnMoveInput()
 {
-		FHitResult hit;
+	FHitResult hit;
 	if(GetHitResultUnderCursor(ECC_Visibility, true, hit))
 	{
 		auto actor = hit.GetActor();
 		if(auto grid = Cast<AGridActor>(actor) )
-		{
-			auto moveDestination = grid->GetGridVertexFromFVector(hit.Location);
-			GEngine->AddOnScreenDebugMessage(1,10,FColor::Emerald,moveDestination.ToString());
+		{						
+			auto action = NewObject<UActionMoveToPoint>();
+			action->SetupAction(playerCharacter, grid, hit.Location);
+			actionHandler->AddAction(action);			
 		}
 	}	
 }
@@ -56,6 +60,16 @@ void AMyPlayerController::SetupMoveInput(UEnhancedInputComponent* inputComponent
 {
 	inputComponent->BindAction(inputManager->Move,ETriggerEvent::Triggered, this,&AMyPlayerController::OnMoveInput);
 }
+void AMyPlayerController::BindInputs()
+{
+	
+}
+void AMyPlayerController::Initialize(UInputManager* InputManager)
+{
+	
+}
+
+
 
 
 

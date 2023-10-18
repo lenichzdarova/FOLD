@@ -1,6 +1,12 @@
 ﻿#include "Action.h"
 
-Action::Action(ACharacterEntity* receiver)
-{
-	Receiver = receiver;
+void UAction::OnActionComplete()
+{		
+	UnbindDelegates();
+	ActionComplete.Broadcast();		
 }
+void UAction::Execute()
+{
+	BindDelegates();
+}
+
