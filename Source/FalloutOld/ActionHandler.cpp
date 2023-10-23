@@ -1,6 +1,6 @@
 ﻿#include "ActionHandler.h"
 
-void ActionHandler::AddAction(UAction* action)
+void UActionHandler::AddAction(UActionBase* action)
 {
 	actions.Enqueue(action);
 	if(current == nullptr)
@@ -8,14 +8,14 @@ void ActionHandler::AddAction(UAction* action)
 		ActionExecute();
 	}
 }
-void ActionHandler::ActionExecute()
+void UActionHandler::ActionExecute()
 {	
 	actions.Dequeue(current);
-	current->ActionComplete.AddRaw(this, &ActionHandler::OnActionComplete);
+	current->ActionComplete.AddUObject(this, &UActionHandler::OnActionComplete);
 	current->Execute();	
 }
 
-void ActionHandler::OnActionComplete()
+void UActionHandler::OnActionComplete()
 {	
 	current->ActionComplete.RemoveAll(this);
 	if(!actions.IsEmpty())

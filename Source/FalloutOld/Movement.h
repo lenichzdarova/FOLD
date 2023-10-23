@@ -29,9 +29,7 @@ private:
 	TArray<FVector> Path;	
 	float MoveSpeed = 100.f;
 	void Move(float deltaTime);
-	void OnWaypointReach();
-	
-	
+	void OnWaypointReach();	
 	
 public:
 	UFUNCTION(BlueprintCallable)

@@ -1,9 +1,9 @@
 ﻿#pragma once
-#include "ActionMove.h"
+#include "ActionMoveBase.h"
 #include "ActionMoveToCharacter.generated.h"
 
 UCLASS()
-class UActionMoveToCharacter : public UActionMove
+class UActionMoveToCharacter : public UActionMoveBase
 {
 	GENERATED_BODY()
 	

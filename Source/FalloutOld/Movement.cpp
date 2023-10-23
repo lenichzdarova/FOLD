@@ -55,6 +55,7 @@ void UMovement::Move(float deltaTime)
 
 void UMovement::OnWaypointReach()
 {
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE,5,FColor::Red,"waypoint");
 	Path.RemoveAt(0,1,true);
 	PositionUpdate.Broadcast();	
 }

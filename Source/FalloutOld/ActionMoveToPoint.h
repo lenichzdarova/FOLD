@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include "ActionMove.h"
+#include "ActionMoveBase.h"
 #include "GridActor.h"
 #include "ActionMoveToPoint.generated.h"
 
 UCLASS()
-class UActionMoveToPoint : public UActionMove
+class UActionMoveToPoint : public UActionMoveBase
 {
 	GENERATED_BODY()	
 	
