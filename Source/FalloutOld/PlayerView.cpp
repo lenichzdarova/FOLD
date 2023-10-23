@@ -48,25 +48,15 @@ void APlayerView::Tick(float DeltaTime)
 
 void APlayerView::Move(FVector value)
 {
-	//need implement borders check etc
+	value *= MoveSensitivity;
 	AddActorLocalOffset(value);	
 }
-void APlayerView::OnMoveInput(const FInputActionValue& inputValue)
-{
-	auto inputVector = inputValue.Get<FVector2D>();
-	inputVector.Normalize();	
-	FVector moveVector{inputVector.X,inputVector.Y,0};
-	moveVector*=MoveSensitivity;
-	Move(moveVector);
-}
 
-
-void APlayerView::OnRotateInput(const FInputActionValue& inputValue)
+void APlayerView::SetRotation(float value)
 {
 	if(RotationDelta == 0)
-	{
-		auto input = inputValue.Get<float>();
-		RotationDelta = input * RotationValue;
+	{		
+		RotationDelta = value * RotationValue;
 	}	
 }
 

@@ -46,12 +46,10 @@ protected:
 	FVector2d MaxBorder;
 
 public:
-
-	//UFUNCTION()
-	void OnMoveInput(const FInputActionValue& inputValue);
+	UFUNCTION(BlueprintCallable)	
 	void Move(FVector value);
 	
-	//UFUNCTION()
-	void OnRotateInput(const FInputActionValue& inputValue);
+	UFUNCTION(BlueprintCallable)
+	void SetRotation(float value);
 	void Rotate();
 };

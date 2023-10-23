@@ -1,12 +1,17 @@
 ﻿#pragma once
-#include "Action.h"
+#include "ActionBase.h"
+#include "ActionHandler.generated.h"
 
-class ActionHandler
+UCLASS(BlueprintType)
+class UActionHandler : public UObject
 {
-	TQueue<UAction*> actions;
-	UAction* current = nullptr;
+	GENERATED_BODY()
+	TQueue<UActionBase*> actions;
+	UPROPERTY()
+	UActionBase* current = nullptr;
 public:
-	void AddAction(UAction* action);	
+	UFUNCTION(BlueprintCallable)
+	void AddAction(UActionBase* action);	
 
 protected:
 	void OnActionComplete();
