@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "FalloutOld/InputReceiver.h"
+#include "FalloutOld/CharacterEntity.h"
 #include "WidgetInventory.generated.h"
 
 /**
@@ -13,5 +15,8 @@ UCLASS(Blueprintable,BlueprintType)
 class FALLOUTOLD_API UWidgetInventory : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
+public:
+	UFUNCTION()
+	void Initialize(TScriptInterface<IInputReceiver> inputReceiver, ACharacterEntity* playerCharacter);	
 };
