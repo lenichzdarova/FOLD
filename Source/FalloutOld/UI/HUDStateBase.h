@@ -13,6 +13,10 @@ class FALLOUTOLD_API UHUDStateBase : public UObject
 {
 	GENERATED_BODY()
 
+protected:
+	virtual void BindEvents(){};
+	virtual void UnbindEvents(){};
+
 public:
 	virtual void Start(){};
 	virtual void Stop(){};

@@ -2,4 +2,8 @@
 
 
 #include "WidgetDownPanel.h"
+void UWidgetDownPanel::Initialize(TScriptInterface<IInputReceiver> inputReceiver, ACharacterEntity* playerCharacter)
+{
+	
+}
 

@@ -3,3 +3,7 @@
 
 #include "WidgetCharacterSheet.h"
 
+void UWidgetCharacterSheet::Initialize(TScriptInterface<IInputReceiver> inputReceiver, ACharacterEntity* playerCharacter)
+{
+	
+}
