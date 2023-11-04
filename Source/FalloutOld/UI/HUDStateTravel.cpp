@@ -20,8 +20,8 @@ void UHUDStateTravel::Initialize(TSubclassOf<UWidgetTravel> TravelSubclass, TScr
 }
 void UHUDStateTravel::Start()
 {	
-	WidgetTravel = Cast<UWidgetTravel>(CreateWidget(, TravelWidgetSubclass));
-	WidgetTravel->Initialize(WorldTravelHandler);
+//	WidgetTravel = Cast<UWidgetTravel>(CreateWidget(, TravelWidgetSubclass));
+	//WidgetTravel->Initialize(WorldTravelHandler);
 }
 void UHUDStateTravel::Stop()
 {

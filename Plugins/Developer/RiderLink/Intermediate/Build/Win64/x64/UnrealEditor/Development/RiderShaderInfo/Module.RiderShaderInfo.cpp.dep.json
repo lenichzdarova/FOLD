@@ -1,12 +1,12 @@
 {
     "Version": "1.2",
     "Data": {
-        "Source": "e:\\projects\\falloutold\\plugins\\developer\\riderlink\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\ridershaderinfo\\module.ridershaderinfo.cpp",
+        "Source": "e:\\falloutclonecpp\\plugins\\developer\\riderlink\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\ridershaderinfo\\module.ridershaderinfo.cpp",
         "ProvidedModule": "",
         "Includes": [
-            "e:\\projects\\falloutold\\plugins\\developer\\riderlink\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\ridershaderinfo\\definitions.h",
-            "e:\\projects\\falloutold\\plugins\\developer\\riderlink\\source\\ridershaderinfo\\ridershaderinfo.cpp",
-            "e:\\projects\\falloutold\\plugins\\developer\\riderlink\\source\\ridershaderinfo\\ridershaderinfo.h",
+            "e:\\falloutclonecpp\\plugins\\developer\\riderlink\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\ridershaderinfo\\definitions.h",
+            "e:\\falloutclonecpp\\plugins\\developer\\riderlink\\source\\ridershaderinfo\\ridershaderinfo.cpp",
+            "e:\\falloutclonecpp\\plugins\\developer\\riderlink\\source\\ridershaderinfo\\ridershaderinfo.h",
             "e:\\unreal engine 5\\ue_5.3\\engine\\source\\runtime\\core\\public\\modules\\moduleinterface.h",
             "e:\\unreal engine 5\\ue_5.3\\engine\\source\\runtime\\core\\public\\coretypes.h",
             "e:\\unreal engine 5\\ue_5.3\\engine\\source\\runtime\\core\\public\\hal\\platform.h",

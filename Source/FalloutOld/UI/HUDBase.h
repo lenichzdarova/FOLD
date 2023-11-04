@@ -86,5 +86,5 @@ public:
 
 protected:
 	void SetupStates();
-	APlayerControllerBase* GetPlayerController(){GetNetOwningPlayer()->PlayerController};
+//	APlayerControllerBase* GetPlayerController(){GetNetOwningPlayer()->PlayerController};
 };
