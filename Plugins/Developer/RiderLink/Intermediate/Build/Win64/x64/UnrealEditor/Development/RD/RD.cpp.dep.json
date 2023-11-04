@@ -1,11 +1,11 @@
 {
     "Version": "1.2",
     "Data": {
-        "Source": "e:\\projects\\falloutold\\plugins\\developer\\riderlink\\source\\rd\\rd.cpp",
+        "Source": "e:\\falloutclonecpp\\plugins\\developer\\riderlink\\source\\rd\\rd.cpp",
         "ProvidedModule": "",
         "Includes": [
-            "e:\\projects\\falloutold\\plugins\\developer\\riderlink\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\rd\\definitions.h",
-            "e:\\projects\\falloutold\\plugins\\developer\\riderlink\\source\\rd\\rd.h",
+            "e:\\falloutclonecpp\\plugins\\developer\\riderlink\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\rd\\definitions.h",
+            "e:\\falloutclonecpp\\plugins\\developer\\riderlink\\source\\rd\\rd.h",
             "e:\\unreal engine 5\\ue_5.3\\engine\\source\\runtime\\core\\public\\logging\\logmacros.h",
             "e:\\unreal engine 5\\ue_5.3\\engine\\source\\runtime\\core\\public\\containers\\unrealstring.h",
             "e:\\unreal engine 5\\ue_5.3\\engine\\source\\runtime\\core\\public\\coretypes.h",
