@@ -18,24 +18,32 @@ class FALLOUTOLD_API UHUDStateGameplay : public UHUDStateBase
 
 protected:
 	UPROPERTY()
-	UWidgetDownPanel* DownPanel;
+	TSubclassOf<UWidgetDownPanel> DownPanel;
 	UPROPERTY()
 	TScriptInterface<IInputReceiver> PlayerInputReceiver;
 	UPROPERTY()
 	TScriptInterface<IInputProvider> PlayerInputProvider;
-
-
-	virtual void BindEvents() override;
-	virtual void UnbindEvents() override;
-
-	void OnInventoryButtonClick();
-	void OnCharacterButtonClicked();
-	void OnOptionsButtonClicked();
-	void OnPipboyButtonClicked();
-	void OnMapButtonClicked();
+	UPROPERTY()
+	TScriptInterface<IHUDStateSwitcher> StateSwitcher;
 	
 public:
-	void Initialize(UWidgetDownPanel* DownPanel, TScriptInterface<IInputReceiver> InputReceiver,TScriptInterface<IInputProvider> InputProvider);
-	virtual void Start() override;
-	virtual void Stop() override;
+	virtual void Initialize(TSubclassOf<UWidgetDownPanel> , TScriptInterface<IInputReceiver>, TScriptInterface<IInputProvider>, TScriptInterface<IHUDStateSwitcher>);
+	
+protected:
+	virtual void BindEvents() override;
+	virtual void UnbindEvents() override;	
+	//UI buttons click events
+	virtual void OnInventoryButtonClicked();
+	virtual void OnCharacterButtonClicked();
+	virtual void OnOptionsButtonClicked();
+	virtual void OnPipBoyButtonClicked();
+	virtual void OnMapButtonClicked();
+	// player controller inputs
+	virtual void OnOpenInventoryInput();
+	virtual void OnOpenCharacterInput();
+	virtual void OnCancelInput();
+	virtual void OnOpenPipBoyInput();
+	virtual void OnOpenMapInput();
+
+	
 };

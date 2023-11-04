@@ -3,66 +3,97 @@
 
 #include "HUDStateGameplay.h"
 
-void UHUDStateGameplay::Initialize(UWidgetDownPanel* downPanel, TScriptInterface<IInputReceiver> InputReceiver, TScriptInterface<IInputProvider> InputProvider)
+void UHUDStateGameplay::Initialize(TSubclassOf<UWidgetDownPanel> downPanel, TScriptInterface<IInputReceiver> InputReceiver,
+									TScriptInterface<IInputProvider> InputProvider, TScriptInterface<IHUDStateSwitcher> stateSwitcher)
 {
 	DownPanel = downPanel;
 	PlayerInputReceiver = InputReceiver;
 	PlayerInputProvider = InputProvider;
+	StateSwitcher = stateSwitcher;
 }
 
 void UHUDStateGameplay::BindEvents()
-{	
-	DownPanel->InventoryButtonClicked.AddUObject(this, &UHUDStateGameplay::OnInventoryButtonClick);
+{	/*
+	DownPanel->InventoryButtonClicked.AddUObject(this, &UHUDStateGameplay::OnInventoryButtonClicked);
 	DownPanel->CharacterButtonClicked.AddUObject(this, &UHUDStateGameplay::OnCharacterButtonClicked);
 	DownPanel->OptionsButtonClicked.AddUObject(this, &UHUDStateGameplay::OnOptionsButtonClicked);
-	DownPanel->PipboyButtonClicked.AddUObject(this, &UHUDStateGameplay::OnPipboyButtonClicked);
+	DownPanel->PipBoyButtonClicked.AddUObject(this, &UHUDStateGameplay::OnPipBoyButtonClicked);
 	DownPanel->MapButtonClicked.AddUObject(this, &UHUDStateGameplay::OnMapButtonClicked);
+
+	PlayerInputProvider->OpenMapInput.AddUObject(this, &UHUDStateGameplay::OnOpenMapInput);
+	PlayerInputProvider->OpenCharacterSheetInput.AddUObject(this, &UHUDStateGameplay::OnOpenCharacterInput);
+	PlayerInputProvider->OpenInventoryInput.AddUObject(this, &UHUDStateGameplay::OnOpenInventoryInput);
+	PlayerInputProvider->CancelInput.AddUObject(this, &UHUDStateGameplay::OnCancelInput);
+	PlayerInputProvider->OpenPipBoyInput.AddUObject(this, &UHUDStateGameplay::OnOpenPipBoyInput);*/
 }
 
 void UHUDStateGameplay::UnbindEvents()
-{
+{/*
 	DownPanel->InventoryButtonClicked.RemoveAll(this);
 	DownPanel->CharacterButtonClicked.RemoveAll(this);
 	DownPanel->OptionsButtonClicked.RemoveAll(this);
-	DownPanel->PipboyButtonClicked.RemoveAll(this);
+	DownPanel->PipBoyButtonClicked.RemoveAll(this);
 	DownPanel->MapButtonClicked.RemoveAll(this);
+
+	PlayerInputProvider->OpenMapInput.RemoveAll(this);
+	PlayerInputProvider->OpenCharacterSheetInput.RemoveAll(this);
+	PlayerInputProvider->OpenInventoryInput.RemoveAll(this);
+	PlayerInputProvider->CancelInput.RemoveAll(this);
+	PlayerInputProvider->OpenPipBoyInput.RemoveAll(this);*/
 }
 
-void UHUDStateGameplay::Start()
-{
-	DownPanel->AddToViewport();
-	BindEvents();
-}
-
-void UHUDStateGameplay::Stop()
-{
-	DownPanel->RemoveFromParent();
-	UnbindEvents();
-}
-
-void UHUDStateGameplay::OnInventoryButtonClick()
+//buttons events
+void UHUDStateGameplay::OnInventoryButtonClicked()
 {
 	PlayerInputReceiver->Execute_OnOpenInventoryInput(PlayerInputReceiver.GetObject());
 }
 
 void UHUDStateGameplay::OnCharacterButtonClicked()
 {
-	PlayerInputReceiver->Execute_OnOpenCharacterSheetInput(PlayerInputReceiver.GetObject());
+	OnOpenCharacterInput();
 }
 
 void UHUDStateGameplay::OnMapButtonClicked()
 {
-	//not implemented yet
+	OnOpenMapInput();
 }
 
 void UHUDStateGameplay::OnOptionsButtonClicked()
 {
-	PlayerInputReceiver->Execute_OnCancelInput(PlayerInputReceiver.GetObject());
+	OnCancelInput();
 }
-void UHUDStateGameplay::OnPipboyButtonClicked()
+void UHUDStateGameplay::OnPipBoyButtonClicked()
 {
-	//not implemented yet
+	OnOpenPipBoyInput();
 }
+
+//player input
+void UHUDStateGameplay::OnOpenCharacterInput()
+{
+	StateSwitcher->Execute_SetCharacterSheetState(StateSwitcher.GetObject());
+}
+void UHUDStateGameplay::OnOpenInventoryInput()
+{
+	StateSwitcher->Execute_SetInventoryState(StateSwitcher.GetObject());
+}
+void UHUDStateGameplay::OnOpenMapInput()
+{
+	StateSwitcher->Execute_SetLocalMapState(StateSwitcher.GetObject());
+}
+void UHUDStateGameplay::OnCancelInput()
+{
+	StateSwitcher->Execute_SetOptionsState(StateSwitcher.GetObject());
+}
+void UHUDStateGameplay::OnOpenPipBoyInput()
+{
+	StateSwitcher->Execute_SetPipBoyState(StateSwitcher.GetObject());
+}
+
+
+
+
+
+
 
 
 

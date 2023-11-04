@@ -3,3 +3,12 @@
 
 #include "HUDStateBase.h"
 
+void UHUDStateBase::Start()
+{
+	BindEvents();	
+}
+void UHUDStateBase::Stop()
+{
+	UnbindEvents();	
+}
+

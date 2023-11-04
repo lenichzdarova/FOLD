@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/Button.h"
 #include "FalloutOld/CharacterEntity.h"
 #include "FalloutOld/InputReceiver.h"
 #include "WidgetCharacterSheet.generated.h"
@@ -16,8 +17,7 @@ class FALLOUTOLD_API UWidgetCharacterSheet : public UUserWidget
 {
 	GENERATED_BODY()
 
-public:
-	UFUNCTION()
-	void Initialize(TScriptInterface<IInputReceiver> inputReceiver, ACharacterEntity* playerCharacter);
-	
+protected:
+	UPROPERTY(meta=(BindWidget),BlueprintReadOnly)
+	UButton* CancelButton;	
 };

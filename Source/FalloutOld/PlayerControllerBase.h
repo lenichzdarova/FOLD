@@ -8,23 +8,25 @@
 #include "CharacterEntity.h"
 #include "CursorController.h"
 #include "EnhancedInputSubsystems.h"
+#include "InputMapper.h"
 #include "InputReceiver.h"
 #include "InputProvider.h"
+#include "WorldTravelHandler.h"
 #include "GameFramework/PlayerController.h"
 #include "PlayerControllerBase.generated.h"
 
 /**
  * 
  */
-UCLASS(Blueprintable, Abstract)
+UCLASS(Blueprintable)
 class FALLOUTOLD_API APlayerControllerBase : public APlayerController, public IInputReceiver, public IInputProvider
 											 
 {
-	GENERATED_BODY()
-
-	APlayerControllerBase();
+	GENERATED_BODY()	
 	
 protected:
+
+	virtual void Tick(float DeltaSeconds) override;
 	
 	UPROPERTY(BlueprintReadWrite)
 	APlayerView* PlayerView = nullptr;
@@ -33,36 +35,33 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UActionHandler* ActionHandler = nullptr;
 	UPROPERTY()
-	UCursorController* CursorController;
+	UCursorController* CursorController = nullptr;
+	UPROPERTY()
+	UWorldTravelHandler* WorldTravelHandler = nullptr;
 		
 	
-#pragma region inputs
+#pragma region InputReceiver
 	
 	virtual void OnCameraRotateInput_Implementation(float value) override;	
 	virtual void OnCameraMoveInput_Implementation(FVector2D value) override;	
 	virtual void OnOpenInventoryInput_Implementation() override;	
 	virtual void OnOpenCharacterSheetInput_Implementation() override;	
-	virtual void OnToggleMouseContextInput_Implementation() override;	
+	virtual void OnCursorContextInput_Implementation() override;	
 	virtual void OnCancelInput_Implementation() override;	
 	virtual void OnActionInput_Implementation() override;	
 	virtual void OnEndTurnInput_Implementation() override;
 	virtual void OnBattleInput_Implementation() override;
-#pragma endregion inputs	
+	virtual void OnOpenPipBoyInput_Implementation() override;
+	virtual void OnOpenMapInput_Implementation() override;
+	
+#pragma endregion InputReceiver	
 	
 
 public:
 	UEnhancedInputLocalPlayerSubsystem* GetEnhancedInputSubsystem();
-
-	DECLARE_MULTICAST_DELEGATE(FMulticastDelegate)
-	FMulticastDelegate InventoryOpen;
-	FMulticastDelegate InventoryClosed;
-	FMulticastDelegate CharacterSheetOpen;
-	FMulticastDelegate CharacterSheetClosed;
-	FMulticastDelegate MapOpen;
-	FMulticastDelegate MapClosed;
-	FMulticastDelegate OptionsOpen;
-	FMulticastDelegate OptionsClosed;
-	FMulticastDelegate Cancel;
-	
+	UFUNCTION(BlueprintCallable)
+	void Initialize(APlayerView* CameraActor, ACharacterEntity* PlayerActor);
+	UFUNCTION()
+	UWorldTravelHandler* GetTravelHandler();
 	
 };

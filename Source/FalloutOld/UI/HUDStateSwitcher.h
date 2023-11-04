@@ -18,17 +18,44 @@ class UHUDStateSwitcher : public UInterface
  */
 class FALLOUTOLD_API IHUDStateSwitcher
 {
-	GENERATED_BODY()
-
+	GENERATED_BODY()	
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	virtual void SetInventoryState(){};
-	virtual void SetCharacterSheetState(){};
-	virtual void SetDialogState(){};
-	virtual void SetOptionsState(){};
-	virtual void SetGameplayState(){};
-	virtual void SetMainMenuState(){};
-	virtual void SetWorldMapState(){};
-	virtual void SetLocalMapState(){};
-	virtual void SetPipboyState(){};
+	UFUNCTION(BlueprintNativeEvent)
+	void SetState(TSubclassOf<class UHUDStateBase> state);
+	UFUNCTION(BlueprintNativeEvent)
+	void SetInventoryState();
+	UFUNCTION(BlueprintNativeEvent)
+	void SetCharacterSheetState();
+	UFUNCTION(BlueprintNativeEvent)
+	void SetDialogState();
+	UFUNCTION(BlueprintNativeEvent)
+	void SetOptionsState();
+	UFUNCTION(BlueprintNativeEvent)
+	void SetGameplayState();
+	UFUNCTION(BlueprintNativeEvent)
+	void SetMainMenuState();
+	UFUNCTION(BlueprintNativeEvent)
+	void SetWorldMapState();
+	UFUNCTION(BlueprintNativeEvent)
+	void SetLocalMapState();
+	UFUNCTION(BlueprintNativeEvent)
+	void SetPipBoyState();
+	UFUNCTION(BlueprintNativeEvent)
+	void SetCinematicState();
+	UFUNCTION(BlueprintNativeEvent)
+	void SetIngameCinematicState();
+
+	DECLARE_MULTICAST_DELEGATE(FMulticastDelegate)
+	FMulticastDelegate InventoryState;
+	FMulticastDelegate CharacterSheetState;
+	FMulticastDelegate DialogState;
+	FMulticastDelegate OptionsState;
+	FMulticastDelegate GameplayState;
+	FMulticastDelegate MainMenuState;
+	FMulticastDelegate WorldMapState;
+	FMulticastDelegate LocalMapState;
+	FMulticastDelegate PipBoyState;
+	FMulticastDelegate CinematicState;
+	FMulticastDelegate IngameCinematicState;
 };

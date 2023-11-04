@@ -6,6 +6,7 @@
 #include "FalloutOld/InputReceiver.h"
 #include "FalloutOld/CharacterEntity.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/Button.h"
 #include "WidgetDownPanel.generated.h"
 
 /**
@@ -16,15 +17,36 @@ class FALLOUTOLD_API UWidgetDownPanel : public UUserWidget
 {
 	GENERATED_BODY()
 
+protected:
+	UPROPERTY(meta=(BindWidget))
+	UButton* InventoryButton = nullptr;
+	UPROPERTY(meta=(BindWidget))
+	UButton* CharacterButton = nullptr;
+	UPROPERTY(meta=(BindWidget))
+	UButton* OptionsButton = nullptr;
+	UPROPERTY(meta=(BindWidget))
+	UButton* PipBoyButton = nullptr;
+	UPROPERTY(meta=(BindWidget))
+	UButton* MapButton = nullptr;	
+
 public:
 	UFUNCTION()
-	void Initialize(TScriptInterface<IInputReceiver> inputReceiver, ACharacterEntity* playerCharacter);
+	void Initialize( ACharacterEntity* playerCharacter);
 
 
 	DECLARE_MULTICAST_DELEGATE(FMulticastDelegate)
 	FMulticastDelegate InventoryButtonClicked;
 	FMulticastDelegate CharacterButtonClicked;
 	FMulticastDelegate OptionsButtonClicked;
-	FMulticastDelegate PipboyButtonClicked;
+	FMulticastDelegate PipBoyButtonClicked;
 	FMulticastDelegate MapButtonClicked;
+	
+protected:
+	virtual void OnInventoryButtonClick();
+	virtual void OnCharacterButtonClick();
+	virtual void OnOptionsButtonClick();
+	virtual void OnPipBoyButtonClick();
+	virtual void OnMapButtonClick();
+
+	virtual void BindEvents();
 };

@@ -3,8 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "HUDStateSwitcher.h"
 #include "HUDStateBase.generated.h"
 
+class IHUDStateSwitcher;
 /**
  * 
  */
@@ -15,9 +17,9 @@ class FALLOUTOLD_API UHUDStateBase : public UObject
 
 protected:
 	virtual void BindEvents(){};
-	virtual void UnbindEvents(){};
+	virtual void UnbindEvents(){};	
 
 public:
-	virtual void Start(){};
-	virtual void Stop(){};
+	virtual void Start();
+	virtual void Stop();
 };
