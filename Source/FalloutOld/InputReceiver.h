@@ -35,7 +35,7 @@ public:
 	void OnOpenCharacterSheetInput();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void OnToggleMouseContextInput();
+	void OnCursorContextInput();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnCancelInput();
@@ -48,5 +48,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnBattleInput();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void OnOpenPipBoyInput();
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void OnOpenMapInput();
 	
 };

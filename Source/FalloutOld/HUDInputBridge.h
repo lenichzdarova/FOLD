@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "PlayerInputData.h"
+#include "InputMapper.h"
 #include "UI/HUDBase.h"
 #include "UObject/Object.h"
 #include "HUDInputBridge.generated.h"
@@ -18,18 +18,26 @@ class FALLOUTOLD_API UHUDInputBridge : public UObject
 
 protected:
 	UPROPERTY()
-	AHUDBase* HUD;
+	TScriptInterface<IHUDStateSwitcher> HUDStateSwitcher;
 	UPROPERTY()
-	UPlayerInputData* InputData;
+	UInputMapper* InputMapper;
 
 	void BindEvents();
+	//HUD states
 	void OnInventoryState();	
 	void OnCharacterSheetState();
 	void OnOptionState();
 	void OnPipboyState();
-	void OnMapState();	
+	void OnLocalMapState();
+	void OnWorldMapState();
+	void OnCinematicState();
+	void OnDialogState();
+	void OnGameplayState();
+	void OnIngameCinematicState();
+	void OnMainMenuState();	
 	
-public:	
-	void Initialize(AHUDBase* hud, UPlayerInputData* inputs, UEnhancedInputLocalPlayerSubsystem* inputSubsystem);
+public:
+	UFUNCTION(BlueprintCallable)
+	void Initialize(TScriptInterface<IHUDStateSwitcher> StateSwitcher, UInputMapper* mapper);
 		
 };

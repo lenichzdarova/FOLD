@@ -25,12 +25,17 @@ public:
 
 	DECLARE_MULTICAST_DELEGATE(FInputMulticastDelegate)
 	FInputMulticastDelegate ActionInput;
-	FInputMulticastDelegate CameraMoveInput;
-	FInputMulticastDelegate CameraRotateInput;
-	FInputMulticastDelegate InventoryInput;
-	FInputMulticastDelegate CharacterSheetInput;	
+	FInputMulticastDelegate OpenPipBoyInput;
+	FInputMulticastDelegate OpenMapInput;	
+	FInputMulticastDelegate OpenInventoryInput;
+	FInputMulticastDelegate OpenCharacterSheetInput;	
 	FInputMulticastDelegate CancelInput;
-	FInputMulticastDelegate MouseContextInput;
+	FInputMulticastDelegate CursorContextInput;
 	FInputMulticastDelegate EndTurnInput;
 	FInputMulticastDelegate EndBattleInput;
+
+	DECLARE_MULTICAST_DELEGATE_OneParam(FInputMulticastDelegateFloatParam, float)
+	FInputMulticastDelegateFloatParam CameraRotateInput;
+	DECLARE_MULTICAST_DELEGATE_OneParam(FInputMulticastDelegateFVector2DParam, FVector2D)	
+	FInputMulticastDelegateFVector2DParam CameraMoveInput;
 };
