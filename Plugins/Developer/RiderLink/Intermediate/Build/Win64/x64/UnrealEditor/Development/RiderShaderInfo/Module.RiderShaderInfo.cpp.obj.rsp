@@ -1,8 +1,8 @@
-"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderShaderInfo\Module.RiderShaderInfo.cpp"
-/FI"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderShaderInfo\Definitions.h"
-/Fo"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderShaderInfo\Module.RiderShaderInfo.cpp.obj"
-/sourceDependencies "E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderShaderInfo\Module.RiderShaderInfo.cpp.dep.json"
-@"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderShaderInfo\RiderShaderInfo.Shared.rsp"
+"C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderShaderInfo\Module.RiderShaderInfo.cpp"
+/FI"C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderShaderInfo\Definitions.h"
+/Fo"C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderShaderInfo\Module.RiderShaderInfo.cpp.obj"
+/sourceDependencies "C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderShaderInfo\Module.RiderShaderInfo.cpp.dep.json"
+@"C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderShaderInfo\RiderShaderInfo.Shared.rsp"
 /Zc:inline
 /nologo
 /Oi

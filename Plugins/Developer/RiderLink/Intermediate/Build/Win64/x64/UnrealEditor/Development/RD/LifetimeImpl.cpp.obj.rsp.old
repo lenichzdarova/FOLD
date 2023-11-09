@@ -1,8 +1,8 @@
-"E:\Projects\FalloutOld\Plugins\Developer\RiderLink\Source\RD\src\rd_core_cpp\src\main\lifetime\LifetimeImpl.cpp"
-/FI"E:\Projects\FalloutOld\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\Definitions.h"
-/Fo"E:\Projects\FalloutOld\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\LifetimeImpl.cpp.obj"
-/sourceDependencies "E:\Projects\FalloutOld\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\LifetimeImpl.cpp.dep.json"
-@"E:\Projects\FalloutOld\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\RD.Shared.rsp"
+"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Source\RD\src\rd_core_cpp\src\main\lifetime\LifetimeImpl.cpp"
+/FI"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\Definitions.h"
+/Fo"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\LifetimeImpl.cpp.obj"
+/sourceDependencies "E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\LifetimeImpl.cpp.dep.json"
+@"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\RD.Shared.rsp"
 /Zc:inline
 /nologo
 /Oi

@@ -1,8 +1,8 @@
-"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp"
-/FI"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLogging\Definitions.h"
-/Fo"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp.obj"
-/sourceDependencies "E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp.dep.json"
-@"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLogging\RiderLogging.Shared.rsp"
+"C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp"
+/FI"C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLogging\Definitions.h"
+/Fo"C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp.obj"
+/sourceDependencies "C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp.dep.json"
+@"C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLogging\RiderLogging.Shared.rsp"
 /Zc:inline
 /nologo
 /Oi

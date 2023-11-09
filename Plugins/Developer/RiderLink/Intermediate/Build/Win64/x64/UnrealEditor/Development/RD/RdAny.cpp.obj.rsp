@@ -1,8 +1,8 @@
-"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp\src\main\serialization\RdAny.cpp"
-/FI"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\Definitions.h"
-/Fo"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\RdAny.cpp.obj"
-/sourceDependencies "E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\RdAny.cpp.dep.json"
-@"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\RD.Shared.rsp"
+"C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp\src\main\serialization\RdAny.cpp"
+/FI"C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\Definitions.h"
+/Fo"C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\RdAny.cpp.obj"
+/sourceDependencies "C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\RdAny.cpp.dep.json"
+@"C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\RD.Shared.rsp"
 /Zc:inline
 /nologo
 /Oi

@@ -19,116 +19,88 @@ void AHUDBase::Initialize(TScriptInterface<IInputProvider> inputResult, TScriptI
 	InputProvider = inputResult;
 	InputReceiver = playerInputs;
 	PlayerCharacter = character;
-	TravelHandler = WorldTravelHandler;
-	SetupStates();
+	TravelHandler = WorldTravelHandler;	
 }
 
-void AHUDBase::SetupStates()
+void AHUDBase::SetCinematicState_Implementation()
+{
+	UHUDStateCinematic* cinematic = NewObject<UHUDStateCinematic>(this);
+	cinematic->Initialize(this);
+	Execute_SetState(this,cinematic);
+	
+}
+void AHUDBase::SetDialogState_Implementation()
+{
+	UHUDStateDialog* dialog = NewObject<UHUDStateDialog>(this);
+	dialog->Initialize(Dialog, DownPanel, this);
+	Execute_SetState(this,dialog);
+}
+void AHUDBase::SetGameplayState_Implementation()
+{
+	UHUDStateGameplay* gameplay = NewObject<UHUDStateGameplay>(this);
+	gameplay->Initialize(DownPanel,InputReceiver, InputProvider, this);
+	Execute_SetState(this,gameplay);
+}
+void AHUDBase::SetInventoryState_Implementation()
+{	
+	UHUDStateInventory* inventory = NewObject<UHUDStateInventory>(this);
+	inventory->Initialize(DownPanel, Inventory, this);
+	Execute_SetState(this,inventory);
+}
+void AHUDBase::SetOptionsState_Implementation()
+{
+	UHUDStateOptions* options = NewObject<UHUDStateOptions>(this);
+	options->Initialize(DownPanel,Options, this);
+	Execute_SetState(this,options);
+}
+void AHUDBase::SetPipBoyState_Implementation()
+{
+	UHUDStatePipBoy* pipboy = NewObject<UHUDStatePipBoy>(this);
+	pipboy->Initialize(PipBoy,DownPanel, this);
+	Execute_SetState(this,pipboy);
+}
+void AHUDBase::SetCharacterSheetState_Implementation()
 {
 	UHUDStateCharacterSheet* charSheet = NewObject<UHUDStateCharacterSheet>(this);	
 	charSheet->Initialize(CharacterSheet,DownPanel, this);
-	AllHUDStates.Add(charSheet);
-
-	UHUDStateCinematic* cinematic = NewObject<UHUDStateCinematic>(this);
-	cinematic->Initialize(this);
-	AllHUDStates.Add(cinematic);
-
-	UHUDStateDialog* dialog = NewObject<UHUDStateDialog>(this);
-	dialog->Initialize(Dialog, DownPanel, this);
-	AllHUDStates.Add(dialog);
-
-	UHUDStateGameplay* gameplay = NewObject<UHUDStateGameplay>(this);
-	gameplay->Initialize(DownPanel,InputReceiver, InputProvider, this);
-	AllHUDStates.Add(gameplay);
-
+	Execute_SetState(this, charSheet);
+}
+void AHUDBase::SetIngameCinematicState_Implementation()
+{
 	UHUDStateIngameCinematic* ingameCinematic = NewObject<UHUDStateIngameCinematic>(this);
 	ingameCinematic->Initialize(DownPanel, this);
-	AllHUDStates.Add(ingameCinematic);
-
-	UHUDStateInventory* inventory = NewObject<UHUDStateInventory>(this);
-	inventory->Initialize(DownPanel, Inventory, this);
-	AllHUDStates.Add(inventory);
-
+	Execute_SetState(this,ingameCinematic);
+}
+void AHUDBase::SetLocalMapState_Implementation()
+{
 	UHUDStateLocalMap* localMap = NewObject<UHUDStateLocalMap>(this);
 	localMap->Initialize(DownPanel,LocalMap, this);
-	AllHUDStates.Add(localMap);
-
-	UHUDStateMainMenu* mainMenu = NewObject<UHUDStateMainMenu>(this);
-	mainMenu->Initialize(MainMenu, this);
-	AllHUDStates.Add(mainMenu);
-
-	UHUDStateOptions* options = NewObject<UHUDStateOptions>(this);
-	options->Initialize(DownPanel,Options, this);
-	AllHUDStates.Add(options);
-
-	UHUDStatePipBoy* pipboy = NewObject<UHUDStatePipBoy>(this);
-	pipboy->Initialize(PipBoy,DownPanel, this);
-	AllHUDStates.Add(pipboy);
-
-	UHUDStateTravel* travel = NewObject<UHUDStateTravel>(this);
-	travel->Initialize(Travel, this, TravelHandler);
-	AllHUDStates.Add(travel);
+	Execute_SetState(this,localMap);
 }
-
-void AHUDBase::SetState_Implementation(TSubclassOf<UHUDStateBase> type)
+void AHUDBase::SetMainMenuState_Implementation()
+{
+	UHUDStateMainMenu* mainMenu = NewObject<UHUDStateMainMenu>(this);
+	mainMenu->Initialize(MainMenu, this);	
+	Execute_SetState(this,mainMenu);
+}
+void AHUDBase::SetWorldMapState_Implementation()
+{
+	UHUDStateTravel* travel = NewObject<UHUDStateTravel>(this);
+	auto widget = CreateWidget(GetOwningPlayerController(), Travel);
+	UWidgetWorldTravel* widgetTravel = Cast<UWidgetWorldTravel>(widget);
+	travel->Initialize(widgetTravel, this, TravelHandler);
+	Execute_SetState(this,travel);
+}
+void AHUDBase::SetState_Implementation(UHUDStateBase* state)
 {
 	if(CurrentHUDState)
 	{
 		CurrentHUDState->Stop();
-	}	
-	for (auto state : AllHUDStates)
-	{
-		if( state->IsA(type))
-		{
-			CurrentHUDState = state;
-		}
 	}
+	CurrentHUDState = state;
 	CurrentHUDState->Start();
 }
-void AHUDBase::SetCinematicState_Implementation()
-{
-	Execute_SetState(this,UHUDStateCinematic::StaticClass());
-}
-void AHUDBase::SetDialogState_Implementation()
-{
-	Execute_SetState(this,UHUDStateDialog::StaticClass());
-}
-void AHUDBase::SetGameplayState_Implementation()
-{
-	Execute_SetState(this,UHUDStateGameplay::StaticClass());
-}
-void AHUDBase::SetInventoryState_Implementation()
-{
-	Execute_SetState(this,UHUDStateInventory::StaticClass());
-}
-void AHUDBase::SetOptionsState_Implementation()
-{
-	Execute_SetState(this,UHUDStateOptions::StaticClass());
-}
-void AHUDBase::SetPipBoyState_Implementation()
-{
-	Execute_SetState(this,UHUDStatePipBoy::StaticClass());
-}
-void AHUDBase::SetCharacterSheetState_Implementation()
-{
-	Execute_SetState(this,UHUDStateCharacterSheet::StaticClass());
-}
-void AHUDBase::SetIngameCinematicState_Implementation()
-{
-	Execute_SetState(this,UHUDStateIngameCinematic::StaticClass());
-}
-void AHUDBase::SetLocalMapState_Implementation()
-{
-	Execute_SetState(this,UHUDStateLocalMap::StaticClass());
-}
-void AHUDBase::SetMainMenuState_Implementation()
-{
-	Execute_SetState(this,UHUDStateMainMenu::StaticClass());
-}
-void AHUDBase::SetWorldMapState_Implementation()
-{
-	Execute_SetState(this,UHUDStateTravel::StaticClass());
-}
+
 
 
 

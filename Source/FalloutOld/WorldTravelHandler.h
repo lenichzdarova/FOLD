@@ -10,20 +10,7 @@
 /**
  * 
  */
-UENUM()
-enum ELandmarks : uint8
-{
-	Zalupki,
-	Podzalupki
-};
 
-UENUM()
-enum EBiomSpecifier : uint8
-{
-	Wasteland,
-	City,
-	Cave
-};
 
 UCLASS()
 class FALLOUTOLD_API UWorldTravelHandler : public UObject
@@ -31,21 +18,18 @@ class FALLOUTOLD_API UWorldTravelHandler : public UObject
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY()
-	TArray<TEnumAsByte<ELandmarks>> KnownPlaces;
-	UPROPERTY()
-	UGameInstanceBase* GameInstanceBase;
+	
 	UPROPERTY()
 	FVector2D TravelDestination;
 	UPROPERTY()
-	float TravelSpeed;
+	FVector2D CurrentPosition = FVector2D{ 725,775};
+	UPROPERTY()
+	float TravelSpeed = 5;
 	UPROPERTY()
 	bool IsMoving = false;	
 
 public:
 
-	UFUNCTION()
-	void Initialize(UGameInstanceBase* GameInstance);
 	UFUNCTION()
 	virtual void Update(float DeltaSeconds);
 	UFUNCTION()

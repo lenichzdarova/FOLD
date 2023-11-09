@@ -1,8 +1,8 @@
-"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderBlueprint\Module.RiderBlueprint.cpp"
-/FI"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderBlueprint\Definitions.h"
-/Fo"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderBlueprint\Module.RiderBlueprint.cpp.obj"
-/sourceDependencies "E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderBlueprint\Module.RiderBlueprint.cpp.dep.json"
-@"E:\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderBlueprint\RiderBlueprint.Shared.rsp"
+"C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderBlueprint\Module.RiderBlueprint.cpp"
+/FI"C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderBlueprint\Definitions.h"
+/Fo"C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderBlueprint\Module.RiderBlueprint.cpp.obj"
+/sourceDependencies "C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderBlueprint\Module.RiderBlueprint.cpp.dep.json"
+@"C:\Projects\FalloutCloneCPP\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderBlueprint\RiderBlueprint.Shared.rsp"
 /Zc:inline
 /nologo
 /Oi
