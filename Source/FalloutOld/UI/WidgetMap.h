@@ -5,16 +5,15 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"
-#include "WidgetWorldMap.generated.h"
+#include "WidgetMap.generated.h"
 
 /**
  * 
  */
-UCLASS(Blueprintable, BlueprintType)
-class FALLOUTOLD_API UWidgetWorldMap : public UUserWidget
+UCLASS()
+class FALLOUTOLD_API UWidgetMap : public UUserWidget
 {
 	GENERATED_BODY()
-
 protected:
 	UPROPERTY(meta=(BindWidget),BlueprintReadWrite)
 	UImage* Map;
@@ -27,8 +26,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	UTexture2D* PlayerMarkMoving;
 	UPROPERTY(BlueprintReadWrite)
-	UTexture2D* PlayerMarkEncounter;
-	
+	UTexture2D* PlayerMarkEncounter;	
 
 public:
 	
@@ -43,14 +41,12 @@ public:
 	//player mark functions
 	UFUNCTION()
 	void SetPlayerMarkPosition(FVector2D value);
-	
+	UFUNCTION()
+	void SetDestinationMarkPosition(FVector2D value);	
 
 protected:
 	UFUNCTION()
 	void ShowDestinationMark();
 	UFUNCTION()
-	void HideDestinationMark();
-	
-	
-	
+	void HideDestinationMark();	
 };

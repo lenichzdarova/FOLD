@@ -2,23 +2,50 @@
 
 
 #include "PlayerControllerBase.h"
-#include "HUDInputBridge.h"
 #include "UI/HUDBase.h"
 
-void APlayerControllerBase::Initialize(APlayerView* CameraActor, ACharacterEntity* PlayerActor)
+void APlayerControllerBase::Initialize(TSubclassOf<UInputMapper> Input)
 {
-	PlayerView = CameraActor;
+	auto playerView = GetWorld()->SpawnActor<APlayerView>(FVector::Zero(), FRotator::ZeroRotator);
+	PlayerView = playerView;
 	SetViewTarget(PlayerView);
-	bShowMouseCursor = true;
-	PlayerCharacter = PlayerActor;
-	WorldTravelHandler = NewObject<UWorldTravelHandler>(this);
-	WorldTravelHandler->Initialize(Cast<UGameInstanceBase>(GetGameInstance()));
+	
+	auto playerCharacter = GetWorld()->SpawnActor<ACharacterEntity>(FVector::Zero(), FRotator::ZeroRotator);
+	PlayerCharacter = playerCharacter;
+
+	WorldTravelHandler = NewObject<UWorldTravelHandler>(this);	
+
+	InputMapper = NewObject<UInputMapper>(this, Input.Get());
+	InputMapper->Initialize(GetEnhancedInputSubsystem());
+	
+	AHUDBase* HUD = Cast<AHUDBase>(GetHUD());
+	HUD->Initialize(this,this, PlayerCharacter, WorldTravelHandler);
+
+	HUDInputBridging(HUD, InputMapper);
+	
+	bShowMouseCursor = true;	
 }
 
 void APlayerControllerBase::Tick(float DeltaSeconds)
 {
 	WorldTravelHandler->Update(DeltaSeconds);
 }
+
+void APlayerControllerBase::HUDInputBridging(TScriptInterface<IHUDStateSwitcher> HUDStateSwitcher, UInputMapper* inputMapper)
+{
+	HUDStateSwitcher->CinematicState.AddUObject(inputMapper, &UInputMapper::SetCinematicContext);
+	HUDStateSwitcher->DialogState.AddUObject(inputMapper, &UInputMapper::SetDialogContext);
+	HUDStateSwitcher->GameplayState.AddUObject(inputMapper, &UInputMapper::SetGameplayContext);
+	HUDStateSwitcher->InventoryState.AddUObject(inputMapper, &UInputMapper::SetInventoryContext);
+	HUDStateSwitcher->OptionsState.AddUObject(inputMapper, &UInputMapper::SetOptionContext);
+	HUDStateSwitcher->PipBoyState.AddUObject(inputMapper, &UInputMapper::SetPipBoyContext);
+	HUDStateSwitcher->CharacterSheetState.AddUObject(inputMapper, &UInputMapper::SetCharacterSheetContext);
+	HUDStateSwitcher->IngameCinematicState.AddUObject(inputMapper, &UInputMapper::SetCinematicContext);
+	HUDStateSwitcher->LocalMapState.AddUObject(inputMapper, &UInputMapper::SetLocalMapContext);
+	HUDStateSwitcher->MainMenuState.AddUObject(inputMapper, &UInputMapper::SetMainMenuContext);
+	HUDStateSwitcher->WorldMapState.AddUObject(inputMapper, &UInputMapper::SetWorldMapContext);
+}
+
 
 
 

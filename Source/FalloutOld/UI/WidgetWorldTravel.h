@@ -3,22 +3,22 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "WidgetWorldMap.h"
+#include "WidgetMap.h"
 #include "Blueprint/UserWidget.h"
 #include "FalloutOld/WorldTravelHandler.h"
-#include "WidgetTravel.generated.h"
+#include "WidgetWorldTravel.generated.h"
 
 /**
  * 
  */
 UCLASS(Blueprintable, BlueprintType)
-class FALLOUTOLD_API UWidgetTravel : public UUserWidget
+class FALLOUTOLD_API UWidgetWorldTravel : public UUserWidget
 {
 	GENERATED_BODY()
 
 protected:
 	UPROPERTY(meta=(BindWidget), BlueprintReadWrite)
-	UWidgetWorldMap* WorldMap;
+	UWidgetMap* WorldMap;
 	UPROPERTY()
 	UWorldTravelHandler* WorldTravelHandler;
 

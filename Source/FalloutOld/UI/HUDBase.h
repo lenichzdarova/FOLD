@@ -8,7 +8,7 @@
 #include "WidgetCharacterSheet.h"
 #include "WidgetDialog.h"
 #include "WidgetDownPanel.h"
-#include "WidgetTravel.h"
+#include "WidgetWorldTravel.h"
 #include "WidgetInventory.h"
 #include "WidgetLocalMap.h"
 #include "WidgetMainMenu.h"
@@ -17,7 +17,6 @@
 #include "FalloutOld/CharacterEntity.h"
 #include "FalloutOld/InputReceiver.h"
 #include "FalloutOld/InputProvider.h"
-#include "FalloutOld/PlayerControllerBase.h"
 #include "FalloutOld/WorldTravelHandler.h"
 #include "GameFramework/HUD.h"
 #include "HUDBase.generated.h"
@@ -43,7 +42,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSubclassOf<UWidgetLocalMap> LocalMap;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TSubclassOf<UWidgetTravel> Travel;
+	TSubclassOf<UWidgetWorldTravel> Travel;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSubclassOf<UWidgetPipBoy> PipBoy;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
@@ -63,15 +62,12 @@ protected:
 	
 	//states	
 	UPROPERTY()
-	UHUDStateBase* CurrentHUDState = nullptr;
-	UPROPERTY()
-	TArray<UHUDStateBase*> AllHUDStates;		
+	UHUDStateBase* CurrentHUDState = nullptr;			
 
 public:
 	UFUNCTION(BlueprintCallable)
 	void Initialize(TScriptInterface<IInputProvider> inputResult, TScriptInterface<IInputReceiver> playerInputs, ACharacterEntity* character, UWorldTravelHandler* WorldTravelHandler);	
-	
-	virtual void SetState_Implementation(TSubclassOf<UHUDStateBase> state) override;
+		
 	virtual void SetCinematicState_Implementation() override;
 	virtual void SetDialogState_Implementation() override;
 	virtual void SetGameplayState_Implementation() override;
@@ -83,8 +79,6 @@ public:
 	virtual void SetLocalMapState_Implementation() override;
 	virtual void SetMainMenuState_Implementation() override;
 	virtual void SetWorldMapState_Implementation() override;
+	virtual void SetState_Implementation(UHUDStateBase*);
 
-protected:
-	void SetupStates();
-//	APlayerControllerBase* GetPlayerController(){GetNetOwningPlayer()->PlayerController};
 };

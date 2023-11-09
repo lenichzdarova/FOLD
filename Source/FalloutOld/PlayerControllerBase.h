@@ -13,12 +13,13 @@
 #include "InputProvider.h"
 #include "WorldTravelHandler.h"
 #include "GameFramework/PlayerController.h"
+#include "UI/HUDBase.h"
 #include "PlayerControllerBase.generated.h"
 
 /**
  * 
  */
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, Abstract)
 class FALLOUTOLD_API APlayerControllerBase : public APlayerController, public IInputReceiver, public IInputProvider
 											 
 {
@@ -38,6 +39,8 @@ protected:
 	UCursorController* CursorController = nullptr;
 	UPROPERTY()
 	UWorldTravelHandler* WorldTravelHandler = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UInputMapper* InputMapper = nullptr;
 		
 	
 #pragma region InputReceiver
@@ -57,11 +60,11 @@ protected:
 #pragma endregion InputReceiver	
 	
 
-public:
+protected:
 	UEnhancedInputLocalPlayerSubsystem* GetEnhancedInputSubsystem();
 	UFUNCTION(BlueprintCallable)
-	void Initialize(APlayerView* CameraActor, ACharacterEntity* PlayerActor);
+	void Initialize(TSubclassOf<UInputMapper> Input);
 	UFUNCTION()
 	UWorldTravelHandler* GetTravelHandler();
-	
+	void HUDInputBridging(TScriptInterface<IHUDStateSwitcher> HUDStateSwitcher, UInputMapper* inputMapper);	
 };

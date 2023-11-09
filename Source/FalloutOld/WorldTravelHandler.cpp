@@ -6,9 +6,8 @@
 void UWorldTravelHandler::Update(float DeltaSeconds)
 {
 	if(IsMoving)
-	{		
-		FVector2D currentPosition = GameInstanceBase->PlayerWorldPosition;
-		FVector2D path = TravelDestination - currentPosition;		
+	{			
+		FVector2D path = TravelDestination - CurrentPosition;		
 		if(path.Length() < TravelSpeed * DeltaSeconds)
 		{
 			SetWorldPosition(TravelDestination);
@@ -19,9 +18,8 @@ void UWorldTravelHandler::Update(float DeltaSeconds)
 		{
 			auto moveVector = path;
 			moveVector.Normalize();
-			moveVector = moveVector * TravelSpeed * DeltaSeconds;
-			currentPosition += moveVector;
-			SetWorldPosition(currentPosition);
+			moveVector = moveVector * TravelSpeed * DeltaSeconds;			
+			SetWorldPosition(CurrentPosition+=moveVector);
 			if(CheckRandomEncounter())
 			{
 				IsMoving = false;
@@ -43,23 +41,19 @@ bool UWorldTravelHandler::CheckRandomEncounter()
 
 void UWorldTravelHandler::SetWorldPosition(FVector2D position)
 {
-	GameInstanceBase->PlayerWorldPosition = position;
+	CurrentPosition = position;
 	WorldPositionChanged.Broadcast();
 }
 
 FVector2D UWorldTravelHandler::GetPlayerPosition()
 {
-	return GameInstanceBase->PlayerWorldPosition;
+	return CurrentPosition;
 }
 FVector2D UWorldTravelHandler::GetDestination()
 {
 	return TravelDestination;
 }
 
-void UWorldTravelHandler::Initialize(UGameInstanceBase* GameInstance)
-{
-	GameInstanceBase = GameInstance;
-}
 
 
 

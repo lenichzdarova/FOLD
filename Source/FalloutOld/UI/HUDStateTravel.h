@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "HUDStateBase.h"
-#include "WidgetTravel.h"
+#include "WidgetWorldTravel.h"
 #include "FalloutOld/WorldTravelHandler.h"
 #include "HUDStateTravel.generated.h"
 
@@ -16,18 +16,16 @@ class FALLOUTOLD_API UHUDStateTravel : public UHUDStateBase
 {
 	GENERATED_BODY()
 
-protected:
+protected:	
 	UPROPERTY()
-	TSubclassOf<UWidgetTravel> TravelWidgetSubclass;
-	UPROPERTY()
-	UWidgetTravel* WidgetTravel;	
+	UWidgetWorldTravel* WidgetTravel;	
 	UPROPERTY()
 	TScriptInterface<IHUDStateSwitcher> StateSwitcher;
 	UPROPERTY()
 	UWorldTravelHandler* WorldTravelHandler;
 	
 public:
-	virtual void Initialize(TSubclassOf<UWidgetTravel>, TScriptInterface<IHUDStateSwitcher>, UWorldTravelHandler*);
+	virtual void Initialize(UWidgetWorldTravel*, TScriptInterface<IHUDStateSwitcher>, UWorldTravelHandler*);
 	virtual void Start() override;
 	virtual void Stop() override; 
 

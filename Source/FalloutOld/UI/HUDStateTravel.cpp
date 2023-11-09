@@ -12,16 +12,17 @@ void UHUDStateTravel::UnbindEvents()
 	
 }
 
-void UHUDStateTravel::Initialize(TSubclassOf<UWidgetTravel> TravelSubclass, TScriptInterface<IHUDStateSwitcher> stateSwitcher, UWorldTravelHandler* TravelHandler)
+void UHUDStateTravel::Initialize(UWidgetWorldTravel* travel, TScriptInterface<IHUDStateSwitcher> stateSwitcher, UWorldTravelHandler* TravelHandler)
 {
-	TravelWidgetSubclass = TravelSubclass;
+	WidgetTravel = travel;
 	StateSwitcher = stateSwitcher;
 	WorldTravelHandler = TravelHandler;
+	
 }
 void UHUDStateTravel::Start()
-{	
-//	WidgetTravel = Cast<UWidgetTravel>(CreateWidget(, TravelWidgetSubclass));
-	//WidgetTravel->Initialize(WorldTravelHandler);
+{
+	WidgetTravel->Initialize(WorldTravelHandler);
+	WidgetTravel->AddToViewport();	
 }
 void UHUDStateTravel::Stop()
 {
