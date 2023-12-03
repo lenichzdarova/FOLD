@@ -17,6 +17,13 @@ class FALLOUTOLD_API UWorldTravelHandler : public UObject
 {
 	GENERATED_BODY()
 
+
+public:
+	UPROPERTY()
+	bool IsMoving = false;
+	UPROPERTY()
+	bool CanMove = true;
+	
 protected:
 	
 	UPROPERTY()
@@ -24,9 +31,7 @@ protected:
 	UPROPERTY()
 	FVector2D CurrentPosition = FVector2D{ 725,775};
 	UPROPERTY()
-	float TravelSpeed = 5;
-	UPROPERTY()
-	bool IsMoving = false;	
+	float TravelSpeed = 5;	
 
 public:
 

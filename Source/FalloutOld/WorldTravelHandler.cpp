@@ -29,8 +29,9 @@ void UWorldTravelHandler::Update(float DeltaSeconds)
 	}
 }
 void UWorldTravelHandler::SetDestination(FVector2D Destination)
-{
-	TravelDestination = Destination;
+{	
+	IsMoving = true;
+	TravelDestination = Destination;	
 	StartMoving.Broadcast();
 }
 bool UWorldTravelHandler::CheckRandomEncounter()
