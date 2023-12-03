@@ -3,8 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "WidgetMap.h"
+#include "WidgetWorldMapImage.h"
+#include "WidgetWorldMapPlayerMark.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/CanvasPanelSlot.h"
 #include "FalloutOld/WorldTravelHandler.h"
 #include "WidgetWorldTravel.generated.h"
 
@@ -18,9 +20,14 @@ class FALLOUTOLD_API UWidgetWorldTravel : public UUserWidget
 
 protected:
 	UPROPERTY(meta=(BindWidget), BlueprintReadWrite)
-	UWidgetMap* WorldMap;
+	UWidgetWorldMapImage* WorldMap;
+	UPROPERTY(meta=(BindWidget), BlueprintReadWrite)
+	UWidgetWorldMapPlayerMark* PlayerMark;
+	UPROPERTY(meta=(BindWidget), BlueprintReadWrite)
+	UImage* DestinationMark;
 	UPROPERTY()
 	UWorldTravelHandler* WorldTravelHandler;
+	
 
 public:
 	UFUNCTION()
@@ -35,9 +42,15 @@ protected:
 	void OnStopMoving();
 	UFUNCTION()
 	void OnStartMoving();
-	UFUNCTION()
-	void SetMapPosition(FVector2D value);
-	UFUNCTION()
-	void SetMapRelativePosition(FVector2D value);
 	
+	UFUNCTION()
+	void OnMapPointerEvent(FVector2D clickPointLocal);
+	UFUNCTION()
+	void OnPlayerMarkPointerEvent();
+	UFUNCTION()
+	void OnDestinationSet(FVector2D Destination);
+
+	void SetInitialSlotPosition(UCanvasPanelSlot* slot);
+	void SetPlayerMarkPosition(FVector2D PlayerPosition);
+	void SetDestinationMarkPosition(FVector2D PlayerPosition);
 };
