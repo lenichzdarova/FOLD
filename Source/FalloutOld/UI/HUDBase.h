@@ -14,7 +14,7 @@
 #include "WidgetMainMenu.h"
 #include "WidgetOptions.h"
 #include "WidgetPipBoy.h"
-#include "FalloutOld/CharacterEntity.h"
+#include "FalloutOld/PawnBase.h"
 #include "FalloutOld/InputReceiver.h"
 #include "FalloutOld/InputProvider.h"
 #include "FalloutOld/WorldTravelHandler.h"
@@ -56,7 +56,7 @@ protected:
 	UPROPERTY()
 	TScriptInterface<IInputReceiver> InputReceiver = nullptr;
 	UPROPERTY()
-	ACharacterEntity* PlayerCharacter = nullptr;
+	APawnBase* PlayerCharacter = nullptr;
 	UPROPERTY()
 	UWorldTravelHandler* TravelHandler = nullptr;
 	
@@ -66,7 +66,7 @@ protected:
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void Initialize(TScriptInterface<IInputProvider> inputResult, TScriptInterface<IInputReceiver> playerInputs, ACharacterEntity* character, UWorldTravelHandler* WorldTravelHandler);	
+	void Initialize(TScriptInterface<IInputProvider> inputResult, TScriptInterface<IInputReceiver> playerInputs, APawnBase* character, UWorldTravelHandler* WorldTravelHandler);	
 		
 	virtual void SetCinematicState_Implementation() override;
 	virtual void SetDialogState_Implementation() override;

@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
-#include "FalloutOld/CharacterEntity.h"
+#include "FalloutOld/PawnBase.h"
 #include "FalloutOld/InputReceiver.h"
 #include "WidgetCharacterSheet.generated.h"
 

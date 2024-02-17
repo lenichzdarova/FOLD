@@ -8,10 +8,10 @@ class UActionMoveToCharacter : public UActionMoveBase
 	GENERATED_BODY()
 	
 public:
-	virtual void SetupAction(ACharacterEntity* receiver, AGridActor* grid, ACharacterEntity* target);
+	virtual void SetupAction(APawnBase* receiver, AGridActor* grid, APawnBase* target);
 	
 protected:
-	ACharacterEntity* Target;
+	APawnBase* Target;
 
 	virtual void BindDelegates() override;
 	virtual void UnbindDelegates() override;

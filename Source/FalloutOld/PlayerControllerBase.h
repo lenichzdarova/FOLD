@@ -5,9 +5,10 @@
 #include "CoreMinimal.h"
 #include "ActionHandler.h"
 #include "PlayerView.h"
-#include "CharacterEntity.h"
+#include "PawnBase.h"
 #include "CursorController.h"
 #include "EnhancedInputSubsystems.h"
+#include "InputContextBase.h"
 #include "InputMapper.h"
 #include "InputReceiver.h"
 #include "InputProvider.h"
@@ -23,7 +24,7 @@ UCLASS(Blueprintable, Abstract)
 class FALLOUTOLD_API APlayerControllerBase : public APlayerController, public IInputReceiver, public IInputProvider
 											 
 {
-	GENERATED_BODY()	
+	GENERATED_BODY()
 	
 protected:
 
@@ -32,7 +33,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	APlayerView* PlayerView = nullptr;
 	UPROPERTY(BlueprintReadWrite)
-	ACharacterEntity* PlayerCharacter = nullptr;
+	APawnBase* FocusedPawn = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UActionHandler* ActionHandler = nullptr;
 	UPROPERTY()
@@ -41,6 +42,12 @@ protected:
 	UWorldTravelHandler* WorldTravelHandler = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UInputMapper* InputMapper = nullptr;
+	UPROPERTY(BlueprintReadWrite)
+	TSubclassOf<UWidgetCursor> CursorWidgetType;
+	UPROPERTY(BlueprintReadWrite)
+	UWidgetCursor* CursorWidget;
+
+	InputContextBase* inputContext;
 		
 	
 #pragma region InputReceiver
@@ -61,10 +68,15 @@ protected:
 	
 
 protected:
-	UEnhancedInputLocalPlayerSubsystem* GetEnhancedInputSubsystem();
+	UEnhancedInputLocalPlayerSubsystem* GetEnhancedInputSubsystem();	
+	
 	UFUNCTION(BlueprintCallable)
 	void Initialize(TSubclassOf<UInputMapper> Input);
+	
 	UFUNCTION()
 	UWorldTravelHandler* GetTravelHandler();
-	void HUDInputBridging(TScriptInterface<IHUDStateSwitcher> HUDStateSwitcher, UInputMapper* inputMapper);	
+	
+	void HUDInputBridging(TScriptInterface<IHUDStateSwitcher> HUDStateSwitcher, UInputMapper* inputMapper);
+	void SetInputContext(InputContextBase*);
+	void SetInputContextDefault();
 };

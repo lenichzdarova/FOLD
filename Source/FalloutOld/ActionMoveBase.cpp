@@ -8,13 +8,13 @@ void UActionMoveBase::Execute()
 
 void UActionMoveBase::SetMovePath(FVector actorLocation, FVector movePoint)
 {
-	auto movementComponent = Receiver->movementComponent;	
+	//auto movementComponent = Receiver->movementComponent;	
 	auto path = Grid->GetMovePath(actorLocation,movePoint);
-	movementComponent->SetPath(path);		
+	//movementComponent->SetPath(path);		
 }
 
 void UActionMoveBase::OnWaypointReached()
-{
+{/*
 	auto movementComponent = Receiver->movementComponent;
 	if(movementComponent->IsMoving())
 	{
@@ -29,15 +29,25 @@ void UActionMoveBase::OnWaypointReached()
 	else
 	{
 		OnActionComplete();
-	}
+	}*/
 }
+
+	
 void UActionMoveBase::BindDelegates()
 {
-	Receiver->movementComponent->PositionUpdate.AddUObject(this, &UActionMoveBase::OnWaypointReached);
+	
 }
+
 void UActionMoveBase::UnbindDelegates()
 {
-	Receiver->movementComponent->PositionUpdate.RemoveAll(this);
+	
 }
+
+
+
+	
+
+
+
 
 
