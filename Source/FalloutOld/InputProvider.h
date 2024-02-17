@@ -23,8 +23,7 @@ class FALLOUTOLD_API IInputProvider
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:	
 
-	DECLARE_MULTICAST_DELEGATE(FInputMulticastDelegate)
-	FInputMulticastDelegate ActionInput;
+	DECLARE_MULTICAST_DELEGATE(FInputMulticastDelegate)	
 	FInputMulticastDelegate OpenPipBoyInput;
 	FInputMulticastDelegate OpenMapInput;	
 	FInputMulticastDelegate OpenInventoryInput;
@@ -33,6 +32,9 @@ public:
 	FInputMulticastDelegate CursorContextInput;
 	FInputMulticastDelegate EndTurnInput;
 	FInputMulticastDelegate EndBattleInput;
+	
+	DECLARE_MULTICAST_DELEGATE_OneParam(FMulticastDelegateHitParam, FHitResult)
+	FMulticastDelegateHitParam ActionInput;
 
 	DECLARE_MULTICAST_DELEGATE_OneParam(FInputMulticastDelegateFloatParam, float)
 	FInputMulticastDelegateFloatParam CameraRotateInput;

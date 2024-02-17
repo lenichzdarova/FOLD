@@ -1,6 +1,6 @@
 ﻿#include "ActionMoveToCharacter.h"
 
-void UActionMoveToCharacter::SetupAction(ACharacterEntity* receiver, AGridActor* grid, ACharacterEntity* target)
+void UActionMoveToCharacter::SetupAction(APawnBase* receiver, AGridActor* grid, APawnBase* target)
 {
 	Receiver = receiver;
 	Grid = grid;
@@ -10,13 +10,13 @@ void UActionMoveToCharacter::SetupAction(ACharacterEntity* receiver, AGridActor*
 void UActionMoveToCharacter::BindDelegates()
 {
 	Super::BindDelegates();
-	Target->movementComponent->PositionUpdate.AddUObject(this, &UActionMoveToCharacter::OnTargetPositionUpdate);
+	//Target->movementComponent->PositionUpdate.AddUObject(this, &UActionMoveToCharacter::OnTargetPositionUpdate);
 }
 
 void UActionMoveToCharacter::UnbindDelegates()
 {
 	Super::UnbindDelegates();
-	Target->movementComponent->PositionUpdate.RemoveAll(this);
+	//Target->movementComponent->PositionUpdate.RemoveAll(this);
 }
 
 void UActionMoveToCharacter::OnTargetPositionUpdate()

@@ -3,7 +3,7 @@
 
 #include "WidgetInventory.h"
 
-void UWidgetInventory::Initialize(TScriptInterface<IInputReceiver> inputReceiver, ACharacterEntity* playerCharacter)
+void UWidgetInventory::Initialize(TScriptInterface<IInputReceiver> inputReceiver, APawnBase* playerCharacter)
 {
 	
 }

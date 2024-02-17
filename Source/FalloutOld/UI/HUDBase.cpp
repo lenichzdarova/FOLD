@@ -14,7 +14,7 @@
 #include "HUDStatePipBoy.h"
 #include "HUDStateTravel.h"
 
-void AHUDBase::Initialize(TScriptInterface<IInputProvider> inputResult, TScriptInterface<IInputReceiver> playerInputs, ACharacterEntity* character, UWorldTravelHandler* WorldTravelHandler)
+void AHUDBase::Initialize(TScriptInterface<IInputProvider> inputResult, TScriptInterface<IInputReceiver> playerInputs, APawnBase* character, UWorldTravelHandler* WorldTravelHandler)
 {
 	InputProvider = inputResult;
 	InputReceiver = playerInputs;

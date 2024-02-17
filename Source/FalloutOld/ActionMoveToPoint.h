@@ -9,7 +9,7 @@ class UActionMoveToPoint : public UActionMoveBase
 	GENERATED_BODY()	
 	
 public:		
-	virtual void SetupAction(ACharacterEntity* receiver, AGridActor* grid, FVector destination);
+	virtual void SetupAction(APawnBase* receiver, AGridActor* grid, FVector destination);
 	
 		
 };

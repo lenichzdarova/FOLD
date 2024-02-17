@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "CharacterEntity.h"
+#include "PawnBase.h"
 #include "ActionBase.generated.h"
 
 UCLASS(Abstract)
@@ -11,7 +11,7 @@ public:
 
 protected:
 	UPROPERTY()
-	ACharacterEntity* Receiver = nullptr;
+	APawnBase* Receiver = nullptr;
 	UFUNCTION()
 	virtual void OnActionComplete();	
 	UFUNCTION()
