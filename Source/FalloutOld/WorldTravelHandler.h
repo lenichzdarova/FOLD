@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameInstanceBase.h"
+#include "Core/GameInstanceBase.h"
 #include "UObject/NoExportTypes.h"
 #include "WorldTravelHandler.generated.h"
 

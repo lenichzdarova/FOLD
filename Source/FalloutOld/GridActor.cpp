@@ -24,7 +24,7 @@ void AGridActor::BeginPlay()
 		MinY = origin.Y - bounds.Y;
 		MaxY = origin.Y + bounds.Y;
 	}
-	SetTestGrid();
+	//SetTestGrid();
 	Super::BeginPlay();
 }
 

@@ -1,17 +1,20 @@
 ﻿#pragma once
-#include "InputContextBase.h"
+#include "UInputContextBase.h"
+#include "Runtime/AIModule/Classes/Navigation/PathFollowingComponent.h"
+#include "InputContextDefault.generated.h"
 
-class InputContextDefault : public InputContextBase
+UCLASS()
+class UInputContextDefault : public UInputContextBase
 {
-
+GENERATED_BODY()
+	
 protected:	
 	virtual void BindInputEvents(IInputProvider*) override;
 	virtual void OnLeftMouseButton(FHitResult);
 public:
 	
-	InputContextDefault(IInputProvider*, APawnBase*, UWidgetCursor*, UWorld*);
-	
-
+	virtual void Initialize(IInputProvider*, ACharacterBase*, UWidgetCursor*, UWorld*) override;
 	virtual void SetCursorData(FHitResult) override;
-	
+	UFUNCTION()
+	virtual void OnStopMovement(FAIRequestID requestID, EPathFollowingResult::Type followResult);	
 };

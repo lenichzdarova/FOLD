@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FalloutOld/InputReceiver.h"
-#include "FalloutOld/PawnBase.h"
+#include "FalloutOld/Interfaces/InputReceiver.h"
+#include "FalloutOld/CharacterBase.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
 #include "WidgetDownPanel.generated.h"
@@ -31,7 +31,7 @@ protected:
 
 public:
 	UFUNCTION()
-	void Initialize( APawnBase* playerCharacter);
+	void Initialize( ACharacterBase* playerCharacter);
 
 
 	DECLARE_MULTICAST_DELEGATE(FMulticastDelegate)

@@ -5,8 +5,8 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
-#include "FalloutOld/InputReceiver.h"
-#include "FalloutOld/PawnBase.h"
+#include "FalloutOld/Interfaces/InputReceiver.h"
+#include "FalloutOld/CharacterBase.h"
 #include "WidgetInventory.generated.h"
 
 /**
@@ -21,5 +21,5 @@ protected:
 	UButton* CancelButton;	
 public:
 	UFUNCTION()
-	void Initialize(TScriptInterface<IInputReceiver> inputReceiver, APawnBase* playerCharacter);	
+	void Initialize(TScriptInterface<IInputReceiver> inputReceiver, ACharacterBase* playerCharacter);	
 };

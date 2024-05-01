@@ -1,81 +1,118 @@
 ﻿#include "InputContextDefault.h"
-#include "Misc/EnumClassFlags.h"
+
+#include "ActionInteract.h"
 #include "NavigationSystem.h"
 #include "NavigationPath.h"
+#include "Core/DialogSubsystem.h"
+#include "Interfaces/Interactable.h"
 #include "Runtime/AIModule/Classes/AIController.h"
 
-InputContextDefault::InputContextDefault(IInputProvider* inputProvider, APawnBase* activeCharacter, UWidgetCursor* cursorWidget, UWorld* world)
-	: InputContextBase(inputProvider,activeCharacter,cursorWidget, world)
+void UInputContextDefault::Initialize(IInputProvider* inputProvider, ACharacterBase* activeCharacter, UWidgetCursor* cursorWidget, UWorld* world)	
 {
-	BindInputEvents(inputProvider);
+	Super::Initialize(inputProvider, activeCharacter, cursorWidget, world);
+	BindInputEvents(inputProvider);	
 }
 
-
-void InputContextDefault::BindInputEvents(IInputProvider* value)
+void UInputContextDefault::BindInputEvents(IInputProvider* value)
 {
-	value->ActionInput.AddRaw(this,&InputContextDefault::OnLeftMouseButton);
+	value->ActionInput.AddUObject(this,&UInputContextDefault::OnLeftMouseButton);
+	AAIController* PawnController = Cast<AAIController>(ActiveCharacter->GetController());
+	PawnController->ReceiveMoveCompleted.AddDynamic(this, &UInputContextDefault::OnStopMovement);
+	
 }
 
-void InputContextDefault::OnLeftMouseButton(FHitResult hit)
+void UInputContextDefault::OnLeftMouseButton(FHitResult hit)
 {	
 	if(hit.bBlockingHit)
 	{
+		AAIController* PawnController = Cast<AAIController>(ActiveCharacter->GetController());
 		auto actor = hit.GetActor();
-		if(actor->IsA(APawnBase::StaticClass()))
-		{			
-			GEngine->AddOnScreenDebugMessage(INDEX_NONE,5,FColor::Blue,"Talk");
-		}
-		else
+		if(PawnController)
 		{
-			AAIController* PawnController = Cast<AAIController>(activeCharacter->GetController());
-			if(activeCharacter->GetController())
+			if(actor->IsA(ACharacterBase::StaticClass()))
 			{
-				GEngine->AddOnScreenDebugMessage(INDEX_NONE,5,FColor::Blue,activeCharacter->GetController()->GetName());
-			}
-			
-			if(PawnController)
-			{
-				if(activeCharacter->GetMovementComponent())
+				if(actor != ActiveCharacter)
 				{
-					GEngine->AddOnScreenDebugMessage(INDEX_NONE,5,FColor::Blue,"MovementCOmponent");
-				}
-				auto result = PawnController->MoveToLocation(hit.Location);
-				FString text = UEnum::GetValueAsString(result);
-				
-				GEngine->AddOnScreenDebugMessage(INDEX_NONE,5,FColor::Blue,text);
-				
-			}					
-		}
+					UGameInstance* gameInstance = World->GetGameInstance();
+					UDialogSubsystem* dialogSunsystem = gameInstance->GetSubsystem<UDialogSubsystem>();
+					dialogSunsystem->StartDialog(ActiveCharacter, Cast<ACharacterBase>(actor));
+				}				
+			}
+			else if(actor->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
+			{
+				PawnController->MoveToActor(actor, 50);
+				GEngine->AddOnScreenDebugMessage(INDEX_NONE, 5,FColor::Red,actor->GetName());
+				/*FAIMoveRequest request(actor);
+				request.SetUsePathfinding(true);
+				request.SetAllowPartialPath(true);
+				request.SetProjectGoalLocation(true);				
+				request.SetAcceptanceRadius(0);
+				request.SetReachTestIncludesAgentRadius(false);
+				request.SetCanStrafe(false);
+				request.SetRequireNavigableEndLocation(true);
+				PawnController->MoveTo(request);*/
+				auto interactAction = new ActionInteract();
+				interactAction->Setup(ActiveCharacter, actor);
+				currentAction = interactAction;				
+			}
+			else
+			{
+				FAIMoveRequest request(hit.Location);
+				request.SetUsePathfinding(true);
+				request.SetAllowPartialPath(false);
+				request.SetProjectGoalLocation(true);				
+				request.SetAcceptanceRadius(0);
+				request.SetReachTestIncludesAgentRadius(false);
+				request.SetCanStrafe(false);
+				request.SetRequireNavigableEndLocation(true);
+				PawnController->MoveTo(request);				
+			}	
+		}				
 	}
 	
 }
 
-
-void InputContextDefault::SetCursorData(FHitResult hit)
+void UInputContextDefault::SetCursorData(FHitResult hit)
 {	
-	UNavigationSystemV1* navSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(world);	
-	if (navSystem) 
+	UNavigationSystemV1* navSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);	
+	if (navSystem && ActiveCharacter) 
 	{
-		UNavigationPath* path = navSystem->FindPathToLocationSynchronously(world,activeCharacter->GetActorLocation(), hit.Location);
-		path->EnableDebugDrawing(true,FLinearColor::Blue);	
+		UNavigationPath* path = navSystem->FindPathToLocationSynchronously(World,ActiveCharacter->GetActorLocation(), hit.Location);
+		TArray<FVector> points = path->PathPoints;
+		for(int i = 0; i < points.Num(); ++i )
+		{
+			if(points[i] != points.Last())
+			{				
+				DrawDebugLine(World,points[i], points[i+1],FColor::Red);
+			}			
+		}	
 		auto length = path->GetPathLength();
 		GEngine->AddOnScreenDebugMessage(1, 2, FColor::Green, FString::FromInt(length));		
 	}
 	auto actor = hit.GetActor();
 	if(actor)
 	{
-		if(actor->IsA(APawnBase::StaticClass()) && actor != activeCharacter)
+		if(actor->IsA(ACharacterBase::StaticClass()) && actor != ActiveCharacter)
 		{
-			cursorWidget->SetDialog();
+			CursorWidget->SetDialog();
 		}
 		else
 		{
-			cursorWidget->SetDefault();
+			CursorWidget->SetDefault();
 		}
 	}
 	else
 	{
-		cursorWidget->SetDefault();
+		CursorWidget->SetDefault();
 	}
 }
+
+void UInputContextDefault::OnStopMovement(FAIRequestID RequestID, EPathFollowingResult::Type Result)
+{
+	if(Result == EPathFollowingResult::Success)
+	{
+		currentAction->Execute();
+	}
+}
+
 

@@ -2,7 +2,7 @@
 
 
 #include "WidgetDownPanel.h"
-void UWidgetDownPanel::Initialize(APawnBase* playerCharacter)
+void UWidgetDownPanel::Initialize(ACharacterBase* playerCharacter)
 {
 	BindEvents();
 }

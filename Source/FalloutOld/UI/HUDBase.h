@@ -3,8 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "HUDStateBase.h"
-#include "HUDStateSwitcher.h"
 #include "WidgetCharacterSheet.h"
 #include "WidgetDialog.h"
 #include "WidgetDownPanel.h"
@@ -14,9 +12,9 @@
 #include "WidgetMainMenu.h"
 #include "WidgetOptions.h"
 #include "WidgetPipBoy.h"
-#include "FalloutOld/PawnBase.h"
-#include "FalloutOld/InputReceiver.h"
-#include "FalloutOld/InputProvider.h"
+#include "FalloutOld/CharacterBase.h"
+#include "FalloutOld/Interfaces/InputReceiver.h"
+#include "FalloutOld/Interfaces/InputProvider.h"
 #include "FalloutOld/WorldTravelHandler.h"
 #include "GameFramework/HUD.h"
 #include "HUDBase.generated.h"
@@ -25,11 +23,11 @@
  * 
  */
 UCLASS(Blueprintable)
-class FALLOUTOLD_API AHUDBase : public AHUD, public IHUDStateSwitcher
+class FALLOUTOLD_API AHUDBase : public AHUD
 {
 	GENERATED_BODY()
 
-protected:
+public:
 	//widgets
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSubclassOf<UWidgetDownPanel> DownPanel;
@@ -49,36 +47,4 @@ protected:
 	TSubclassOf<UWidgetOptions> Options;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSubclassOf<UWidgetDialog> Dialog;
-	
-	//
-	UPROPERTY()
-	TScriptInterface<IInputProvider> InputProvider = nullptr;
-	UPROPERTY()
-	TScriptInterface<IInputReceiver> InputReceiver = nullptr;
-	UPROPERTY()
-	APawnBase* PlayerCharacter = nullptr;
-	UPROPERTY()
-	UWorldTravelHandler* TravelHandler = nullptr;
-	
-	//states	
-	UPROPERTY()
-	UHUDStateBase* CurrentHUDState = nullptr;			
-
-public:
-	UFUNCTION(BlueprintCallable)
-	void Initialize(TScriptInterface<IInputProvider> inputResult, TScriptInterface<IInputReceiver> playerInputs, APawnBase* character, UWorldTravelHandler* WorldTravelHandler);	
-		
-	virtual void SetCinematicState_Implementation() override;
-	virtual void SetDialogState_Implementation() override;
-	virtual void SetGameplayState_Implementation() override;
-	virtual void SetInventoryState_Implementation() override;
-	virtual void SetOptionsState_Implementation() override;
-	virtual void SetPipBoyState_Implementation() override;
-	virtual void SetCharacterSheetState_Implementation() override;
-	virtual void SetIngameCinematicState_Implementation() override;
-	virtual void SetLocalMapState_Implementation() override;
-	virtual void SetMainMenuState_Implementation() override;
-	virtual void SetWorldMapState_Implementation() override;
-	virtual void SetState_Implementation(UHUDStateBase*);
-
 };

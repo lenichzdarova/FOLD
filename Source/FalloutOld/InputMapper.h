@@ -6,9 +6,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputMapper.generated.h"
 
-/**
- * 
- */
+
 UCLASS(Blueprintable, Abstract)
 class FALLOUTOLD_API UInputMapper : public UObject
 {
