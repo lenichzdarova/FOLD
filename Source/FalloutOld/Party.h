@@ -10,21 +10,25 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class FALLOUTOLD_API UParty : public UObject
 {
 	GENERATED_BODY()
 
 	UPROPERTY()
-	TArray<ACharacterBase*> party;
+	TArray<ACharacterBase*> partyMembers;	
 
 public:
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void AddCharacter(ACharacterBase* pointer);
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void RemoveByIndex(int index);
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void RemoveByValue(ACharacterBase* pointer);
-	UFUNCTION()
-	const TArray<ACharacterBase*>& GetParty();
+	UFUNCTION(BlueprintCallable)
+	const TArray<ACharacterBase*> GetParty() const;	
+
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPartyChanged);
+	UPROPERTY()
+	FPartyChanged PartyChanged;
 };

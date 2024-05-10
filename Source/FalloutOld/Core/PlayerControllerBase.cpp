@@ -2,6 +2,8 @@
 
 
 #include "PlayerControllerBase.h"
+
+#include "GameInstanceBase.h"
 #include "FalloutOld/InputContextDefault.h"
 #include "Kismet/GameplayStatics.h"
 #include "Runtime/AIModule/Classes/AIController.h"
@@ -39,21 +41,30 @@ void APlayerControllerBase::Initialize(TSubclassOf<UInputMapper> Input)
 
 void APlayerControllerBase::Initialize() 
 {
+	//spawn and setup playerView instance
 	auto playerView = GetWorld()->SpawnActor<APlayerView>(FVector::Zero(), FRotator::ZeroRotator);
 	PlayerView = playerView;
 	SetViewTarget(PlayerView);
 
+	//setup cursor
 	auto widget = CreateWidget(this, CursorWidgetType);
 	CursorWidget = Cast<UWidgetCursor>(widget);
 	bShowMouseCursor = true;
-
 	SetMouseCursorWidget(EMouseCursor::Default, CursorWidget);
-	SetInputContextDefault();
-
+	
 	//focus game window
 	FInputModeGameOnly mode;
 	mode.SetConsumeCaptureMouseDown(false);
 	SetInputMode(mode);
+	
+	//for not reset camera after possess character
+	bAutoManageActiveCameraTarget = false;
+
+	//set party
+	UGameInstanceBase* gameInstance = Cast<UGameInstanceBase>(GetGameInstance());
+	party = gameInstance->Party;
+	selector = gameInstance->characterSelector;
+	selector->FocusedCharacterChanged.AddDynamic(this, &APlayerControllerBase::OnFocusedCharacterChanged);	
 }
 
 void APlayerControllerBase::Tick(float DeltaSeconds)
@@ -64,31 +75,12 @@ void APlayerControllerBase::Tick(float DeltaSeconds)
 		FVector location, direction;
 		DeprojectMousePositionToWorld(location,direction);
 		FCollisionQueryParams params;
-		params.AddIgnoredActor(FocusedEntity);
-		GetWorld()->LineTraceSingleByChannel(hit, location, location + direction*10000.f, ECC_Visibility,params);
-		/*
-		if(GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_Visibility), false,hit))
-		{
-			GEngine->AddOnScreenDebugMessage(1,1,FColor::Cyan, hit.GetActor()->GetName());
-		}	*/
+		params.AddIgnoredActor(selector->GetFocusedCharacter());
+		GetWorld()->LineTraceSingleByChannel(hit, location, location + direction*10000.f, ECC_Visibility,params);		
 		inputContext->SetCursorData(hit);
 	}	
 }
-/*
-void APlayerControllerBase::HUDInputBridging(TScriptInterface<IHUDStateSwitcher> HUDStateSwitcher, UInputMapper* inputMapper)
-{
-	HUDStateSwitcher->CinematicState.AddUObject(inputMapper, &UInputMapper::SetCinematicContext);
-	HUDStateSwitcher->DialogState.AddUObject(inputMapper, &UInputMapper::SetDialogContext);
-	HUDStateSwitcher->GameplayState.AddUObject(inputMapper, &UInputMapper::SetGameplayContext);
-	HUDStateSwitcher->InventoryState.AddUObject(inputMapper, &UInputMapper::SetInventoryContext);
-	HUDStateSwitcher->OptionsState.AddUObject(inputMapper, &UInputMapper::SetOptionContext);
-	HUDStateSwitcher->PipBoyState.AddUObject(inputMapper, &UInputMapper::SetPipBoyContext);
-	HUDStateSwitcher->CharacterSheetState.AddUObject(inputMapper, &UInputMapper::SetCharacterSheetContext);
-	HUDStateSwitcher->IngameCinematicState.AddUObject(inputMapper, &UInputMapper::SetCinematicContext);
-	HUDStateSwitcher->LocalMapState.AddUObject(inputMapper, &UInputMapper::SetLocalMapContext);
-	HUDStateSwitcher->MainMenuState.AddUObject(inputMapper, &UInputMapper::SetMainMenuContext);
-	HUDStateSwitcher->WorldMapState.AddUObject(inputMapper, &UInputMapper::SetWorldMapContext);
-}*/
+
 
 #pragma region InputReceiver
 void APlayerControllerBase::OnActionInput_Implementation()
@@ -96,20 +88,25 @@ void APlayerControllerBase::OnActionInput_Implementation()
 	/*
 	FHitResult hit;
 	GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_Visibility), false,hit);*/
-	FHitResult hit;
-	FVector location, direction;
-	DeprojectMousePositionToWorld(location,direction);
-	FCollisionQueryParams params;
-	params.AddIgnoredActor(FocusedEntity);
-	GetWorld()->LineTraceSingleByChannel(hit, location, location + direction*10000.f, ECC_Visibility,params);
-	ActionInput.Broadcast(hit);
+	if(selector->GetFocusedCharacter())
+	{
+		FHitResult hit;
+		FVector location, direction;
+		DeprojectMousePositionToWorld(location,direction);
+		FCollisionQueryParams params;
+		params.AddIgnoredActor(selector->GetFocusedCharacter());
+		GetWorld()->LineTraceSingleByChannel(hit, location, location + direction*10000.f, ECC_Visibility,params);
+		//ActionInput.Broadcast(hit);
+		inputContext->OnLeftMouseButton(hit);
+	}	
 }
 
 void APlayerControllerBase::OnCameraMoveInput_Implementation(FVector2D value)
 {
-	FVector moveOffset;
+	FVector moveOffset(0,0,0);
 	moveOffset.X = value.X;
 	moveOffset.Y = value.Y;
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE,10, FColor::Red, moveOffset.ToString());
 	PlayerView->Move(moveOffset);
 	CameraMoveInput.Broadcast(value);
 }
@@ -174,9 +171,24 @@ void APlayerControllerBase::SetInputContext(UInputContextBase* context)
 void APlayerControllerBase::SetInputContextDefault()
 {
 	auto context =  NewObject<UInputContextDefault>();
-	context->Initialize(this, FocusedEntity,CursorWidget, GetWorld());	
+	context->Initialize(this, selector->GetFocusedCharacter(),CursorWidget, GetWorld());	
 	SetInputContext(context);
 }
+
+void APlayerControllerBase::OnFocusedCharacterChanged()
+{
+	//Possess(selector->GetFocusedCharacter());
+	SetInputContextDefault();
+}
+
+void APlayerControllerBase::CycleCharacters()
+{
+	selector->SetNext();
+}
+
+
+
+
 
 
 

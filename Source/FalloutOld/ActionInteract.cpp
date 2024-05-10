@@ -8,5 +8,6 @@ void ActionInteract::Setup(ACharacterBase* character, TScriptInterface<IInteract
 void ActionInteract::Execute()
 {
 	IInteractable::Execute_Interact(target.GetObject(), performer);
+	delete this;
 }
 

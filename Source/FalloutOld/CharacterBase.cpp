@@ -40,5 +40,12 @@ void ACharacterBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void ACharacterBase::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE,10,FColor::Red, NewController->GetName());
+}
+
+
 
 

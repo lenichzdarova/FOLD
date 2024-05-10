@@ -10,11 +10,12 @@ GENERATED_BODY()
 	
 protected:	
 	virtual void BindInputEvents(IInputProvider*) override;
-	virtual void OnLeftMouseButton(FHitResult);
-public:
+	//virtual void OnLeftMouseButton(FHitResult);
 	
+public:	
 	virtual void Initialize(IInputProvider*, ACharacterBase*, UWidgetCursor*, UWorld*) override;
 	virtual void SetCursorData(FHitResult) override;
 	UFUNCTION()
-	virtual void OnStopMovement(FAIRequestID requestID, EPathFollowingResult::Type followResult);	
+	virtual void OnStopMovement(FAIRequestID requestID, EPathFollowingResult::Type followResult);
+	virtual void OnLeftMouseButton(FHitResult) override;
 };

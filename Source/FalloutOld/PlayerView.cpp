@@ -48,7 +48,7 @@ void APlayerView::Tick(float DeltaTime)
 
 void APlayerView::Move(FVector value)
 {	
-	value *= MoveSensitivity;
+	value *= MoveSensitivity;	
 	AddActorLocalOffset(value);	
 }
 

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "FalloutOld/Party.h"
+#include "FalloutOld/Selector.h"
 #include "GameInstanceBase.generated.h"
 
 /**
@@ -17,13 +18,19 @@ class FALLOUTOLD_API UGameInstanceBase : public UGameInstance
 
 protected:
 	UPROPERTY()
-	FString PlayerStartTag = "MainMenu";
-	UPROPERTY()
-	UParty* Party;
+	FString PlayerStartTag = "MainMenu";	
 
 public:
 	UPROPERTY()
 	FVector2D PlayerWorldPosition;
+	
+	UPROPERTY(BlueprintReadWrite)
+	TObjectPtr<UParty> Party = nullptr;
+	UPROPERTY()
+	TObjectPtr<USelector> characterSelector = nullptr;
 
-	UGameInstanceBase(const FObjectInitializer& ObjectInitializer);	
+	UGameInstanceBase(const FObjectInitializer& ObjectInitializer);
+	
+	UFUNCTION()
+	void OnPartyChanged();
 };

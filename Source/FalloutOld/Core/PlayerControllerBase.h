@@ -12,6 +12,8 @@
 #include "FalloutOld/Interfaces/InputReceiver.h"
 #include "FalloutOld/Interfaces/InputProvider.h"
 //#include "WorldTravelHandler.h"
+#include "FalloutOld/Party.h"
+#include "FalloutOld/Selector.h"
 #include "GameFramework/PlayerController.h"
 //#include "UI/HUDBase.h"
 #include "PlayerControllerBase.generated.h"
@@ -30,10 +32,7 @@ protected:
 	virtual void Tick(float DeltaSeconds) override;
 	
 	UPROPERTY(BlueprintReadWrite)
-	APlayerView* PlayerView = nullptr;
-
-	UPROPERTY(BlueprintReadWrite)
-	ACharacterBase* FocusedEntity = nullptr;	
+	APlayerView* PlayerView = nullptr;		
 
 	UPROPERTY()
 	UCursorController* CursorController = nullptr;
@@ -48,7 +47,11 @@ protected:
 	UWidgetCursor* CursorWidget;
 
 	UPROPERTY()
-	UInputContextBase* inputContext;
+	UInputContextBase* inputContext = nullptr;
+	UPROPERTY()
+	TObjectPtr<UParty> party = nullptr;
+	UPROPERTY()
+	TObjectPtr<USelector> selector = nullptr;
 		
 	
 #pragma region InputReceiver
@@ -82,4 +85,10 @@ protected:
 	//void HUDInputBridging(TScriptInterface<IHUDStateSwitcher> HUDStateSwitcher, UInputMapper* inputMapper);
 	void SetInputContext(UInputContextBase*);
 	void SetInputContextDefault();
+
+	UFUNCTION()
+	void OnFocusedCharacterChanged();
+
+	UFUNCTION(BlueprintCallable)
+	void CycleCharacters();
 };

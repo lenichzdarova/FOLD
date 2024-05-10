@@ -3,27 +3,32 @@
 
 #include "Party.h"
 
-const TArray<ACharacterBase*>& UParty::GetParty()
+const TArray<ACharacterBase*> UParty::GetParty() const
 {
-	return party;
+	return partyMembers;
 }
 
 void UParty::RemoveByIndex(int index)
 {
-	if(party.IsValidIndex(index))
+	if(partyMembers.IsValidIndex(index))
 	{
-		party.RemoveAt(index);
+		partyMembers.RemoveAt(index);
 	}
+	PartyChanged.Broadcast();
 }
 
 void UParty::AddCharacter(ACharacterBase* pointer)
-{
-	party.Add(pointer);
+{	
+	partyMembers.Add(pointer);
+	PartyChanged.Broadcast();	
 }
 void UParty::RemoveByValue(ACharacterBase* pointer)
 {
-	party.RemoveSingle(pointer);
+	partyMembers.RemoveSingle(pointer);
+	PartyChanged.Broadcast();
 }
+
+
 
 
 

@@ -14,14 +14,18 @@ class UInputContextBase : public UObject
 
 protected:
 	IInputProvider* InputProvider;
+	UPROPERTY()
 	ACharacterBase* ActiveCharacter;
+	UPROPERTY()
 	UWidgetCursor* CursorWidget;
-	UWorld* World;
+	UPROPERTY()
+	UWorld* World;	
 	Action* currentAction;
  	
 public:
 	virtual void Initialize(IInputProvider*, ACharacterBase*, UWidgetCursor*, UWorld*);	
-	virtual void SetCursorData(FHitResult){}	
+	virtual void SetCursorData(FHitResult){}
+	virtual void OnLeftMouseButton(FHitResult){};
 
 protected:	
 	virtual void BindInputEvents(IInputProvider*){}

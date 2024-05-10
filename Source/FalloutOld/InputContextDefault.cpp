@@ -40,6 +40,9 @@ void UInputContextDefault::OnLeftMouseButton(FHitResult hit)
 			}
 			else if(actor->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
 			{
+				auto interactAction = new ActionInteract();
+				interactAction->Setup(ActiveCharacter, actor);
+				currentAction = interactAction;		
 				PawnController->MoveToActor(actor, 50);
 				GEngine->AddOnScreenDebugMessage(INDEX_NONE, 5,FColor::Red,actor->GetName());
 				/*FAIMoveRequest request(actor);
@@ -50,10 +53,7 @@ void UInputContextDefault::OnLeftMouseButton(FHitResult hit)
 				request.SetReachTestIncludesAgentRadius(false);
 				request.SetCanStrafe(false);
 				request.SetRequireNavigableEndLocation(true);
-				PawnController->MoveTo(request);*/
-				auto interactAction = new ActionInteract();
-				interactAction->Setup(ActiveCharacter, actor);
-				currentAction = interactAction;				
+				PawnController->MoveTo(request);*/						
 			}
 			else
 			{
@@ -109,7 +109,7 @@ void UInputContextDefault::SetCursorData(FHitResult hit)
 
 void UInputContextDefault::OnStopMovement(FAIRequestID RequestID, EPathFollowingResult::Type Result)
 {
-	if(Result == EPathFollowingResult::Success)
+	if(currentAction && Result == EPathFollowingResult::Success)
 	{
 		currentAction->Execute();
 	}

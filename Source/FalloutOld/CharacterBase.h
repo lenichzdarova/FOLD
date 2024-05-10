@@ -11,7 +11,7 @@ UCLASS(Blueprintable)
 class FALLOUTOLD_API ACharacterBase : public ACharacter
 {
 	GENERATED_BODY()
-
+	
 public:
 	// Sets default values for this pawn's properties
 	ACharacterBase();
@@ -24,6 +24,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;	 
 
-protected:	
+protected:
+	virtual void PossessedBy(AController* NewController) override;
 		
 };
