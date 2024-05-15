@@ -1,10 +1,11 @@
 ﻿#pragma once
 
-#include "Action.h"
+#include "ActionBase.h"
 #include "Interfaces/InputProvider.h"
 #include "CharacterBase.h"
 #include "UI/WidgetCursor.h"
-#include "UInputContextBase.generated.h"
+#include "ActionHandler.h"
+#include "InputContextBase.generated.h"
 
 
 UCLASS(Abstract)
@@ -20,12 +21,12 @@ protected:
 	UWidgetCursor* CursorWidget;
 	UPROPERTY()
 	UWorld* World;	
-	Action* currentAction;
+	ActionBase* currentAction;
  	
 public:
 	virtual void Initialize(IInputProvider*, ACharacterBase*, UWidgetCursor*, UWorld*);	
 	virtual void SetCursorData(FHitResult){}
-	virtual void OnLeftMouseButton(FHitResult){};
+	virtual void OnLeftMouseButton(){};
 
 protected:	
 	virtual void BindInputEvents(IInputProvider*){}

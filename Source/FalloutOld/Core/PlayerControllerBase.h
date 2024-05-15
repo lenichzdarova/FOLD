@@ -7,7 +7,7 @@
 #include "FalloutOld/CharacterBase.h"
 #include "FalloutOld/CursorController.h"
 #include "EnhancedInputSubsystems.h"
-#include "FalloutOld/UInputContextBase.h"
+#include "FalloutOld/InputContextBase.h"
 //#include "InputMapper.h"
 #include "FalloutOld/Interfaces/InputReceiver.h"
 #include "FalloutOld/Interfaces/InputProvider.h"
@@ -84,7 +84,7 @@ protected:
 	
 	//void HUDInputBridging(TScriptInterface<IHUDStateSwitcher> HUDStateSwitcher, UInputMapper* inputMapper);
 	void SetInputContext(UInputContextBase*);
-	void SetInputContextDefault();
+	void SetInputContextDefault();	
 
 	UFUNCTION()
 	void OnFocusedCharacterChanged();

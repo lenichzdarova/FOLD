@@ -2,8 +2,9 @@
 
 
 #include "CharacterBase.h"
-
-#include "GameFramework/PawnMovementComponent.h"
+#include "ActionHandler.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Navigation/GridPathFollowingComponent.h"
 
 
 // Sets default values
@@ -11,20 +12,11 @@ ACharacterBase::ACharacterBase()
 {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	/*
-	//RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
-	//RootComponent = CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));	
-	//SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>("Skeletal mesh");	
-	//SkeletalMesh->SetupAttachment(RootComponent);	
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> helper(TEXT("/Script/Engine.SkeletalMesh'/Game/ControlRig/Characters/Mannequins/Meshes/SKM_Quinn.SKM_Quinn'"));
-	if(helper.Succeeded())
-	{		
-		SkeletalMesh->SetSkinnedAssetAndUpdate(helper.Object);
-	}
-	//CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
-	//CapsuleComponent->SetupAttachment(RootComponent);*/
-
+	
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	PathFollowingComponent = CreateDefaultSubobject<UPathFollowingComponent>("Path Following Component");
+	ActionHandler = CreateDefaultSubobject<UActionHandler>("ActionHandler");
+	GetCharacterMovement()->bOrientRotationToMovement = true;	
 }
 
 // Called when the game starts or when spawned

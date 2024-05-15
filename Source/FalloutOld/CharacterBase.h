@@ -5,13 +5,16 @@
 #include "CoreMinimal.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
+#include "Navigation/PathFollowingComponent.h"
 #include "CharacterBase.generated.h"
+
+class UActionHandler;
 
 UCLASS(Blueprintable)
 class FALLOUTOLD_API ACharacterBase : public ACharacter
 {
 	GENERATED_BODY()
-	
+
 public:
 	// Sets default values for this pawn's properties
 	ACharacterBase();
@@ -26,5 +29,10 @@ public:
 
 protected:
 	virtual void PossessedBy(AController* NewController) override;
-		
+
+public:
+	UPROPERTY()
+	UPathFollowingComponent* PathFollowingComponent;
+	UPROPERTY()
+	UActionHandler* ActionHandler;		
 };

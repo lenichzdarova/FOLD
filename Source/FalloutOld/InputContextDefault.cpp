@@ -1,6 +1,7 @@
 ﻿#include "InputContextDefault.h"
 
 #include "ActionInteract.h"
+#include "ActionMoveToLocation.h"
 #include "NavigationSystem.h"
 #include "NavigationPath.h"
 #include "Core/DialogSubsystem.h"
@@ -14,92 +15,38 @@ void UInputContextDefault::Initialize(IInputProvider* inputProvider, ACharacterB
 }
 
 void UInputContextDefault::BindInputEvents(IInputProvider* value)
-{
-	value->ActionInput.AddUObject(this,&UInputContextDefault::OnLeftMouseButton);
-	AAIController* PawnController = Cast<AAIController>(ActiveCharacter->GetController());
-	PawnController->ReceiveMoveCompleted.AddDynamic(this, &UInputContextDefault::OnStopMovement);
+{	
 	
 }
 
-void UInputContextDefault::OnLeftMouseButton(FHitResult hit)
-{	
-	if(hit.bBlockingHit)
-	{
-		AAIController* PawnController = Cast<AAIController>(ActiveCharacter->GetController());
-		auto actor = hit.GetActor();
-		if(PawnController)
-		{
-			if(actor->IsA(ACharacterBase::StaticClass()))
-			{
-				if(actor != ActiveCharacter)
-				{
-					UGameInstance* gameInstance = World->GetGameInstance();
-					UDialogSubsystem* dialogSunsystem = gameInstance->GetSubsystem<UDialogSubsystem>();
-					dialogSunsystem->StartDialog(ActiveCharacter, Cast<ACharacterBase>(actor));
-				}				
-			}
-			else if(actor->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
-			{
-				auto interactAction = new ActionInteract();
-				interactAction->Setup(ActiveCharacter, actor);
-				currentAction = interactAction;		
-				PawnController->MoveToActor(actor, 50);
-				GEngine->AddOnScreenDebugMessage(INDEX_NONE, 5,FColor::Red,actor->GetName());
-				/*FAIMoveRequest request(actor);
-				request.SetUsePathfinding(true);
-				request.SetAllowPartialPath(true);
-				request.SetProjectGoalLocation(true);				
-				request.SetAcceptanceRadius(0);
-				request.SetReachTestIncludesAgentRadius(false);
-				request.SetCanStrafe(false);
-				request.SetRequireNavigableEndLocation(true);
-				PawnController->MoveTo(request);*/						
-			}
-			else
-			{
-				FAIMoveRequest request(hit.Location);
-				request.SetUsePathfinding(true);
-				request.SetAllowPartialPath(false);
-				request.SetProjectGoalLocation(true);				
-				request.SetAcceptanceRadius(0);
-				request.SetReachTestIncludesAgentRadius(false);
-				request.SetCanStrafe(false);
-				request.SetRequireNavigableEndLocation(true);
-				PawnController->MoveTo(request);				
-			}	
-		}				
-	}
-	
+void UInputContextDefault::OnLeftMouseButton()
+{		
+	currentAction->Execute();
 }
 
 void UInputContextDefault::SetCursorData(FHitResult hit)
 {	
-	UNavigationSystemV1* navSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);	
-	if (navSystem && ActiveCharacter) 
+	if(hit.bBlockingHit)
 	{
-		UNavigationPath* path = navSystem->FindPathToLocationSynchronously(World,ActiveCharacter->GetActorLocation(), hit.Location);
-		TArray<FVector> points = path->PathPoints;
-		for(int i = 0; i < points.Num(); ++i )
+		AActor* actor = hit.GetActor();
+		if(actor->IsA(ACharacterBase::StaticClass()))
 		{
-			if(points[i] != points.Last())
-			{				
-				DrawDebugLine(World,points[i], points[i+1],FColor::Red);
-			}			
-		}	
-		auto length = path->GetPathLength();
-		GEngine->AddOnScreenDebugMessage(1, 2, FColor::Green, FString::FromInt(length));		
-	}
-	auto actor = hit.GetActor();
-	if(actor)
-	{
-		if(actor->IsA(ACharacterBase::StaticClass()) && actor != ActiveCharacter)
+			if(actor != ActiveCharacter)
+			{
+				CursorWidget->SetDialog();				
+			}				
+		}
+		else if(actor->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
 		{
-			CursorWidget->SetDialog();
+			CursorWidget->SetDefault();
+			auto interactAction = new ActionInteract(World, ActiveCharacter, actor);				
+			currentAction = interactAction;				
 		}
 		else
 		{
 			CursorWidget->SetDefault();
-		}
+			currentAction = new ActionMoveToLocation(World,ActiveCharacter, hit.Location);					
+		}		
 	}
 	else
 	{
@@ -107,12 +54,6 @@ void UInputContextDefault::SetCursorData(FHitResult hit)
 	}
 }
 
-void UInputContextDefault::OnStopMovement(FAIRequestID RequestID, EPathFollowingResult::Type Result)
-{
-	if(currentAction && Result == EPathFollowingResult::Success)
-	{
-		currentAction->Execute();
-	}
-}
+
 
 
