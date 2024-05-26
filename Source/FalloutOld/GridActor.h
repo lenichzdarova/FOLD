@@ -48,7 +48,7 @@ public:
 	void ShowTestGrid();
 protected:
 	void SetGridData();
-	void CheckGraphEdges(FVector vertex, FGridVertexEdges&);
+	void CheckGraphEdges(FVector&, FGridVertexEdges&);
 	void TraceVertex(const FVector&, const FVector&, FHitResult&);
 	void StraightDirectionCheck(TArray<FVector>&, TArray<FVector>&, FVector, FVector, FVector, FVector);
 

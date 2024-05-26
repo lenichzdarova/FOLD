@@ -16,7 +16,7 @@ AGridActor::AGridActor(const FObjectInitializer& ObjectInitializer)
 
 // Called when the game starts or when spawned
 void AGridActor::BeginPlay()
-{	
+{	/*
 	if(GridMesh != nullptr)
 	{
 		FVector bounds, origin;
@@ -26,7 +26,7 @@ void AGridActor::BeginPlay()
 		MinY = origin.Y - bounds.Y;
 		MaxY = origin.Y + bounds.Y;
 	}
-	//SetTestGrid();
+	//SetTestGrid();*/
 	Super::BeginPlay();
 }
 
@@ -65,7 +65,7 @@ void AGridActor::ShowTestGrid()
 		FGridVertexEdges* edges = Graph.Find(key);		
 		for (auto& edge : edges->edges)
 		{			
-			FVector offset{0, 0,CellSize/2};
+			FVector offset{0, 0,CellSize/10};
 			DrawDebugLine(GetWorld(), key + offset, edge + offset, FColor::Red, true);
 		}
 	}	
@@ -94,13 +94,18 @@ void AGridActor::SetGridData()
 				FVector traceStart = cellOriginLoc + FVector{0, 0, 1000};
 				FVector traceEnd = cellOriginLoc - FVector{0, 0, 1000};
 				TArray<FHitResult> hits;
-				world->LineTraceMultiByChannel(hits,traceStart, traceEnd, ECC_GameTraceChannel2);
-				posY += CellSize;				
+				world->LineTraceMultiByChannel(hits,traceStart, traceEnd, ECC_GameTraceChannel2);								
 				for (auto hit : hits)
 				{
+					//Manipulate Z for more grid stability
+					double posZ{hit.Location.Z};
+					posZ /= CellSize;
+					posZ = round(posZ)*100;
+					FVector cell{posX, posY, posZ};
 					FGridVertexEdges edges;										
-					Graph.Add(hit.Location, edges);					
-				}				
+					Graph.Add(cell, edges);					
+				}
+				posY += CellSize;
 			}
 			posX += CellSize;
 		}
@@ -114,7 +119,7 @@ void AGridActor::SetGridData()
 
 
 
-void AGridActor::CheckGraphEdges(FVector vertex, FGridVertexEdges& edges)
+void AGridActor::CheckGraphEdges(FVector& vertex, FGridVertexEdges& edges)
 {	
 	FVector up{vertex.X, vertex.Y + CellSize, vertex.Z};
 	FVector down {vertex.X, vertex.Y - CellSize, vertex.Z};
@@ -171,16 +176,7 @@ void AGridActor::StraightDirectionCheck(TArray<FVector>& diagonal, TArray<FVecto
 		}		
 	}
 	else
-	{
-		if(start == FVector{200, -200, start.Z})
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s"),*FString{start.ToString()});
-			UE_LOG(LogTemp, Warning, TEXT("%s"),*FString{target.ToString()});
-			for (auto Element : Graph)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("%s"),*FString{Element.Key.ToString()});
-			}
-		}
+	{		
 		diagonal.Remove(removeOne);
 		diagonal.Remove(removeSecond);;
 	}	
