@@ -4,17 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "FGridVertexEdges.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/Actor.h"
 #include "GridActor.generated.h"
 
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, BlueprintType)
 class FALLOUTOLD_API AGridActor : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	AGridActor();	
+	AGridActor(const FObjectInitializer& ObjectInitializer);	
 
 protected:
 	// Called when the game starts or when spawned
@@ -23,10 +24,10 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-protected:
-	UPROPERTY(BlueprintReadWrite)
-	UStaticMeshComponent* GridMesh = nullptr;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UStaticMeshComponent> GridMesh;
+	
 	UPROPERTY()
 	float CellSize = 100.f;; 
 	UPROPERTY(BlueprintReadWrite)
@@ -39,10 +40,17 @@ protected:
 	float MaxY = 0;
 	UPROPERTY()
 	TArray<FVector> Obstacles;
+	
 	UPROPERTY()
 	TMap<FVector, FGridVertexEdges> Graph;
 
-	void SetTestGrid();
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void ShowTestGrid();
+protected:
+	void SetGridData();
+	void CheckGraphEdges(FVector vertex, FGridVertexEdges&);
+	void TraceVertex(const FVector&, const FVector&, FHitResult&);
+	void StraightDirectionCheck(TArray<FVector>&, TArray<FVector>&, FVector, FVector, FVector, FVector);
 
 public:
 	//convert world coordinate to graph vertex coordinate;
@@ -50,7 +58,5 @@ public:
 	FVector GetGridVertexFromFVector(FVector value) const;
 
 	UFUNCTION()
-	TArray<FVector> GetMovePath(FVector start, FVector destination) const;
-	UFUNCTION()
-	bool CheckGraphEdges(FVector startVertex, FVector vertexToCheck);	
+	TArray<FVector> GetMovePath(FVector start, FVector destination) const;		
 };

@@ -9,5 +9,6 @@ public:
 	//virtual void Execute() override;
 
 protected:
-	FVector Destination;	
+	FVector Destination;
+	virtual void SetupMoveRequest() override;
 };

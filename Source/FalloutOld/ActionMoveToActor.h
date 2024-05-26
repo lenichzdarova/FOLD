@@ -9,5 +9,6 @@ public:
 	ActionMoveToActor(UWorld*, ACharacterBase*, AActor*);	
 
 protected:
-	AActor* Destination;	
+	AActor* Destination;
+	virtual void SetupMoveRequest() override;
 };

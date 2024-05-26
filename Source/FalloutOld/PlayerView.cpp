@@ -24,16 +24,17 @@ APlayerView::APlayerView()
 	Camera->SetupAttachment(SpringArm,SpringArm->SocketName);
 
 	FRotator rotator;
-	rotator.Pitch = DefaultViewAngle;
+	rotator.Pitch = DefaultViewAngle;	
 	SpringArm->SetWorldRotation(rotator);
-	RotationDelta = 0.f;
-	
+	RotationDelta = 0.f;	
 }
 
 // Called when the game starts or when spawned
 void APlayerView::BeginPlay()
 {
 	Super::BeginPlay();
+	FRotator defaultRotation{0,45,0};
+	SetActorRotation(defaultRotation);
 }
 
 // Called every frame

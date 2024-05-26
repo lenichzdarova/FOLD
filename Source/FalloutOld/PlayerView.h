@@ -38,7 +38,7 @@ protected:
 	//rotation properties
 	float DefaultViewAngle{300.f};
 	float RotationDelta;
-	const float RotationValue = 90.f;
+	const float RotationValue = -90.f;
 	float MinRotationValueAbs = 1.f;
 	//move properties	
 	float MoveSensitivity = 50.f;

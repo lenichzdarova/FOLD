@@ -6,8 +6,10 @@
 
 
 // Sets default values
-AGridActor::AGridActor()
-{	
+AGridActor::AGridActor(const FObjectInitializer& ObjectInitializer)
+{
+	GridMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
+	GridMesh->SetupAttachment(RootComponent);
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;	
 }
@@ -50,46 +52,138 @@ TArray<FVector> AGridActor::GetMovePath(FVector start, FVector destination) cons
 	return pathBuilder.GetPath();
 }
 
-void AGridActor::SetTestGrid()
-{	
-	float xPos = MinX + CellSize/2;
-	FVector location = GetActorLocation();
-	while (xPos < MaxX)
-	{
-		float yPos = MinY + CellSize/2;
-		while (yPos < MaxY)
-		{
-			FVector gridVertex{xPos,yPos, location.Z};
-			FGridVertexEdges edges;
-			for (float x = xPos - CellSize; x <= (xPos + CellSize); x += CellSize)
-			{
-				if (x > MinX && x < MaxX)
-				{
-					for(float y = yPos - CellSize; y <= (yPos + CellSize); y += CellSize)
-					{
-						if(y > MinY && y < MaxY)
-						{
-							FVector edge{x,y,location.Z}; 
-							if(gridVertex != edge)
-							{
-								edges.edges.Add(FVector{x,y,location.Z});
-							}														
-						}
-					}
-				}				
-			}
-			Graph.Add(gridVertex, edges);
-			DrawDebugSphere(GetWorld(),gridVertex,50,edges.edges.Num(), FColor::Red, false , 20);
-			yPos += CellSize;
-		}		
-		xPos += CellSize;		
+void AGridActor::ShowTestGrid()
+{
+	SetGridData();
+	TArray<FVector> keys;
+	Graph.GetKeys(keys);	
+	for (auto key : keys)
+	{			
+		FPlane Plane{0,0,1,key.Z + 5};
+		FColor color = FColor::Green.WithAlpha(150);					
+		DrawDebugSolidPlane(GetWorld(), Plane, key, 48, color, true);
+		FGridVertexEdges* edges = Graph.Find(key);		
+		for (auto& edge : edges->edges)
+		{			
+			FVector offset{0, 0,CellSize/2};
+			DrawDebugLine(GetWorld(), key + offset, edge + offset, FColor::Red, true);
+		}
 	}	
 }
 
-bool AGridActor::CheckGraphEdges(FVector startVertex, FVector vertexToCheck)
+void AGridActor::SetGridData()
 {
-	auto edges = Graph.Find(startVertex);
-	return edges->edges.Contains(vertexToCheck);
+	Graph.Empty();
+	UWorld* world = GetWorld();
+	if(GridMesh != nullptr)
+	{
+		FVector bounds, origin;		
+		GetActorBounds(false,origin, bounds);		
+		MinX = origin.X - bounds.X;
+		MaxX = origin.X + bounds.X;
+		MinY = origin.Y - bounds.Y;
+		MaxY = origin.Y + bounds.Y;
+
+		float posX = MinX + CellSize/2;		
+		while(posX < MaxX)
+		{
+			float posY = MinY + CellSize/2;
+			while (posY < MaxY)
+			{
+				FVector cellOriginLoc{posX, posY, origin.Z};
+				FVector traceStart = cellOriginLoc + FVector{0, 0, 1000};
+				FVector traceEnd = cellOriginLoc - FVector{0, 0, 1000};
+				TArray<FHitResult> hits;
+				world->LineTraceMultiByChannel(hits,traceStart, traceEnd, ECC_GameTraceChannel2);
+				posY += CellSize;				
+				for (auto hit : hits)
+				{
+					FGridVertexEdges edges;										
+					Graph.Add(hit.Location, edges);					
+				}				
+			}
+			posX += CellSize;
+		}
+	}
+	
+	for (auto& keyValue : Graph)
+	{
+		CheckGraphEdges(keyValue.Key,keyValue.Value);
+	}	
+}
+
+
+
+void AGridActor::CheckGraphEdges(FVector vertex, FGridVertexEdges& edges)
+{	
+	FVector up{vertex.X, vertex.Y + CellSize, vertex.Z};
+	FVector down {vertex.X, vertex.Y - CellSize, vertex.Z};
+	FVector left {vertex.X - CellSize, vertex.Y, vertex.Z};
+	FVector right {vertex.X + CellSize, vertex.Y, vertex.Z};
+	FVector upLeft {vertex.X - CellSize, vertex.Y + CellSize, vertex.Z};
+	FVector upRight{vertex.X + CellSize, vertex.Y + CellSize, vertex.Z};
+	FVector downLeft {vertex.X - CellSize, vertex.Y - CellSize, vertex.Z};
+	FVector downRight {vertex.X + CellSize, vertex.Y - CellSize, vertex.Z};	
+	
+	TArray<FVector> diagonal{upLeft, upRight, downLeft, downRight};	
+
+	StraightDirectionCheck(diagonal, edges.edges,vertex, up, upLeft, upRight);	
+	StraightDirectionCheck(diagonal,edges.edges,vertex,down, downLeft, downRight);	
+	StraightDirectionCheck(diagonal, edges.edges,vertex,left, upLeft, downLeft);
+	StraightDirectionCheck(diagonal, edges.edges,vertex,right, upRight, downRight);	
+
+	for (auto edge : diagonal)
+	{
+		if(Graph.Contains(edge))
+		{
+			FHitResult hit;
+			TraceVertex(vertex,edge,hit);
+			if(!hit.bBlockingHit)
+			{
+				edges.edges.Add(edge);
+			}
+		}		
+	}		
+}
+
+void AGridActor::TraceVertex(const FVector& start, const FVector& target, FHitResult& hit)
+{
+	FVector linetraceOffcet{0, 0, CellSize/2};
+	FVector traceStart = start + linetraceOffcet;		
+	FVector traceEnd = target + linetraceOffcet;	
+	GetWorld()->LineTraceSingleByChannel(hit,traceStart,traceEnd, ECollisionChannel::ECC_GameTraceChannel1);	
+}
+
+void AGridActor::StraightDirectionCheck(TArray<FVector>& diagonal, TArray<FVector>& edges, FVector start, FVector target, FVector removeOne, FVector removeSecond)
+{
+	if(Graph.Contains(target))
+	{
+		FHitResult hit;			
+		TraceVertex(start, target, hit);
+		if(hit.bBlockingHit)
+		{			
+			diagonal.Remove(removeOne);
+			diagonal.Remove(removeSecond);			
+		}
+		else
+		{
+			edges.Add(target);
+		}		
+	}
+	else
+	{
+		if(start == FVector{200, -200, start.Z})
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s"),*FString{start.ToString()});
+			UE_LOG(LogTemp, Warning, TEXT("%s"),*FString{target.ToString()});
+			for (auto Element : Graph)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("%s"),*FString{Element.Key.ToString()});
+			}
+		}
+		diagonal.Remove(removeOne);
+		diagonal.Remove(removeSecond);;
+	}	
 }
 
 

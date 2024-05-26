@@ -4,6 +4,7 @@
 #include "CharacterBase.h"
 #include "ActionHandler.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Navigation/CrowdFollowingComponent.h"
 #include "Navigation/GridPathFollowingComponent.h"
 
 
@@ -14,7 +15,7 @@ ACharacterBase::ACharacterBase()
 	PrimaryActorTick.bCanEverTick = true;
 	
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
-	PathFollowingComponent = CreateDefaultSubobject<UPathFollowingComponent>("Path Following Component");
+	PathFollowingComponent = CreateDefaultSubobject<UPathFollowingComponent>("Path Following Component");	
 	ActionHandler = CreateDefaultSubobject<UActionHandler>("ActionHandler");
 	GetCharacterMovement()->bOrientRotationToMovement = true;	
 }

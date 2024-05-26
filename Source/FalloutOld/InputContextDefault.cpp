@@ -1,6 +1,7 @@
 ﻿#include "InputContextDefault.h"
 
 #include "ActionInteract.h"
+#include "ActionMoveToActor.h"
 #include "ActionMoveToLocation.h"
 #include "NavigationSystem.h"
 #include "NavigationPath.h"
@@ -22,18 +23,26 @@ void UInputContextDefault::BindInputEvents(IInputProvider* value)
 void UInputContextDefault::OnLeftMouseButton()
 {		
 	currentAction->Execute();
+	currentAction = nullptr;
+	
 }
 
 void UInputContextDefault::SetCursorData(FHitResult hit)
-{	
-	if(hit.bBlockingHit)
+{
+	/*
+	if(currentAction)
 	{
+		delete currentAction;
+	}
+	if(hit.bBlockingHit)
+	{		
 		AActor* actor = hit.GetActor();
 		if(actor->IsA(ACharacterBase::StaticClass()))
 		{
 			if(actor != ActiveCharacter)
 			{
-				CursorWidget->SetDialog();				
+				CursorWidget->SetDialog();
+				currentAction = new ActionMoveToActor(World,ActiveCharacter, actor);
 			}				
 		}
 		else if(actor->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
@@ -51,7 +60,7 @@ void UInputContextDefault::SetCursorData(FHitResult hit)
 	else
 	{
 		CursorWidget->SetDefault();
-	}
+	}*/
 }
 
 
