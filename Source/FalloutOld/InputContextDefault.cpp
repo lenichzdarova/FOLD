@@ -21,15 +21,16 @@ void UInputContextDefault::BindInputEvents(IInputProvider* value)
 }
 
 void UInputContextDefault::OnLeftMouseButton()
-{		
-	currentAction->Execute();
-	currentAction = nullptr;
-	
+{
+	if(currentAction)
+	{
+		currentAction->Execute();
+		currentAction = nullptr;
+	}	
 }
 
 void UInputContextDefault::SetCursorData(FHitResult hit)
-{
-	/*
+{	
 	if(currentAction)
 	{
 		delete currentAction;
@@ -60,7 +61,7 @@ void UInputContextDefault::SetCursorData(FHitResult hit)
 	else
 	{
 		CursorWidget->SetDefault();
-	}*/
+	}
 }
 
 

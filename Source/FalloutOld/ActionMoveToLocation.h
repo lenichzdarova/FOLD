@@ -10,5 +10,4 @@ public:
 
 protected:
 	FVector Destination;
-	virtual void SetupMoveRequest() override;
-};
+};	
