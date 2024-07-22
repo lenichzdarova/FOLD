@@ -1,8 +1,8 @@
 ﻿#include "PathBuilder.h"
 
-PathBuilder::PathBuilder(const TMap<Cell, FGridVertexEdges>* graph, FVector actorLocation, FVector targetPoint)
+PathBuilder::PathBuilder(const FNavGraph* graph, FVector actorLocation, FVector targetPoint)
 {
-	this->graph = graph;
+	this->NavGraph = graph;
 	start = actorLocation;
 	end = targetPoint;	
 	OpenCell(start,0);
@@ -59,7 +59,7 @@ bool PathBuilder::HandleBest()
 	{
 		return true;
 	}
-	auto cells = graph ->Find(closest);
+	auto cells = NavGraph->Graph.Find(closest);
 	for (const auto& cell : cells->edges)
 	{
 		if(!opened.Contains(cell) && !closed.Contains(cell))
@@ -102,7 +102,7 @@ Cell PathBuilder::GetClosestToStart(Cell cell)
 {
 	auto baseDistance = distanceInfo.Find(cell)->fromStart;
 	Cell result;	
-	auto neighbours = graph->Find(cell);;
+	auto neighbours = NavGraph->Graph.Find(cell);;
 	for (auto n : neighbours->edges)
 	{
 		auto distance = distanceInfo.Find(n);
@@ -120,7 +120,7 @@ Cell PathBuilder::GetClosestToStart(Cell cell)
 
 float PathBuilder::GetDistanceFromStart(Cell cell)
 {
-	auto edges  = graph->Find(cell);
+	auto edges  = NavGraph->Graph.Find(cell);
 	auto neibours = edges->edges;
 	
 	FVector bestCell;

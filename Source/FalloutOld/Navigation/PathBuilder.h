@@ -1,8 +1,10 @@
 ﻿#pragma once
 #include "FGridVertexEdges.h"
+#include "FNavGraph.h"
 
 
 typedef FVector Cell;
+typedef TArray<Cell> NavPath;
 
 class PathBuilder
 {
@@ -18,8 +20,8 @@ class PathBuilder
 
 	TArray<Cell> path;
 	Cell start;
-	Cell end;
-	const TMap<Cell, FGridVertexEdges>* graph;
+	Cell end;	
+	const FNavGraph* NavGraph;
 	TArray<Cell> opened;
 	TArray<Cell> closed;	
 	TMap<Cell, Distance> distanceInfo; 
@@ -35,7 +37,7 @@ class PathBuilder
 	float GetDistanceFromStart(Cell cell);
 	
 public:
-	PathBuilder(const TMap<Cell, FGridVertexEdges>* graph, FVector actorLocation, FVector targetPoint);
+	PathBuilder(const FNavGraph* graph, FVector actorLocation, FVector targetPoint);
 	bool Success() const;
-	TArray<Cell> GetPath() const;	
+	NavPath GetPath() const;	
 };

@@ -7,7 +7,7 @@
 #include "Movement.generated.h"
 
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS(BlueprintType, meta=(BlueprintSpawnableComponent))
 class FALLOUTOLD_API UMovement : public UActorComponent
 {
 	GENERATED_BODY()
@@ -26,17 +26,20 @@ public:
 	                           FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-	TArray<FVector> Path;	
-	float MoveSpeed = 100.f;
-	void Move(float deltaTime);
-	void OnWaypointReach();	
+	FVector Destination;
+	bool bIsMoving = false;
+public:
+	UPROPERTY(EditAnywhere)
+	float MaxMoveSpeed = 100.f;
+
+private:
+	void Move(float deltaTime);	
 	
 public:
 	UFUNCTION(BlueprintCallable)
-	void SetPath(TArray<FVector> path);
-	FVector GetMovePoint();
+	void MoveTo(FVector destination);	
 	bool IsMoving() const;
 
 	DECLARE_MULTICAST_DELEGATE(FStaticMulticastDelegate)
-	FStaticMulticastDelegate PositionUpdate;
+	FStaticMulticastDelegate DestinationReached;
 };

@@ -1,0 +1,34 @@
+﻿// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "FalloutOld/Navigation/GridActor.h"
+#include "FalloutOld/Navigation/FNavGraph.h"
+#include "Subsystems/GameInstanceSubsystem.h"
+#include "FalloutOld/Navigation/PathBuilder.h"
+#include "NavigationSubsystem.generated.h"
+
+/**
+ * 
+ */
+UCLASS()
+class FALLOUTOLD_API UNavigationSubsystem : public UGameInstanceSubsystem
+{
+	GENERATED_BODY()
+
+private:
+	UPROPERTY()
+	TWeakObjectPtr<const AGridActor> Grid;
+	FNavGraph NavGraph;
+	float CellSize = 100.f;
+
+public:
+	UFUNCTION(BlueprintCallable)
+	void SetupGrid(const AGridActor* gridActor);
+	UFUNCTION(BlueprintCallable)
+	void ShowTestGrid();
+	
+	FVector ConvertVectorToCell(FVector) const;	
+	NavPath FindPath(FVector, FVector);
+};

@@ -23,29 +23,31 @@ void UMovement::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if(!Path.IsEmpty())
+	if(bIsMoving)
 	{
 		Move(DeltaTime);
 	}
 }
 
-void UMovement::SetPath(TArray<FVector> path)
+void UMovement::MoveTo(FVector location)
 {
-	Path = path;		
+	bIsMoving = true;
+	Destination = location;		
 }
 void UMovement::Move(float deltaTime)
 {	
 	auto owner = GetOwner();	
 	auto location = owner->GetActorLocation();
-	FVector destinationVector = *Path.begin() - location;	
+	FVector destinationVector = Destination - location;	
 	FVector moveVector = destinationVector;
 	moveVector.Normalize();	
-	moveVector *= deltaTime * MoveSpeed;	
+	moveVector *= deltaTime * MaxMoveSpeed;	
 	if (moveVector.Length() >= destinationVector.Length())
 	{
 		moveVector = destinationVector;
 		owner->AddActorWorldOffset(moveVector);
-		OnWaypointReach();		
+		bIsMoving = false;
+		DestinationReached.Broadcast();		
 	}
 	else
 	{
@@ -53,22 +55,11 @@ void UMovement::Move(float deltaTime)
 	}		
 }
 
-void UMovement::OnWaypointReach()
-{
-	GEngine->AddOnScreenDebugMessage(INDEX_NONE,5,FColor::Red,"waypoint");
-	Path.RemoveAt(0,1,true);
-	PositionUpdate.Broadcast();	
-}
-
 bool UMovement::IsMoving () const
 {
-	return !Path.IsEmpty();
+	return bIsMoving;
 }
 
-FVector UMovement::GetMovePoint()
-{
-	return *Path.begin();
-}
 
 
 
