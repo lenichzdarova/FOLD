@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FalloutOld/CharacterBase.h"
+#include "FalloutOld/Core/PawnBase.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "DialogSubsystem.generated.h"
 
@@ -16,5 +16,5 @@ class FALLOUTOLD_API UDialogSubsystem : public UGameInstanceSubsystem
 	GENERATED_BODY()
 
 public:
-	void StartDialog(ACharacterBase*, ACharacterBase*);
+	void StartDialog(APawnBase*, APawnBase*);
 };

@@ -1,12 +1,12 @@
 ﻿#pragma once
 #include "ActionBase.h"
-#include "CharacterBase.h"
+#include "Core/PawnBase.h"
 #include "Interfaces/Interactable.h"
 
 class ActionInteract : public ActionBase
 {
 public:
-	ActionInteract(UWorld*, ACharacterBase*, TScriptInterface<IInteractable> target);	
+	ActionInteract(UWorld*, APawnBase*, TScriptInterface<IInteractable> target);	
 	virtual ~ActionInteract() override {} ;
 	virtual void Execute() override;
 	virtual void Stop() override;

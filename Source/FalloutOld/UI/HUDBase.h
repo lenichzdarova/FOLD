@@ -12,7 +12,7 @@
 #include "WidgetMainMenu.h"
 #include "WidgetOptions.h"
 #include "WidgetPipBoy.h"
-#include "FalloutOld/CharacterBase.h"
+#include "FalloutOld/Core/PawnBase.h"
 #include "FalloutOld/Interfaces/InputReceiver.h"
 #include "FalloutOld/Interfaces/InputProvider.h"
 #include "FalloutOld/WorldTravelHandler.h"

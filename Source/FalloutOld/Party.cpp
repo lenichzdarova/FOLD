@@ -3,7 +3,7 @@
 
 #include "Party.h"
 
-const TArray<ACharacterBase*> UParty::GetParty() const
+const TArray<APawnBase*> UParty::GetParty() const
 {
 	return partyMembers;
 }
@@ -17,12 +17,12 @@ void UParty::RemoveByIndex(int index)
 	PartyChanged.Broadcast();
 }
 
-void UParty::AddCharacter(ACharacterBase* pointer)
+void UParty::AddCharacter(APawnBase* pointer)
 {	
 	partyMembers.Add(pointer);
 	PartyChanged.Broadcast();	
 }
-void UParty::RemoveByValue(ACharacterBase* pointer)
+void UParty::RemoveByValue(APawnBase* pointer)
 {
 	partyMembers.RemoveSingle(pointer);
 	PartyChanged.Broadcast();

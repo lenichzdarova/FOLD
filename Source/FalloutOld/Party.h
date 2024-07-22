@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharacterBase.h"
+#include "Core/PawnBase.h"
 
 #include "Party.generated.h"
 
@@ -16,17 +16,17 @@ class FALLOUTOLD_API UParty : public UObject
 	GENERATED_BODY()
 
 	UPROPERTY()
-	TArray<ACharacterBase*> partyMembers;	
+	TArray<APawnBase*> partyMembers;	
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void AddCharacter(ACharacterBase* pointer);
+	void AddCharacter(APawnBase* pointer);
 	UFUNCTION(BlueprintCallable)
 	void RemoveByIndex(int index);
 	UFUNCTION(BlueprintCallable)
-	void RemoveByValue(ACharacterBase* pointer);
+	void RemoveByValue(APawnBase* pointer);
 	UFUNCTION(BlueprintCallable)
-	const TArray<ACharacterBase*> GetParty() const;	
+	const TArray<APawnBase*> GetParty() const;	
 
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPartyChanged);
 	UPROPERTY()

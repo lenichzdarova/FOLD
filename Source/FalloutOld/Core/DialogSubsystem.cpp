@@ -7,7 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 
 
-void UDialogSubsystem::StartDialog(ACharacterBase* a, ACharacterBase* b)
+void UDialogSubsystem::StartDialog(APawnBase* a, APawnBase* b)
 {
 	UWorld* world = GetWorld();	
 	APlayerController* playerController = UGameplayStatics::GetPlayerController(world,0);	

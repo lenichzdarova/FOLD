@@ -3,21 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/CapsuleComponent.h"
-#include "GameFramework/Character.h"
-#include "Navigation/PathFollowingComponent.h"
-#include "CharacterBase.generated.h"
+#include "FalloutOld/Navigation/Movement.h"
+#include "PawnBase.generated.h"
 
 class UActionHandler;
 
 UCLASS(Blueprintable)
-class FALLOUTOLD_API ACharacterBase : public ACharacter
+class FALLOUTOLD_API APawnBase : public APawn
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
-	ACharacterBase();
+	APawnBase();
 
 protected:
 	// Called when the game starts or when spawned
@@ -30,9 +28,12 @@ public:
 protected:
 	virtual void PossessedBy(AController* NewController) override;
 
-public:
+public:	
+	UPROPERTY(VisibleAnywhere)
+	UMovement* Movement;
+	UPROPERTY(VisibleAnywhere)
+	USkeletalMeshComponent* Mesh;
 	UPROPERTY()
-	UPathFollowingComponent* PathFollowingComponent;
-	UPROPERTY()
-	UActionHandler* ActionHandler;		
+	UActionHandler* ActionHandler;
+	
 };
