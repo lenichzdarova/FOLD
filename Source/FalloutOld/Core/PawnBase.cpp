@@ -16,6 +16,8 @@ APawnBase::APawnBase()
 	
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;		
 	ActionHandler = CreateDefaultSubobject<UActionHandler>("ActionHandler");
+	SceneComponent = CreateDefaultSubobject<USceneComponent>("Scene Component");
+	RootComponent = SceneComponent;
 	Movement = CreateDefaultSubobject<UMovement>("Movement Component");
 	Movement->RegisterComponent();
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>("Skeletal mesh");

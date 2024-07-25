@@ -12,14 +12,14 @@ PathBuilder::PathBuilder(const FNavGraph* graph, FVector actorLocation, FVector 
 	}
 }
 
-void PathBuilder::OpenCell(Cell cell, float distanceFromStart)
+void PathBuilder::OpenCell(FVector cell, float distanceFromStart)
 {	
 	Distance distance{distanceFromStart,DistanceToEnd(cell)};
 	distanceInfo.Add(cell,distance);
 	InsertByDistanceToEnd(cell, distance);
 }
 
-void PathBuilder::InsertByDistanceToEnd(Cell cell, Distance distance)
+void PathBuilder::InsertByDistanceToEnd(FVector cell, Distance distance)
 {
 	
 	for(int index = 0; index < opened.Num(); index++)
@@ -38,7 +38,7 @@ void PathBuilder::InsertByDistanceToEnd(Cell cell, Distance distance)
 void PathBuilder::BuildPath()
 {
 	const int begin = 0;
-	Cell current = end;
+	FVector current = end;
 	path.Insert(current,begin);
 	while(current != start)
 	{
@@ -54,26 +54,33 @@ bool PathBuilder::HandleBest()
 	{
 		return false;
 	}	
-	Cell closest = GetClosestToEnd();
+	FVector closest = GetClosestToEnd();
 	if(closest == end)
 	{
 		return true;
 	}
 	auto cells = NavGraph->Graph.Find(closest);
-	for (const auto& cell : cells->edges)
+	if(cells)
 	{
-		if(!opened.Contains(cell) && !closed.Contains(cell))
+		for (const auto& cell : cells->edges)
 		{
-			float fromStart = GetDistanceFromStart(cell);
-			//OpenCell(cell,distanceInfo.Find(closest)->fromStart + 1);
-			OpenCell(cell,fromStart);
+			if(!opened.Contains(cell) && !closed.Contains(cell))
+			{
+				float fromStart = GetDistanceFromStart(cell);
+				//OpenCell(cell,distanceInfo.Find(closest)->fromStart + 1);
+				OpenCell(cell,fromStart);
+			}
 		}
+		CloseCell(closest);
+		return HandleBest();
 	}
-	CloseCell(closest);
-	return HandleBest();	
+	else
+	{
+		return false;
+	}	
 }
 
-float PathBuilder::DistanceToEnd(Cell cell) const
+float PathBuilder::DistanceToEnd(FVector cell) const
 {
 	/*
 	auto verticalDistance =  FMath::Abs(end.X - cell.X);
@@ -85,23 +92,23 @@ bool PathBuilder::Success() const
 {
 	return !path.IsEmpty();
 }
-void PathBuilder::CloseCell(Cell cell)
+void PathBuilder::CloseCell(FVector cell)
 {
 	opened.Remove(cell);
 	closed.Add(cell);
 }
-TArray<Cell> PathBuilder::GetPath() const
+TArray<FVector> PathBuilder::GetPath() const
 {	
 	return path;
 }
-Cell PathBuilder::GetClosestToEnd()
+FVector PathBuilder::GetClosestToEnd()
 {
 	return *opened.begin();
 }
-Cell PathBuilder::GetClosestToStart(Cell cell)
+FVector PathBuilder::GetClosestToStart(FVector cell)
 {
 	auto baseDistance = distanceInfo.Find(cell)->fromStart;
-	Cell result;	
+	FVector result;	
 	auto neighbours = NavGraph->Graph.Find(cell);;
 	for (auto n : neighbours->edges)
 	{
@@ -118,7 +125,7 @@ Cell PathBuilder::GetClosestToStart(Cell cell)
 	return result;
 }
 
-float PathBuilder::GetDistanceFromStart(Cell cell)
+float PathBuilder::GetDistanceFromStart(FVector cell)
 {
 	auto edges  = NavGraph->Graph.Find(cell);
 	auto neibours = edges->edges;

@@ -3,6 +3,8 @@
 
 #include "Movement.h"
 
+#include "Kismet/GameplayStatics.h"
+
 // Sets default values for this component's properties
 UMovement::UMovement()
 {
@@ -32,27 +34,41 @@ void UMovement::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 void UMovement::MoveTo(FVector location)
 {
 	bIsMoving = true;
-	Destination = location;		
+	Destination = location;	
 }
 void UMovement::Move(float deltaTime)
 {	
 	auto owner = GetOwner();	
-	auto location = owner->GetActorLocation();
-	FVector destinationVector = Destination - location;	
-	FVector moveVector = destinationVector;
-	moveVector.Normalize();	
-	moveVector *= deltaTime * MaxMoveSpeed;	
-	if (moveVector.Length() >= destinationVector.Length())
+	auto location = owner->GetActorLocation();	
+	if(location != Destination)
 	{
-		moveVector = destinationVector;
-		owner->AddActorWorldOffset(moveVector);
-		bIsMoving = false;
-		DestinationReached.Broadcast();		
+		FVector destinationVector = Destination - location;	
+		FVector moveVector = destinationVector;
+		Rotate(moveVector,deltaTime);
+		moveVector.Normalize();
+		Velocity = moveVector *= MaxMoveSpeed;
+		moveVector *= deltaTime;// * MaxMoveSpeed;	
+		if (moveVector.Length() >= destinationVector.Length())
+		{
+			moveVector = destinationVector;								
+		}		
+		owner->AddActorWorldOffset(moveVector);		
 	}
 	else
 	{
-		owner->AddActorWorldOffset(moveVector);
-	}		
+		bIsMoving = false;
+		DestinationReached.Broadcast();
+		Velocity = FVector::Zero();
+	}	
+}
+
+void UMovement::Rotate(FVector moveVector, float deltaTime)
+{
+	auto owner = GetOwner();	
+	auto location = owner->GetActorLocation();
+	moveVector.Normalize();
+	FRotator rotator (0,moveVector.Rotation().Yaw,0);
+	owner->SetActorRotation(rotator);
 }
 
 bool UMovement::IsMoving () const

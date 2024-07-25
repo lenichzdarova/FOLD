@@ -4,7 +4,8 @@
 #include "NavigationSubsystem.h"
 #include <cmath>
 #include "FalloutOld/Navigation/GraphBuilder.h"
-
+#include "FalloutOld/Navigation/PathBuilder.h"
+/*
 FVector UNavigationSubsystem::ConvertVectorToCell(FVector value) const
 {	
 	float cellX = value.X - NavGraph.MinX;
@@ -19,7 +20,7 @@ FVector UNavigationSubsystem::ConvertVectorToCell(FVector value) const
 	posZ /= CellSize;
 	posZ = round(posZ)*100;
 	return FVector{cellX, cellY, posZ};
-}
+}*/
 
 void UNavigationSubsystem::SetupGrid(const AGridActor* gridActor)
 {
@@ -31,10 +32,15 @@ void UNavigationSubsystem::SetupGrid(const AGridActor* gridActor)
 	builder.BuildGraph(&NavGraph);
 }
 
-TArray<FVector> UNavigationSubsystem::FindPath(FVector start, FVector destination)
+TArray<FVector> UNavigationSubsystem::FindPath(FVector start, FVector destination) const
 {	
-	PathBuilder builder = PathBuilder(&NavGraph, ConvertVectorToCell(start), ConvertVectorToCell(destination));	
+	PathBuilder builder = PathBuilder(&NavGraph, NavGraph.ConvertVectorToCell(start), NavGraph.ConvertVectorToCell(destination));	
 	return builder.GetPath();
+}
+
+bool UNavigationSubsystem::CheckPath(TArray<FVector> path) const
+{
+	return true;
 }
 
 void UNavigationSubsystem::ShowTestGrid()

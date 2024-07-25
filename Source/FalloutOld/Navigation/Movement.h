@@ -27,19 +27,24 @@ public:
 
 private:
 	FVector Destination;
+	FVector Velocity;
 	bool bIsMoving = false;
+	
 public:
 	UPROPERTY(EditAnywhere)
 	float MaxMoveSpeed = 100.f;
 
 private:
-	void Move(float deltaTime);	
+	void Move(float deltaTime);
+	void Rotate(FVector, float deltaTime);
 	
 public:
 	UFUNCTION(BlueprintCallable)
-	void MoveTo(FVector destination);	
+	void MoveTo(FVector destination);
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FVector GetVelocity() const {return Velocity;};
 	bool IsMoving() const;
 
-	DECLARE_MULTICAST_DELEGATE(FStaticMulticastDelegate)
-	FStaticMulticastDelegate DestinationReached;
+	DECLARE_MULTICAST_DELEGATE(FMulticastDelegate)
+	FMulticastDelegate DestinationReached;
 };

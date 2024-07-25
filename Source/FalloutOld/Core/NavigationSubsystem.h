@@ -6,7 +6,6 @@
 #include "FalloutOld/Navigation/GridActor.h"
 #include "FalloutOld/Navigation/FNavGraph.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "FalloutOld/Navigation/PathBuilder.h"
 #include "NavigationSubsystem.generated.h"
 
 /**
@@ -29,6 +28,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ShowTestGrid();
 	
-	FVector ConvertVectorToCell(FVector) const;	
-	NavPath FindPath(FVector, FVector);
+	//FVector ConvertVectorToCell(FVector) const;	
+	TArray<FVector> FindPath(FVector, FVector) const;
+	bool CheckPath(TArray<FVector>) const;
 };

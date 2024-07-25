@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/CapsuleComponent.h"
 #include "FalloutOld/Navigation/Movement.h"
 #include "PawnBase.generated.h"
 
@@ -28,8 +29,10 @@ public:
 protected:
 	virtual void PossessedBy(AController* NewController) override;
 
-public:	
+public:
 	UPROPERTY(VisibleAnywhere)
+	USceneComponent* SceneComponent;	
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	UMovement* Movement;
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* Mesh;

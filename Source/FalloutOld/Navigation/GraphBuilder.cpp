@@ -33,10 +33,11 @@ bool GraphBuilder::BuildGraph(FNavGraph* navGraph)
 				for (auto hit : hits)
 				{
 					//Manipulate Z for more grid stability
-					double posZ{hit.Location.Z};
+					/*double posZ{hit.Location.Z};
 					posZ /= CellSize;
-					posZ = round(posZ)*100;
-					FVector cell{posX, posY, posZ};
+					posZ = round(posZ)*100;					
+					FVector cell{posX, posY, posZ};*/
+					FVector cell = navGraph->ConvertVectorToCell(FVector(posX,posY, hit.Location.Z));
 					FGridVertexEdges edges;										
 					navGraph->Graph.Add(cell, edges);					
 				}

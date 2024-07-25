@@ -2,10 +2,6 @@
 #include "FGridVertexEdges.h"
 #include "FNavGraph.h"
 
-
-typedef FVector Cell;
-typedef TArray<Cell> NavPath;
-
 class PathBuilder
 {
 	struct Distance
@@ -18,26 +14,26 @@ class PathBuilder
 		}
 	};
 
-	TArray<Cell> path;
-	Cell start;
-	Cell end;	
+	TArray<FVector> path;
+	FVector start;
+	FVector end;	
 	const FNavGraph* NavGraph;
-	TArray<Cell> opened;
-	TArray<Cell> closed;	
-	TMap<Cell, Distance> distanceInfo; 
+	TArray<FVector> opened;
+	TArray<FVector> closed;	
+	TMap<FVector, Distance> distanceInfo; 
 
-	float DistanceToEnd(Cell cell) const;
-	void OpenCell(Cell cell, float distanceFromStart);
-	void CloseCell(Cell cell);
+	float DistanceToEnd(FVector cell) const;
+	void OpenCell(FVector cell, float distanceFromStart);
+	void CloseCell(FVector cell);
 	bool HandleBest();
-	Cell GetClosestToEnd();
-	Cell GetClosestToStart(Cell cell);
+	FVector GetClosestToEnd();
+	FVector GetClosestToStart(FVector cell);
 	void BuildPath();
-	void InsertByDistanceToEnd(Cell cell,Distance distanceInfo);
-	float GetDistanceFromStart(Cell cell);
+	void InsertByDistanceToEnd(FVector cell,Distance distanceInfo);
+	float GetDistanceFromStart(FVector cell);
 	
 public:
 	PathBuilder(const FNavGraph* graph, FVector actorLocation, FVector targetPoint);
 	bool Success() const;
-	NavPath GetPath() const;	
+	TArray<FVector> GetPath() const;	
 };
