@@ -15,7 +15,6 @@ APawnBase::APawnBase()
 	PrimaryActorTick.bCanEverTick = true;
 	
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;		
-	ActionHandler = CreateDefaultSubobject<UActionHandler>("ActionHandler");
 	SceneComponent = CreateDefaultSubobject<USceneComponent>("Scene Component");
 	RootComponent = SceneComponent;
 	Movement = CreateDefaultSubobject<UMovement>("Movement Component");

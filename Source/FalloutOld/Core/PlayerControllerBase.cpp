@@ -31,7 +31,8 @@ void APlayerControllerBase::Initialize()
 	UGameInstanceBase* gameInstance = Cast<UGameInstanceBase>(GetGameInstance());
 	party = gameInstance->Party;
 	selector = gameInstance->characterSelector;
-	selector->FocusedCharacterChanged.AddDynamic(this, &APlayerControllerBase::OnFocusedCharacterChanged);	
+	selector->FocusedCharacterChanged.AddDynamic(this, &APlayerControllerBase::OnFocusedCharacterChanged);
+	ActionHandler = gameInstance->WorldActions;
 }
 
 void APlayerControllerBase::Tick(float DeltaSeconds)
@@ -128,7 +129,7 @@ void APlayerControllerBase::SetInputContext(UInputContextBase* context)
 void APlayerControllerBase::SetInputContextDefault()
 {
 	auto context =  NewObject<UInputContextDefault>();
-	context->Initialize(this, selector->GetFocusedCharacter(),CursorWidget, GetWorld());	
+	context->Initialize(this, selector->GetFocusedCharacter(),CursorWidget, GetWorld(), ActionHandler);	
 	SetInputContext(context);
 }
 

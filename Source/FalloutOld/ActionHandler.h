@@ -16,5 +16,7 @@ class FALLOUTOLD_API UActionHandler : public UObject
 	GENERATED_BODY()
 
 public:
-	void SetAction(ActionBase*);
+	void ExecuteAction(APawnBase*, ActionBase*);
+private:	
+	TMap<APawnBase*, ActionBase*> ActiveActions;
 };

@@ -3,9 +3,10 @@
 #include "ActionMove.h"
 #include "Interfaces/Interactable.h"
 
-void UInputContextDefault::Initialize(IInputProvider* inputProvider, APawnBase* activeCharacter, UWidgetCursor* cursorWidget, UWorld* world)	
+void UInputContextDefault::Initialize(IInputProvider* inputProvider, APawnBase* activeCharacter, UWidgetCursor* cursorWidget, UWorld* world
+	, UActionHandler* actionHandler)	
 {
-	Super::Initialize(inputProvider, activeCharacter, cursorWidget, world);
+	Super::Initialize(inputProvider, activeCharacter, cursorWidget, world, actionHandler);
 	BindInputEvents(inputProvider);	
 }
 
@@ -18,7 +19,7 @@ void UInputContextDefault::OnLeftMouseButton()
 {
 	if(currentAction)
 	{
-		currentAction->Execute();
+		ActionHandler->ExecuteAction(ActiveCharacter, currentAction);		
 		currentAction = nullptr;
 	}	
 }

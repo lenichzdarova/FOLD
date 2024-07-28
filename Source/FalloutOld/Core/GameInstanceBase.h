@@ -6,6 +6,7 @@
 #include "Engine/GameInstance.h"
 #include "FalloutOld/Party.h"
 #include "FalloutOld/Selector.h"
+#include "FalloutOld/ActionHandler.h"
 #include "GameInstanceBase.generated.h"
 
 /**
@@ -28,7 +29,9 @@ public:
 	TObjectPtr<UParty> Party = nullptr;
 	UPROPERTY()
 	TObjectPtr<USelector> characterSelector = nullptr;
-
+	UPROPERTY()
+	TObjectPtr<UActionHandler> WorldActions;
+	
 	UGameInstanceBase(const FObjectInitializer& ObjectInitializer);
 	
 	UFUNCTION()

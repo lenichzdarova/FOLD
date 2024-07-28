@@ -52,6 +52,8 @@ protected:
 	TObjectPtr<UParty> party = nullptr;
 	UPROPERTY()
 	TObjectPtr<USelector> selector = nullptr;
+	UPROPERTY()
+	TObjectPtr<UActionHandler> ActionHandler;
 		
 	
 #pragma region InputReceiver

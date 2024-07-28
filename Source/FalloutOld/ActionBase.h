@@ -5,8 +5,8 @@ class ActionBase
 {
 public:
 	ActionBase(UWorld*, APawnBase*);
-	virtual void Execute() = 0;
-	virtual void Stop();
+	virtual void Execute() = 0;	
+	virtual void Stop() = 0;
 	virtual ~ActionBase(){}
 	virtual int GetCost();
 

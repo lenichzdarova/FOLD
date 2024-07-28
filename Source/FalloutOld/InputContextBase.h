@@ -20,11 +20,13 @@ protected:
 	UPROPERTY()
 	UWidgetCursor* CursorWidget;
 	UPROPERTY()
-	UWorld* World;	
+	UWorld* World;
+	UPROPERTY()
+	TObjectPtr<UActionHandler> ActionHandler;
 	ActionBase* currentAction = nullptr;
  	
 public:
-	virtual void Initialize(IInputProvider*, APawnBase*, UWidgetCursor*, UWorld*);	
+	virtual void Initialize(IInputProvider*, APawnBase*, UWidgetCursor*, UWorld*, UActionHandler*);	
 	virtual void SetCursorData(FHitResult){}
 	virtual void OnLeftMouseButton(){};
 

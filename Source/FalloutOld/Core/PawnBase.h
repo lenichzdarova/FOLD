@@ -7,8 +7,6 @@
 #include "FalloutOld/Navigation/Movement.h"
 #include "PawnBase.generated.h"
 
-class UActionHandler;
-
 UCLASS(Blueprintable)
 class FALLOUTOLD_API APawnBase : public APawn
 {
@@ -35,8 +33,5 @@ public:
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	UMovement* Movement;
 	UPROPERTY(VisibleAnywhere)
-	USkeletalMeshComponent* Mesh;
-	UPROPERTY()
-	UActionHandler* ActionHandler;
-	
+	USkeletalMeshComponent* Mesh;	
 };
