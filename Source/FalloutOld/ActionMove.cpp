@@ -7,7 +7,7 @@ ActionMove::ActionMove(UWorld* world, APawnBase* receiver, FMoveRequest request)
 	MovementComponent = Receiver->Movement;
 	MoveRequest = request;
 	UGameInstance* GameInstance = World->GetGameInstance();
-	UNavigationSubsystem* navSystem = GameInstance->GetSubsystem<UNavigationSubsystem>();
+	navSystem = GameInstance->GetSubsystem<UNavigationSubsystem>();
 	FVector pathStart = Receiver->GetActorLocation();	
 	Path = navSystem->FindPath(pathStart, MoveRequest.GetDestination());	
 }
@@ -27,8 +27,31 @@ void ActionMove::Execute()
 }
 
 void ActionMove::OnDestinationReached()
-{
-	MoveToNextPathSegment();	
+{/*
+	if(MoveRequest.IsMoveToActor())
+	{
+		//check last path segment is previous to end of path
+		if(PathSegment == Path.Num()-2)
+		{
+			if(MoveRequest.IsMoveToCell())
+			{
+				//check if target in length, broadcast complete
+				return;
+			}
+			else
+			{
+				FVector start = Receiver->GetActorLocation();
+				FVector target = MoveRequest.GetTargetActor()->GetActorLocation();
+				if((target-start).Length()<= navSystem->CellSize)
+				{
+					//broadcast complete
+					return;
+				}
+			}			
+		}
+	}*/
+	MoveToNextPathSegment();
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 5,FColor::Green, "ActionMove destination reached");
 }
 
 void ActionMove::MoveToNextPathSegment()
@@ -37,8 +60,7 @@ void ActionMove::MoveToNextPathSegment()
 	{
 		MovementComponent->MoveTo(Path[PathSegment]);
 		++PathSegment;
-	}
-	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 5,FColor::Green, "ActionMove destination reached");
+	}	
 }
 
 void ActionMove::Stop()
@@ -55,7 +77,7 @@ FMoveRequest::FMoveRequest()
 FMoveRequest::FMoveRequest(const AActor* actor)
 {	
 	targetActor = TWeakObjectPtr<const AActor>(actor);
-	isMoveToActor = true;
+	isMoveToActor = true;	
 }
 FMoveRequest::FMoveRequest(FVector location)
 {
@@ -77,6 +99,17 @@ FVector FMoveRequest::GetDestination()
 		return destination;
 	}
 }
+
+TWeakObjectPtr<const AActor> FMoveRequest::GetTargetActor() const
+{
+	return targetActor;
+}
+
+bool FMoveRequest::IsMoveToActor() const
+{
+	return isMoveToActor;
+}
+
 
 
 

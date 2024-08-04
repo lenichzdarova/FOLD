@@ -2,18 +2,23 @@
 #include "ActionBase.h"
 #include "Navigation/PathBuilder.h"
 
+class UNavigationSubsystem;
+
 class FMoveRequest
 {
-public:
+public:	
 	FMoveRequest();
 	FMoveRequest(const AActor*);
 	FMoveRequest(FVector);
 	FVector GetDestination();
+	TWeakObjectPtr<const AActor> GetTargetActor() const; 
+	bool IsMoveToActor() const;	
 
 private:
-	TWeakObjectPtr<const AActor> targetActor;
+	TWeakObjectPtr<const AActor> targetActor = nullptr;
 	FVector destination;
-	bool isMoveToActor;	
+	bool isMoveToActor = false;
+	bool isMoveToCell = true;
 };
 
 class ActionMove : public ActionBase
@@ -23,6 +28,7 @@ protected:
 	TWeakObjectPtr<UMovement> MovementComponent = nullptr;		
 	FMoveRequest MoveRequest;
 	TArray<FVector> Path;
+	UNavigationSubsystem* navSystem;
 	FDelegateHandle DestinationReached;
 	
 public:

@@ -28,7 +28,7 @@ FVector FNavGraph::ConvertVectorToCell(FVector value) const
 	//Manipulate Z for more grid stability
 	double posZ{value.Z};
 	posZ /= CellSize;
-	posZ = round(posZ)*100;
+	posZ = round(posZ)*CellSize;
 	return FVector{cellX, cellY, posZ};
 }
 

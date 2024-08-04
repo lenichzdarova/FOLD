@@ -16,17 +16,20 @@ class FALLOUTOLD_API UNavigationSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 
+public:
+	const float CellSize = 100.f;
 private:
 	UPROPERTY()
 	TWeakObjectPtr<const AGridActor> Grid;
 	FNavGraph NavGraph;
-	float CellSize = 100.f;
+	//float CellSize = 100.f;
 
 public:
 	UFUNCTION(BlueprintCallable)
 	void SetupGrid(const AGridActor* gridActor);
 	UFUNCTION(BlueprintCallable)
 	void ShowTestGrid();
+	
 	
 	//FVector ConvertVectorToCell(FVector) const;	
 	TArray<FVector> FindPath(FVector, FVector) const;

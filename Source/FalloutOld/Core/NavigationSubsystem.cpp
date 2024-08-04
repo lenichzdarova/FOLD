@@ -27,8 +27,8 @@ void UNavigationSubsystem::SetupGrid(const AGridActor* gridActor)
 	Grid = gridActor;
 	FVector bounds, origin;
 	gridActor->GetActorBounds(false, origin, bounds);
-	NavGraph = {bounds, origin};
-	GraphBuilder builder(GetWorld(), gridActor);	
+	NavGraph = {bounds, origin, CellSize};
+	GraphBuilder builder(GetWorld(), gridActor, CellSize);	
 	builder.BuildGraph(&NavGraph);
 }
 
@@ -51,7 +51,7 @@ void UNavigationSubsystem::ShowTestGrid()
 	{			
 		FPlane Plane{0,0,1,key.Z + 5};
 		FColor color = FColor::Green.WithAlpha(150);					
-		DrawDebugSolidPlane(GetWorld(), Plane, key, 48, color, true);
+		DrawDebugSolidPlane(GetWorld(), Plane, key, (CellSize/2 -2), color, true);
 		FGridVertexEdges* edges = NavGraph.Graph.Find(key);		
 		for (auto& edge : edges->edges)
 		{			
