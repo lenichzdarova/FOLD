@@ -3,8 +3,8 @@
 PathBuilder::PathBuilder(const FNavGraph* graph, FVector actorLocation, FVector targetPoint)
 {
 	this->NavGraph = graph;
-	start = targetPoint;
-	end = actorLocation;	
+	start = actorLocation;
+	end = targetPoint;	
 	OpenCell(start,0);
 	if(HandleBest())
 	{
@@ -34,20 +34,18 @@ void PathBuilder::InsertByDistanceToEnd(FVector cell, Distance distance)
 	opened.Add(cell);	
 }
 
-//building path from destination to character to get destination point when move to actor
-//which location between graph cells
+
 void PathBuilder::BuildPath()
 {
-	//const int begin = 0;
+	const int begin = 0;
 	FVector current = end;
-	path.Add(current);
+	path.Insert(current,begin);
 	while(current != start)
 	{
 		auto next = GetClosestToStart(current);
 		current = next;		
-		path.Add(current);
-	}
-	path.Add(start);
+		path.Insert(current, begin);
+	}		
 }
 
 bool PathBuilder::HandleBest()
