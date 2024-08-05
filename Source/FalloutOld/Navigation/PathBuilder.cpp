@@ -1,10 +1,11 @@
 ﻿#include "PathBuilder.h"
 
-PathBuilder::PathBuilder(const FNavGraph* graph, FVector actorLocation, FVector targetPoint)
+PathBuilder::PathBuilder(const FNavGraph* graph, FNavPathQuery query)
 {
-	this->NavGraph = graph;
-	start = actorLocation;
-	end = targetPoint;	
+	NavGraph = graph;
+	this->query = query;
+	start = graph->ConvertVectorToCell(query.Start);
+	destination = graph->ConvertVectorToCell(query.Destination);	
 	OpenCell(start,0);
 	if(HandleBest())
 	{
@@ -38,7 +39,7 @@ void PathBuilder::InsertByDistanceToEnd(FVector cell, Distance distance)
 void PathBuilder::BuildPath()
 {
 	const int begin = 0;
-	FVector current = end;
+	FVector current = destination;
 	path.Insert(current,begin);
 	while(current != start)
 	{
@@ -55,7 +56,7 @@ bool PathBuilder::HandleBest()
 		return false;
 	}	
 	FVector closest = GetClosestToEnd();
-	if(closest == end)
+	if(closest == destination)
 	{
 		return true;
 	}
@@ -66,8 +67,27 @@ bool PathBuilder::HandleBest()
 		{
 			if(!opened.Contains(cell) && !closed.Contains(cell))
 			{
-				float fromStart = GetDistanceFromStart(cell);
-				//OpenCell(cell,distanceInfo.Find(closest)->fromStart + 1);
+				if(cell == destination)
+				{
+					if(query.Actor.IsValid())
+					{
+						if(query.IsCellOriented())
+						{
+							destination = closest;
+							return true;
+						}
+						else
+						{
+							float lengh = (query.Actor->GetActorLocation() - closest).Length();
+							if(lengh < NavGraph->CellSize)
+							{
+								destination = closest;
+								return true;
+							}
+						}
+					}
+				}
+				float fromStart = GetDistanceFromStart(cell);				
 				OpenCell(cell,fromStart);
 			}
 		}
@@ -86,7 +106,7 @@ float PathBuilder::DistanceToEnd(FVector cell) const
 	auto verticalDistance =  FMath::Abs(end.X - cell.X);
 	auto horysontalDistance =  FMath::Abs(end.X - cell.X);
 	return FMath::Max(verticalDistance, horysontalDistance);*/
-	return (end - cell).Length();
+	return (destination - cell).Length();
 }
 bool PathBuilder::Success() const
 {

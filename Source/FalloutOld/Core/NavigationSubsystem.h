@@ -33,5 +33,7 @@ public:
 	
 	//FVector ConvertVectorToCell(FVector) const;	
 	TArray<FVector> FindPath(FVector, FVector) const;
+	TArray<FVector> FindPath(FVector, TWeakObjectPtr<AActor>) const;
+	
 	bool CheckPath(TArray<FVector>) const;
 };

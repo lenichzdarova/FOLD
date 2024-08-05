@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "FGridVertexEdges.h"
 #include "FNavGraph.h"
+#include "FNavPathQuery.h"
 
 class PathBuilder
 {
@@ -16,11 +17,12 @@ class PathBuilder
 
 	TArray<FVector> path;
 	FVector start;
-	FVector end;	
+	FVector destination;	
 	const FNavGraph* NavGraph;
 	TArray<FVector> opened;
 	TArray<FVector> closed;	
-	TMap<FVector, Distance> distanceInfo; 
+	TMap<FVector, Distance> distanceInfo;
+	FNavPathQuery query;
 
 	float DistanceToEnd(FVector cell) const;
 	void OpenCell(FVector cell, float distanceFromStart);
@@ -33,7 +35,7 @@ class PathBuilder
 	float GetDistanceFromStart(FVector cell);
 	
 public:
-	PathBuilder(const FNavGraph* graph, FVector actorLocation, FVector targetPoint);
+	PathBuilder(const FNavGraph* graph, FNavPathQuery query);
 	bool Success() const;
 	TArray<FVector> GetPath() const;	
 };

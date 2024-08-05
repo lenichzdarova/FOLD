@@ -34,7 +34,13 @@ void UNavigationSubsystem::SetupGrid(const AGridActor* gridActor)
 
 TArray<FVector> UNavigationSubsystem::FindPath(FVector start, FVector destination) const
 {	
-	PathBuilder builder = PathBuilder(&NavGraph, NavGraph.ConvertVectorToCell(start), NavGraph.ConvertVectorToCell(destination));	
+	PathBuilder builder = PathBuilder(&NavGraph, FNavPathQuery(start,destination));	
+	return builder.GetPath();
+}
+
+TArray<FVector> UNavigationSubsystem::FindPath(FVector start, TWeakObjectPtr<AActor> actor) const
+{
+	PathBuilder builder = PathBuilder(&NavGraph, FNavPathQuery(start, actor));	
 	return builder.GetPath();
 }
 

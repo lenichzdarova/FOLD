@@ -1,26 +1,30 @@
 ﻿#pragma once
 #include "ActionBase.h"
-#include "Navigation/PathBuilder.h"
+#include "Core/NavigationSubsystem.h"
 
-class UNavigationSubsystem;
+/////////////////////////////////////////////////////////////
+//Move request struct use it to avoid separation of logic by inheritance
+/////////////////////////////////////////////////////////////
 
 class FMoveRequest
 {
 public:	
 	FMoveRequest();
-	FMoveRequest(const AActor*);
+	FMoveRequest(AActor*);
 	FMoveRequest(FVector);
 	FVector GetDestination();
-	TWeakObjectPtr<const AActor> GetTargetActor() const; 
+	TWeakObjectPtr<AActor> GetTargetActor() const; 
 	bool IsMoveToActor() const;	
 
 private:
-	TWeakObjectPtr<const AActor> targetActor = nullptr;
+	TWeakObjectPtr<AActor> targetActor = nullptr;
 	FVector destination;
-	bool isMoveToActor = false;
-	bool isMoveToCell = true;
+	bool isMoveToActor = false;	
 };
 
+/////////////////////////////////////////////////////////
+///move logic
+///////////////////////////////////////////////////////
 class ActionMove : public ActionBase
 {
 	int PathSegment = 0;

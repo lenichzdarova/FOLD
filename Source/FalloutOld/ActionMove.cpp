@@ -1,6 +1,7 @@
 ﻿#include "ActionMove.h"
 
 #include "Core/NavigationSubsystem.h"
+#include "Navigation/FNavPathQuery.h"
 
 ActionMove::ActionMove(UWorld* world, APawnBase* receiver, FMoveRequest request) : ActionBase(world,receiver)
 {		
@@ -8,8 +9,15 @@ ActionMove::ActionMove(UWorld* world, APawnBase* receiver, FMoveRequest request)
 	MoveRequest = request;
 	UGameInstance* GameInstance = World->GetGameInstance();
 	navSystem = GameInstance->GetSubsystem<UNavigationSubsystem>();
-	FVector pathStart = Receiver->GetActorLocation();	
-	Path = navSystem->FindPath(pathStart, MoveRequest.GetDestination());	
+	FVector pathStart = Receiver->GetActorLocation();
+	if(MoveRequest.IsMoveToActor())
+	{
+		Path = navSystem->FindPath(pathStart, MoveRequest.GetTargetActor());
+	}
+	else
+	{
+		Path = navSystem->FindPath(pathStart, MoveRequest.GetDestination());
+	}		
 }
 
 ActionMove::~ActionMove()
@@ -74,9 +82,9 @@ FMoveRequest::FMoveRequest()
 	isMoveToActor = false;
 }
 
-FMoveRequest::FMoveRequest(const AActor* actor)
+FMoveRequest::FMoveRequest(AActor* actor)
 {	
-	targetActor = TWeakObjectPtr<const AActor>(actor);
+	targetActor = TWeakObjectPtr<AActor>(actor);
 	isMoveToActor = true;	
 }
 FMoveRequest::FMoveRequest(FVector location)
@@ -100,7 +108,7 @@ FVector FMoveRequest::GetDestination()
 	}
 }
 
-TWeakObjectPtr<const AActor> FMoveRequest::GetTargetActor() const
+TWeakObjectPtr<AActor> FMoveRequest::GetTargetActor() const
 {
 	return targetActor;
 }
