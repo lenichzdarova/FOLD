@@ -33,7 +33,7 @@ void UInputContextDefault::SetCursorData(FHitResult hit)
 	}
 	if(hit.bBlockingHit)
 	{		
-		AActor* actor = hit.GetActor();
+		AActor* actor = hit.GetActor();		
 		if(actor->IsA(APawnBase::StaticClass()))
 		{
 			if(actor != ActiveCharacter)
@@ -45,8 +45,8 @@ void UInputContextDefault::SetCursorData(FHitResult hit)
 		else if(actor->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
 		{
 			CursorWidget->SetDefault();
-			auto interactAction = new ActionInteract(World, ActiveCharacter, actor);				
-			currentAction = interactAction;				
+			currentAction = new ActionMove(World,ActiveCharacter, FMoveRequest(actor));
+			//currentAction = new ActionInteract(World, ActiveCharacter, actor);						
 		}
 		else
 		{
