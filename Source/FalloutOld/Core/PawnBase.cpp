@@ -42,6 +42,11 @@ void APawnBase::PossessedBy(AController* NewController)
 	GEngine->AddOnScreenDebugMessage(INDEX_NONE,10,FColor::Red, NewController->GetName());
 }
 
+bool APawnBase::IsCellCenterOriented_Implementation()
+{
+	return true;
+}
+
 
 
 

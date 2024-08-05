@@ -5,10 +5,11 @@
 #include "CoreMinimal.h"
 #include "Components/CapsuleComponent.h"
 #include "FalloutOld/Navigation/Movement.h"
+#include "FalloutOld/Navigation/NavTargetActor.h"
 #include "PawnBase.generated.h"
 
 UCLASS(Blueprintable)
-class FALLOUTOLD_API APawnBase : public APawn
+class FALLOUTOLD_API APawnBase : public APawn, public INavTargetActor
 {
 	GENERATED_BODY()
 
@@ -33,5 +34,7 @@ public:
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	UMovement* Movement;
 	UPROPERTY(VisibleAnywhere)
-	USkeletalMeshComponent* Mesh;	
+	USkeletalMeshComponent* Mesh;
+	
+	virtual bool IsCellCenterOriented_Implementation() override;
 };
