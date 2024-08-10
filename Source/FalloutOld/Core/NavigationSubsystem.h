@@ -17,7 +17,8 @@ class FALLOUTOLD_API UNavigationSubsystem : public UGameInstanceSubsystem
 	GENERATED_BODY()
 
 public:
-	const float CellSize = 100.f;
+	UPROPERTY(BlueprintReadWrite)
+	float CellSize = 100.f;
 private:
 	UPROPERTY()
 	TWeakObjectPtr<const AGridActor> Grid;
