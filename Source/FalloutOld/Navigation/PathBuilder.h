@@ -7,12 +7,8 @@ class PathBuilder
 {
 	struct Distance
 	{
-		float fromStart, toEnd;
-		Distance(float fromStart, float toEnd)
-		{
-			this->fromStart = fromStart;
-			this->toEnd = toEnd;
-		}
+		float fromStart, toEnd, summary;
+		Distance(float _fromStart, float _toEnd): fromStart(_fromStart), toEnd(_toEnd), summary(fromStart+toEnd){}		
 	};
 
 	TArray<FVector> path;
@@ -28,10 +24,10 @@ class PathBuilder
 	void OpenCell(FVector cell, float distanceFromStart);
 	void CloseCell(FVector cell);
 	bool HandleBest();
-	FVector GetClosestToEnd();
+	FVector GetShortestHeuristic();
 	FVector GetClosestToStart(FVector cell);
 	void BuildPath();
-	void InsertByDistanceToEnd(FVector cell,Distance distanceInfo);
+	void InsertByShortestHeuristic(FVector cell,Distance distanceInfo);
 	float GetDistanceFromStart(FVector cell);
 	
 public:
