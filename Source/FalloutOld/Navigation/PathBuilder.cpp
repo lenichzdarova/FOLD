@@ -17,7 +17,8 @@ void PathBuilder::OpenCell(FVector cell, float distanceFromStart)
 {	
 	Distance distance{distanceFromStart,DistanceToEnd(cell)};
 	distanceInfo.Add(cell,distance);
-	InsertByShortestHeuristic(cell, distance);
+	opened.Add(cell);
+	//InsertByShortestHeuristic(cell, distance);
 }
 
 void PathBuilder::InsertByShortestHeuristic(FVector cell, Distance distance)
@@ -123,7 +124,19 @@ TArray<FVector> PathBuilder::GetPath() const
 }
 FVector PathBuilder::GetShortestHeuristic()
 {
-	return *opened.begin();
+	FVector bestCell = opened[0];
+	Distance* bestDistance = distanceInfo.Find(bestCell);
+	for(int index = 1; index < opened.Num(); index++)
+	{			
+		Distance* openedDistance = distanceInfo.Find(opened[index]);
+		if(openedDistance->summary < bestDistance->summary)
+		{
+			bestCell = opened[index];
+			bestDistance = openedDistance;
+		}
+	}
+	return bestCell;
+	//return *opened.begin();
 }
 FVector PathBuilder::GetClosestToStart(FVector cell)
 {
