@@ -11,14 +11,6 @@ bool GraphBuilder::BuildGraph(FNavGraph* navGraph)
 {	
 	if(GridActor->GridMesh != nullptr)
 	{
-		/*
-		FVector bounds, origin;		
-		GridActor->GetActorBounds(false,origin, bounds);		
-		int MinX = origin.X - bounds.X;
-		int MaxX = origin.X + bounds.X;
-		int MinY = origin.Y - bounds.Y;
-		int MaxY = origin.Y + bounds.Y;*/
-
 		float posX = navGraph->MinX + CellSize/2;		
 		while(posX < navGraph->MaxX)
 		{
@@ -31,14 +23,9 @@ bool GraphBuilder::BuildGraph(FNavGraph* navGraph)
 				TArray<FHitResult> hits;
 				World->LineTraceMultiByChannel(hits,traceStart, traceEnd, ECC_GameTraceChannel2);								
 				for (auto hit : hits)
-				{
-					//Manipulate Z for more grid stability
-					/*double posZ{hit.Location.Z};
-					posZ /= CellSize;
-					posZ = round(posZ)*100;					
-					FVector cell{posX, posY, posZ};*/
+				{					
 					FVector cell = navGraph->ConvertVectorToCell(FVector(posX,posY, hit.Location.Z));
-					FGridVertexEdges edges;										
+					FNavGraphVertexData edges;										
 					navGraph->Graph.Add(cell, edges);					
 				}
 				posY += CellSize;
@@ -57,7 +44,7 @@ bool GraphBuilder::BuildGraph(FNavGraph* navGraph)
 	return true;
 }
 
-void GraphBuilder::CheckGraphEdges(FVector& vertex, FGridVertexEdges& edges, const TMap<FVector, FGridVertexEdges>& graph)
+void GraphBuilder::CheckGraphEdges(FVector& vertex, FNavGraphVertexData& edges, const TMap<FVector, FNavGraphVertexData>& graph)
 {	
 	FVector up{vertex.X, vertex.Y + CellSize, vertex.Z};
 	FVector down {vertex.X, vertex.Y - CellSize, vertex.Z};
@@ -97,7 +84,7 @@ void GraphBuilder::TraceVertex(const FVector& start, const FVector& target, FHit
 	World->LineTraceSingleByChannel(hit,traceStart,traceEnd, ECollisionChannel::ECC_GameTraceChannel1);	
 }
 
-void GraphBuilder::StraightDirectionCheck(TArray<FVector>& diagonal, TArray<FVector>& edges, FVector start, FVector target, FVector removeOne, FVector removeSecond, const TMap<FVector, FGridVertexEdges>& graph)
+void GraphBuilder::StraightDirectionCheck(TArray<FVector>& diagonal, TArray<FVector>& edges, FVector start, FVector target, FVector removeOne, FVector removeSecond, const TMap<FVector, FNavGraphVertexData>& graph)
 {
 	if(graph.Contains(target))
 	{

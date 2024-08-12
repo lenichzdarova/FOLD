@@ -66,6 +66,11 @@ bool PathBuilder::HandleBest()
 	{
 		for (const auto& cell : cells->edges)
 		{
+			const FNavGraphVertexData* VertexData = NavGraph->Graph.Find(cell);
+			if(!VertexData->bIsEmpty && cell != destination)
+			{
+				continue;
+			}
 			if(!opened.Contains(cell) && !closed.Contains(cell))
 			{
 				if(cell == destination)

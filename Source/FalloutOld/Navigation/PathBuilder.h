@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "FGridVertexEdges.h"
+#include "FNavGraphVertexData.h"
 #include "FNavGraph.h"
 #include "FNavPathQuery.h"
 

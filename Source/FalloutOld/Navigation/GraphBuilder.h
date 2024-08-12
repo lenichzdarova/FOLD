@@ -8,9 +8,9 @@ class GraphBuilder
 	UWorld* World;
 	float CellSize;	
 	
-	void CheckGraphEdges(FVector&, FGridVertexEdges&, const TMap<FVector, FGridVertexEdges>&);
+	void CheckGraphEdges(FVector&, FNavGraphVertexData&, const TMap<FVector, FNavGraphVertexData>&);
 	void TraceVertex(const FVector&, const FVector&, FHitResult&);
-	void StraightDirectionCheck(TArray<FVector>&, TArray<FVector>&, FVector, FVector, FVector, FVector, const TMap<FVector, FGridVertexEdges>&);
+	void StraightDirectionCheck(TArray<FVector>&, TArray<FVector>&, FVector, FVector, FVector, FVector, const TMap<FVector, FNavGraphVertexData>&);
 	
 public:
 	GraphBuilder(UWorld*, const AGridActor*, float = 100.f);

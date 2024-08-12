@@ -44,7 +44,10 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FVector GetVelocity() const {return Velocity;};
 	bool IsMoving() const;
+	FVector GetDestination() const {return Destination;}
 
 	DECLARE_MULTICAST_DELEGATE(FMulticastDelegate)
 	FMulticastDelegate DestinationReached;
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FStartMovingDelegate, FVector, FVector)
+	FStartMovingDelegate StartMoving;
 };

@@ -34,7 +34,8 @@ void UMovement::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 void UMovement::MoveTo(FVector location)
 {
 	bIsMoving = true;
-	Destination = location;	
+	Destination = location;
+	StartMoving.Broadcast(GetOwner()->GetActorLocation(), location);
 }
 void UMovement::Move(float deltaTime)
 {	

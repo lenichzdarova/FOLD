@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "FalloutOld/Navigation/GridActor.h"
 #include "FalloutOld/Navigation/FNavGraph.h"
+#include "FalloutOld/Navigation/NavObstacleHandler.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "NavigationSubsystem.generated.h"
 
@@ -22,19 +23,16 @@ public:
 private:
 	UPROPERTY()
 	TWeakObjectPtr<const AGridActor> Grid;
-	FNavGraph NavGraph;
-	//float CellSize = 100.f;
+	FNavGraph NavGraph;	
+	NavObstacleHandler* ObstacleHandler = nullptr;	
 
 public:
 	UFUNCTION(BlueprintCallable)
 	void SetupGrid(const AGridActor* gridActor);
 	UFUNCTION(BlueprintCallable)
-	void ShowTestGrid();
-	
-	
-	//FVector ConvertVectorToCell(FVector) const;	
+	void ShowTestGrid();	
+		
 	TArray<FVector> FindPath(FVector, FVector) const;
-	TArray<FVector> FindPath(FVector, TWeakObjectPtr<AActor>) const;
-	
-	bool CheckPath(TArray<FVector>) const;
+	TArray<FVector> FindPath(FVector, TWeakObjectPtr<AActor>) const;	
+	bool CheckPath(TArray<FVector>) const;	
 };

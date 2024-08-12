@@ -9,6 +9,10 @@ public:
 	virtual void Stop() = 0;
 	virtual ~ActionBase(){}
 	virtual int GetCost();
+	DECLARE_MULTICAST_DELEGATE_OneParam(FActionChangedDelegate, ActionBase*)
+	FActionChangedDelegate Completed;
+	FActionChangedDelegate Terminated;
+	
 
 protected:
 	APawnBase* Receiver = nullptr;

@@ -37,13 +37,14 @@ protected:
 	
 public:
 	ActionMove(UWorld*, APawnBase*, FMoveRequest);
-	~ActionMove();
+	virtual ~ActionMove() override;
 	virtual void Stop() override;
 	virtual void Execute() override;
 
 protected:
 	void OnDestinationReached();
 	void MoveToNextPathSegment();
+	void SetPath(FMoveRequest);
 };
 
 
