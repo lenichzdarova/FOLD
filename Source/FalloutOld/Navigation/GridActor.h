@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FNavGraphVertexData.h"
+#include "FNavVertexData.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Actor.h"
 #include "GridActor.generated.h"

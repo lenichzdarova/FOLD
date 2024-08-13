@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "FNavGraphVertexData.h"
+#include "FNavVertexData.h"
 
 struct FNavGraph
 {
@@ -12,7 +12,7 @@ struct FNavGraph
 	float CellSize = 0; ;
 	
 	TArray<FVector> Obstacles;	
-	TMap<FVector, FNavGraphVertexData> Graph;	
+	TMap<FVector, FNavVertexData> Graph;	
 
 	FNavGraph(){};
 	FNavGraph(const FVector&, const FVector&, float = 100.f);

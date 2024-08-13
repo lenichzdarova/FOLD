@@ -15,7 +15,7 @@ NavObstacleHandler::NavObstacleHandler(UWorld* world, FNavGraph* graph): World(w
 void NavObstacleHandler::OnPawnStartMoving(FVector start, FVector destination)
 {		
 	FVector vertex = NavGraph->ConvertVectorToCell(start);
-	FNavGraphVertexData* vertexData = NavGraph->Graph.Find(vertex);
+	FNavVertexData* vertexData = NavGraph->Graph.Find(vertex);
 	
 	if(vertexData)
 	{

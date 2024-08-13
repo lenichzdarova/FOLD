@@ -1,6 +1,7 @@
 ﻿#pragma once
-#include "FNavGraphVertexData.h"
+#include "FNavVertexData.h"
 #include "FNavGraph.h"
+#include "FNavPath.h"
 #include "FNavPathQuery.h"
 
 class PathBuilder
@@ -11,14 +12,13 @@ class PathBuilder
 		Distance(float _fromStart, float _toEnd): fromStart(_fromStart), toEnd(_toEnd), summary(fromStart+toEnd){}		
 	};
 
-	TArray<FVector> path;
+	FNavPath path;
 	FVector start;
 	FVector destination;	
 	const FNavGraph* NavGraph;
 	TArray<FVector> opened;
 	TArray<FVector> closed;	
-	TMap<FVector, Distance> distanceInfo;
-	FNavPathQuery query;
+	TMap<FVector, Distance> distanceInfo;	
 
 	float DistanceToEnd(FVector cell) const;
 	void OpenCell(FVector cell, float distanceFromStart);
@@ -33,5 +33,5 @@ class PathBuilder
 public:
 	PathBuilder(const FNavGraph* graph, FNavPathQuery query);
 	bool Success() const;
-	TArray<FVector> GetPath() const;	
+	FNavPath GetPath() const;	
 };

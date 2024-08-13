@@ -2,7 +2,7 @@
 //#include "FNavGraphVertexData.generated.h"
 
 //USTRUCT()
-struct FNavGraphVertexData
+struct FNavVertexData
 {
 	//GENERATED_BODY();
 	bool bIsEmpty = true;

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "FalloutOld/Navigation/GridActor.h"
 #include "FalloutOld/Navigation/FNavGraph.h"
+#include "FalloutOld/Navigation/FNavPath.h"
 #include "FalloutOld/Navigation/NavObstacleHandler.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "NavigationSubsystem.generated.h"
@@ -32,7 +33,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ShowTestGrid();	
 		
-	TArray<FVector> FindPath(FVector, FVector) const;
-	TArray<FVector> FindPath(FVector, TWeakObjectPtr<AActor>) const;	
-	bool CheckPath(TArray<FVector>) const;	
+	FNavPath FindPath(FVector, FVector) const;
+	FNavPath FindPath(FVector, TWeakObjectPtr<AActor>) const;	
+	bool CheckPath(AActor*,FNavPath) const;	
 };

@@ -20,20 +20,40 @@ void UNavigationSubsystem::SetupGrid(const AGridActor* gridActor)
 	ObstacleHandler = new NavObstacleHandler{GetWorld(), &NavGraph};	
 }
 
-TArray<FVector> UNavigationSubsystem::FindPath(FVector start, FVector destination) const
+FNavPath UNavigationSubsystem::FindPath(FVector start, FVector destination) const
 {	
 	PathBuilder builder = PathBuilder(&NavGraph, FNavPathQuery(start,destination));	
 	return builder.GetPath();
 }
 
-TArray<FVector> UNavigationSubsystem::FindPath(FVector start, TWeakObjectPtr<AActor> actor) const
+FNavPath UNavigationSubsystem::FindPath(FVector start, TWeakObjectPtr<AActor> targetActor) const
 {
-	PathBuilder builder = PathBuilder(&NavGraph, FNavPathQuery(start, actor));	
+	PathBuilder builder = PathBuilder(&NavGraph, FNavPathQuery(start, targetActor));	
 	return builder.GetPath();
 }
 
-bool UNavigationSubsystem::CheckPath(TArray<FVector> path) const
+bool UNavigationSubsystem::CheckPath(AActor* actor, FNavPath path) const
 {
+	FNavPathQuery query = path.Query;
+	if(query.Actor.IsValid())
+	{
+		FVector previousLocation = NavGraph.ConvertVectorToCell(query.Destination);
+		FVector currentLocation = NavGraph.ConvertVectorToCell(query.Actor->GetActorLocation());
+		if(previousLocation != currentLocation)
+		{
+			return false;
+		}
+	}
+	
+	for (int i = 0; i < path.PathPoints.Num();++i)
+	{
+		const FNavVertexData* vertexData = NavGraph.Graph.Find(path.PathPoints[i]);
+		if(vertexData->bIsEmpty)
+		{
+			continue;
+		}
+		return false;		
+	}
 	return true;
 }
 
@@ -46,7 +66,7 @@ void UNavigationSubsystem::ShowTestGrid()
 		FPlane Plane{0,0,1,key.Z + 5};
 		FColor color = FColor::Green.WithAlpha(150);					
 		DrawDebugSolidPlane(GetWorld(), Plane, key, (CellSize/2 -2), color, true);
-		FNavGraphVertexData* edges = NavGraph.Graph.Find(key);		
+		FNavVertexData* edges = NavGraph.Graph.Find(key);		
 		for (auto& edge : edges->edges)
 		{			
 			FVector offset{0, 0,CellSize/10};

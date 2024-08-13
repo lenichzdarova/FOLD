@@ -25,7 +25,7 @@ bool GraphBuilder::BuildGraph(FNavGraph* navGraph)
 				for (auto hit : hits)
 				{					
 					FVector cell = navGraph->ConvertVectorToCell(FVector(posX,posY, hit.Location.Z));
-					FNavGraphVertexData edges;										
+					FNavVertexData edges;										
 					navGraph->Graph.Add(cell, edges);					
 				}
 				posY += CellSize;
@@ -44,7 +44,7 @@ bool GraphBuilder::BuildGraph(FNavGraph* navGraph)
 	return true;
 }
 
-void GraphBuilder::CheckGraphEdges(FVector& vertex, FNavGraphVertexData& edges, const TMap<FVector, FNavGraphVertexData>& graph)
+void GraphBuilder::CheckGraphEdges(FVector& vertex, FNavVertexData& edges, const TMap<FVector, FNavVertexData>& graph)
 {	
 	FVector up{vertex.X, vertex.Y + CellSize, vertex.Z};
 	FVector down {vertex.X, vertex.Y - CellSize, vertex.Z};
@@ -84,7 +84,7 @@ void GraphBuilder::TraceVertex(const FVector& start, const FVector& target, FHit
 	World->LineTraceSingleByChannel(hit,traceStart,traceEnd, ECollisionChannel::ECC_GameTraceChannel1);	
 }
 
-void GraphBuilder::StraightDirectionCheck(TArray<FVector>& diagonal, TArray<FVector>& edges, FVector start, FVector target, FVector removeOne, FVector removeSecond, const TMap<FVector, FNavGraphVertexData>& graph)
+void GraphBuilder::StraightDirectionCheck(TArray<FVector>& diagonal, TArray<FVector>& edges, FVector start, FVector target, FVector removeOne, FVector removeSecond, const TMap<FVector, FNavVertexData>& graph)
 {
 	if(graph.Contains(target))
 	{

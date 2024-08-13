@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "ActionBase.h"
 #include "Core/NavigationSubsystem.h"
+#include "Navigation/FNavPath.h"
 
 /////////////////////////////////////////////////////////////
 //Move request struct use it to avoid separation of logic by inheritance
@@ -31,7 +32,7 @@ class ActionMove : public ActionBase
 protected:	
 	TWeakObjectPtr<UMovement> MovementComponent = nullptr;		
 	FMoveRequest MoveRequest;
-	TArray<FVector> Path;
+	FNavPath Path;
 	UNavigationSubsystem* navSystem;
 	FDelegateHandle DestinationReached;
 	

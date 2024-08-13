@@ -2,10 +2,10 @@
 
 PathBuilder::PathBuilder(const FNavGraph* graph, FNavPathQuery query)
 {
-	NavGraph = graph;
-	this->query = query;
+	NavGraph = graph;	
 	start = graph->ConvertVectorToCell(query.Start);
-	destination = graph->ConvertVectorToCell(query.Destination);	
+	destination = graph->ConvertVectorToCell(query.Destination);
+	path.Query = query;
 	OpenCell(start,0);
 	if(HandleBest())
 	{
@@ -39,15 +39,16 @@ void PathBuilder::InsertByShortestHeuristic(FVector cell, Distance distance)
 
 void PathBuilder::BuildPath()
 {
+	
 	const int begin = 0;
 	FVector current = destination;
-	path.Insert(current,begin);
+	path.PathPoints.Insert(current,begin);
 	while(current != start)
 	{
 		auto next = GetClosestToStart(current);
 		current = next;		
-		path.Insert(current, begin);
-	}		
+		path.PathPoints.Insert(current, begin);
+	}	
 }
 
 bool PathBuilder::HandleBest()
@@ -66,25 +67,27 @@ bool PathBuilder::HandleBest()
 	{
 		for (const auto& cell : cells->edges)
 		{
-			const FNavGraphVertexData* VertexData = NavGraph->Graph.Find(cell);
-			if(!VertexData->bIsEmpty && cell != destination)
+			const FNavVertexData* VertexData = NavGraph->Graph.Find(cell);
+			/*if(!VertexData->bIsEmpty && cell != destination)
 			{
 				continue;
-			}
+			}*/
 			if(!opened.Contains(cell) && !closed.Contains(cell))
-			{
+			{				
 				if(cell == destination)
 				{
-					if(query.Actor.IsValid())
-					{
-						if(query.IsCellOriented())
+					if(path.Query.Actor.IsValid())
+					{						
+						if(path.Query.IsCellOriented())
 						{
+							//if actor must be placed in vertex destination is closest vertex to it
 							destination = closest;
 							return true;
 						}
 						else
 						{
-							float lengh = (query.Actor->GetActorLocation() - closest).Length();
+							//if placed on edge its position anyway cast to grid vertex thats wy we nedd to check distance
+							float lengh = (path.Query.Actor->GetActorLocation() - closest).Length();
 							if(lengh < NavGraph->CellSize)
 							{
 								destination = closest;
@@ -92,9 +95,16 @@ bool PathBuilder::HandleBest()
 							}
 						}
 					}
+					else if(!VertexData->bIsEmpty)
+					{
+						return false;
+					}
 				}
-				float fromStart = GetDistanceFromStart(cell);				
-				OpenCell(cell,fromStart);
+				if(VertexData->bIsEmpty)
+				{
+					float fromStart = GetDistanceFromStart(cell);				
+					OpenCell(cell,fromStart);
+				}				
 			}
 		}
 		CloseCell(closest);
@@ -116,14 +126,14 @@ float PathBuilder::DistanceToEnd(FVector cell) const
 }
 bool PathBuilder::Success() const
 {
-	return !path.IsEmpty();
+	return !path.PathPoints.IsEmpty();
 }
 void PathBuilder::CloseCell(FVector cell)
 {
 	opened.Remove(cell);
 	closed.Add(cell);
 }
-TArray<FVector> PathBuilder::GetPath() const
+FNavPath PathBuilder::GetPath() const
 {	
 	return path;
 }

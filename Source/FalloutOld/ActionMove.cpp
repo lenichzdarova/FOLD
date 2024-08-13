@@ -1,16 +1,13 @@
 ﻿#include "ActionMove.h"
 
 #include "Core/NavigationSubsystem.h"
-#include "Navigation/FNavPathQuery.h"
 
 ActionMove::ActionMove(UWorld* world, APawnBase* receiver, FMoveRequest request) : ActionBase(world,receiver)
 {		
 	MovementComponent = Receiver->Movement;
 	MoveRequest = request;
 	UGameInstance* GameInstance = World->GetGameInstance();
-	navSystem = GameInstance->GetSubsystem<UNavigationSubsystem>();
-	//set movement component dest as start point if already moving because of navgraph obstacle approach
-	//when character start to move it obstacle move from location to destination
+	navSystem = GameInstance->GetSubsystem<UNavigationSubsystem>();	
 	SetPath(MoveRequest);	
 }
 
@@ -30,22 +27,22 @@ void ActionMove::Execute()
 
 void ActionMove::OnDestinationReached()
 {
-	if(MoveRequest.IsMoveToActor() && !MoveRequest.GetTargetActor().IsValid())
-	{
-		Terminated.Broadcast(this);
-		UE_LOG(LogTemp, Log, TEXT("Movement Terminated"));
-		return;
-	}
-	if(PathSegment == Path.Num())
+	//Path.PathPoints.RemoveAt(0);
+	if(!Path.IsValid()) //invalid if path points array is empty
 	{
 		Completed.Broadcast(this);
 		UE_LOG(LogTemp, Log, TEXT("Movement Completed"));
 		return;
 	}
-	if(!navSystem->CheckPath(Path))
+	if(MoveRequest.IsMoveToActor() && !MoveRequest.GetTargetActor().IsValid())
 	{
-		SetPath(MoveRequest);
-		PathSegment = 0;
+		Terminated.Broadcast(this);
+		UE_LOG(LogTemp, Log, TEXT("Movement Terminated"));
+		return;
+	}	
+	if(!navSystem->CheckPath(Receiver,Path))
+	{
+		SetPath(MoveRequest);		
 	}	
 	MoveToNextPathSegment();
 	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 5,FColor::Green, "ActionMove destination reached");
@@ -53,15 +50,16 @@ void ActionMove::OnDestinationReached()
 
 void ActionMove::MoveToNextPathSegment()
 {
-	if(Path.IsValidIndex(PathSegment))
-	{
-		MovementComponent->MoveTo(Path[PathSegment]);
-		++PathSegment;
+	if(Path.IsValid())
+	{		
+		MovementComponent->MoveTo(Path.PopNextPathPoint());		
 	}	
 }
 
 void ActionMove::SetPath(FMoveRequest request)
 {
+	//set movement component dest as start point if already moving because of navgraph obstacle approach
+	//when character start to move it obstacle move from location to destination
 	FVector pathStart = MovementComponent->IsMoving()? MovementComponent->GetDestination() : Receiver->GetActorLocation();
 	if(request.IsMoveToActor())
 	{
