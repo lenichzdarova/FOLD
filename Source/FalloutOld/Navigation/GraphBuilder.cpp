@@ -1,5 +1,7 @@
 ﻿#include "GraphBuilder.h"
 
+#include "Kismet/KismetSystemLibrary.h"
+
 GraphBuilder::GraphBuilder(UWorld* world, const AGridActor* grid, float cellSize)
 {
 	World = world;
@@ -81,7 +83,11 @@ void GraphBuilder::TraceVertex(const FVector& start, const FVector& target, FHit
 	FVector linetraceOffset{0, 0, CellSize/2};
 	FVector traceStart = start + linetraceOffset;		
 	FVector traceEnd = target + linetraceOffset;	
-	World->LineTraceSingleByChannel(hit,traceStart,traceEnd, ECollisionChannel::ECC_GameTraceChannel1);	
+	//World->LineTraceSingleByChannel(hit,traceStart,traceEnd, ECollisionChannel::ECC_GameTraceChannel1);
+	//UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel1);
+	ETraceTypeQuery query = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel1);	
+	TArray<AActor*> toIgnore;	
+	UKismetSystemLibrary::SphereTraceSingle(World,start,target, 10.f, query, true,toIgnore, EDrawDebugTrace::None,hit,true);
 }
 
 void GraphBuilder::StraightDirectionCheck(TArray<FVector>& diagonal, TArray<FVector>& edges, FVector start, FVector target, FVector removeOne, FVector removeSecond, const TMap<FVector, FNavVertexData>& graph)
