@@ -20,15 +20,15 @@ class PathBuilder
 	TArray<FVector> closed;	
 	TMap<FVector, Distance> distanceInfo;	
 
-	float DistanceToEnd(FVector cell) const;
-	void OpenCell(FVector cell, float distanceFromStart);
-	void CloseCell(FVector cell);
+	float DistanceToEnd(FVector navVertex) const;
+	void OpenCell(FVector navVertex, float distanceFromStart);
+	void CloseCell(FVector navVertex);
 	bool HandleBest();
 	FVector GetShortestHeuristic();
-	FVector GetClosestToStart(FVector cell);
+	FVector GetClosestToStart(FVector navVertex);
 	void BuildPath();
-	void InsertByShortestHeuristic(FVector cell,Distance distanceInfo);
-	float GetDistanceFromStart(FVector cell);
+	void InsertByShortestHeuristic(FVector navVertex,Distance distanceInfo);
+	float GetDistanceFromStart(FVector navVertex);
 	
 public:
 	PathBuilder(const FNavGraph* graph, FNavPathQuery query);
