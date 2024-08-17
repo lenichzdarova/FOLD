@@ -28,12 +28,12 @@ public:
 
 protected:
 	
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* Camera;
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArm;
 
-	float DefaultArmLength = 1000.0f;	
+	float DefaultArmLength = 1300.0f;	
 		
 	//rotation properties
 	float DefaultViewAngle{300.f};
