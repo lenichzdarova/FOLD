@@ -7,8 +7,10 @@ NavObstacleHandler::NavObstacleHandler(UWorld* world, FNavGraph* graph): World(w
 	{		
 		APawnBase* pawn = Cast<APawnBase>(*It);
 		FVector PawnGraphLocation = NavGraph->ConvertVectorToCell(pawn->GetActorLocation());
-		NavGraph->Graph.Find(PawnGraphLocation)->bIsEmpty = false;
+		FNavVertexData* vertexData = NavGraph->Graph.Find(PawnGraphLocation);
+		vertexData->bIsEmpty = false;
 		pawn->Movement->StartMoving.AddRaw(this, &NavObstacleHandler::OnPawnStartMoving);
+		//UE_LOG(LogTemp, Warning, TEXT("1"));
 	}	
 }
 

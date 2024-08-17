@@ -34,9 +34,11 @@ bool GraphBuilder::BuildGraph(FNavGraph* navGraph)
 			}
 			posX += CellSize;
 		}
-		for (auto& keyValue : navGraph->Graph)
+		TArray<FVector> allNavVertex;
+		navGraph->Graph.GetKeys(allNavVertex);
+		for (FVector& Key : allNavVertex)
 		{
-			CheckGraphEdges(keyValue.Key,keyValue.Value, navGraph->Graph);
+			CheckGraphEdges(Key, navGraph->Graph);			
 		}		
 	}
 	else
@@ -46,8 +48,9 @@ bool GraphBuilder::BuildGraph(FNavGraph* navGraph)
 	return true;
 }
 
-void GraphBuilder::CheckGraphEdges(FVector& vertex, FNavVertexData& edges, const TMap<FVector, FNavVertexData>& graph)
-{	
+void GraphBuilder::CheckGraphEdges(FVector& vertex, TMap<FVector, FNavVertexData>& graph)
+{
+	FNavVertexData* VertexData = graph.Find(vertex);
 	FVector up{vertex.X, vertex.Y + CellSize, vertex.Z};
 	FVector down {vertex.X, vertex.Y - CellSize, vertex.Z};
 	FVector left {vertex.X - CellSize, vertex.Y, vertex.Z};
@@ -59,10 +62,10 @@ void GraphBuilder::CheckGraphEdges(FVector& vertex, FNavVertexData& edges, const
 	
 	TArray<FVector> diagonal{upLeft, upRight, downLeft, downRight};	
 
-	StraightDirectionCheck(diagonal, edges.edges,vertex, up, upLeft, upRight, graph);
-	StraightDirectionCheck(diagonal,edges.edges,vertex,down, downLeft, downRight, graph);	
-	StraightDirectionCheck(diagonal, edges.edges,vertex,left, upLeft, downLeft, graph);
-	StraightDirectionCheck(diagonal, edges.edges,vertex,right, upRight, downRight, graph);	
+	StraightDirectionCheck(diagonal, VertexData->edges,vertex, up, upLeft, upRight, graph);
+	StraightDirectionCheck(diagonal,VertexData->edges,vertex,down, downLeft, downRight, graph);	
+	StraightDirectionCheck(diagonal, VertexData->edges,vertex,left, upLeft, downLeft, graph);
+	StraightDirectionCheck(diagonal, VertexData->edges,vertex,right, upRight, downRight, graph);	
 
 	for (auto edge : diagonal)
 	{
@@ -72,10 +75,14 @@ void GraphBuilder::CheckGraphEdges(FVector& vertex, FNavVertexData& edges, const
 			TraceVertex(vertex,edge,hit);
 			if(!hit.bBlockingHit)
 			{
-				edges.edges.Add(edge);
+				VertexData->edges.Add(edge);
 			}
 		}		
-	}		
+	}
+	if(VertexData->edges.IsEmpty())
+	{
+		graph.Remove(vertex);
+	}
 }
 
 void GraphBuilder::TraceVertex(const FVector& start, const FVector& target, FHitResult& hit)
