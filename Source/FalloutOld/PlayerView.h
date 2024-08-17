@@ -36,7 +36,7 @@ protected:
 	float DefaultArmLength = 1300.0f;	
 		
 	//rotation properties
-	float DefaultViewAngle{300.f};
+	float DefaultViewAngle{-50.f};
 	float RotationDelta;
 	const float RotationValue = -90.f;
 	float MinRotationValueAbs = 1.f;
