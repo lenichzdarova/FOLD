@@ -1,6 +1,13 @@
 ﻿#pragma once
 #include "Core/PawnBase.h"
 
+UENUM(BlueprintType)
+enum class EActionResult: uint8
+{
+	Fail,
+	Complete	
+};
+
 class ActionBase
 {
 public:
@@ -8,14 +15,11 @@ public:
 	virtual void Execute() = 0;	
 	virtual void Stop() = 0;
 	virtual ~ActionBase(){}
-	virtual int GetCost();
-	DECLARE_MULTICAST_DELEGATE_OneParam(FActionChangedDelegate, ActionBase*)
+	virtual int GetCost() const;
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FActionChangedDelegate, ActionBase*, EActionResult)	
 	FActionChangedDelegate Completed;
-	FActionChangedDelegate Terminated;
-	
-
-protected:
+protected:	
 	APawnBase* Receiver = nullptr;
 	UWorld* World = nullptr;
-	int Cost;
+	int Cost = 0;
 };

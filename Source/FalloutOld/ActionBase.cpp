@@ -6,7 +6,7 @@ ActionBase::ActionBase(UWorld* world,APawnBase* character)
 	this->Receiver = character;
 }
 
-int ActionBase::GetCost()
+int ActionBase::GetCost() const
 {
 	return Cost;
 }
