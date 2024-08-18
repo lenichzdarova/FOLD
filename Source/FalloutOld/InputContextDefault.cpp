@@ -45,8 +45,7 @@ void UInputContextDefault::SetCursorData(FHitResult hit)
 		else if(actor->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
 		{
 			CursorWidget->SetDefault();
-			currentAction = new ActionMove(World,ActiveCharacter, FMoveRequest(actor));
-			//currentAction = new ActionInteract(World, ActiveCharacter, actor);						
+			currentAction = new ActionInteract(World,ActiveCharacter, actor);									
 		}
 		else
 		{
