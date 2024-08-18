@@ -8,7 +8,7 @@ ActionMove::ActionMove(UWorld* world, APawnBase* receiver, FMoveRequest request)
 	MoveRequest = request;
 	UGameInstance* GameInstance = World->GetGameInstance();
 	navSystem = GameInstance->GetSubsystem<UNavigationSubsystem>();	
-	SetPath(MoveRequest);	
+	Path = GetPath(MoveRequest);	
 }
 
 ActionMove::~ActionMove()
@@ -22,7 +22,12 @@ ActionMove::~ActionMove()
 void ActionMove::Execute()
 {	
 	DestinationReached = MovementComponent->DestinationReached.AddRaw(this,&ActionMove::OnDestinationReached);
-	MoveToNextPathSegment();	
+	if(Path.IsValid())
+	{
+		MoveToNextPathSegment();
+		return;
+	}
+	Completed.Broadcast(this,EActionResult::Fail);		
 }
 
 void ActionMove::OnDestinationReached()
@@ -30,19 +35,25 @@ void ActionMove::OnDestinationReached()
 	//Path.PathPoints.RemoveAt(0);
 	if(!Path.IsValid()) //invalid if path points array is empty
 	{
-		Completed.Broadcast(this);
+		Completed.Broadcast(this, EActionResult::Complete);
 		UE_LOG(LogTemp, Log, TEXT("Movement Completed"));
 		return;
 	}
 	if(MoveRequest.IsMoveToActor() && !MoveRequest.GetTargetActor().IsValid())
 	{
-		Terminated.Broadcast(this);
-		UE_LOG(LogTemp, Log, TEXT("Movement Terminated"));
+		Completed.Broadcast(this, EActionResult::Fail);
+		UE_LOG(LogTemp, Log, TEXT("Movement Terminated, target not valid"));
 		return;
 	}	
 	if(!navSystem->CheckPath(Receiver,Path))
 	{
-		SetPath(MoveRequest);		
+		Path = GetPath(MoveRequest);
+		if(!Path.IsValid())
+		{
+			Completed.Broadcast(this,EActionResult::Fail);
+			UE_LOG(LogTemp, Log, TEXT("Terminated. Path not valid"));
+			return;
+		}
 	}	
 	MoveToNextPathSegment();
 	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 5,FColor::Green, "ActionMove destination reached");
@@ -56,19 +67,16 @@ void ActionMove::MoveToNextPathSegment()
 	}	
 }
 
-void ActionMove::SetPath(FMoveRequest request)
+FNavPath ActionMove::GetPath(FMoveRequest request)
 {
 	//set movement component dest as start point if already moving because of navgraph obstacle approach
 	//when character start to move it obstacle move from location to destination
 	FVector pathStart = MovementComponent->IsMoving()? MovementComponent->GetDestination() : Receiver->GetActorLocation();
 	if(request.IsMoveToActor())
 	{
-		Path = navSystem->FindPath(pathStart, request.GetTargetActor());
-	}
-	else
-	{
-		Path = navSystem->FindPath(pathStart, request.GetDestination());
+		return  navSystem->FindPath(pathStart, request.GetTargetActor());
 	}	
+	return navSystem->FindPath(pathStart, request.GetDestination());		
 }
 
 void ActionMove::Stop()

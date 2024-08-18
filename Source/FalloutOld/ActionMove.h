@@ -45,7 +45,7 @@ public:
 protected:
 	void OnDestinationReached();
 	void MoveToNextPathSegment();
-	void SetPath(FMoveRequest);
+	FNavPath GetPath(FMoveRequest);
 };
 
 
