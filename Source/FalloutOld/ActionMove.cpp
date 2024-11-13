@@ -1,6 +1,6 @@
 ﻿#include "ActionMove.h"
 
-#include "Core/NavigationSubsystem.h"
+#include "NavigationSubsystem.h"
 
 ActionMove::ActionMove(UWorld* world, APawnBase* receiver, FMoveRequest request) : ActionBase(world,receiver)
 {		
@@ -24,6 +24,7 @@ void ActionMove::Execute()
 	DestinationReached = MovementComponent->DestinationReached.AddRaw(this,&ActionMove::OnDestinationReached);
 	if(Path.IsValid())
 	{
+		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 5,FColor::Green, FString::FromInt(Path.PathPoints.Num()));
 		MoveToNextPathSegment();
 		return;
 	}

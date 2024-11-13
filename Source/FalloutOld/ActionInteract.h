@@ -2,7 +2,7 @@
 #include "ActionBase.h"
 #include "ActionMove.h"
 #include "Core/PawnBase.h"
-#include "Interfaces/Interactable.h"
+#include "Interactable.h"
 
 class ActionInteract : public ActionBase
 {

@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "5.4",
+	"EngineAssociation": "5.5",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -12,8 +12,15 @@
 				"Engine",
 				"EnhancedInput",
 				"CoreUObject",
-				"UMG"
+				"UMG",
+				"Slate",
+				"SlateCore"
 			]
+		},
+		{
+			"Name": "GridNavigation",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [

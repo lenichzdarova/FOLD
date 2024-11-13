@@ -4,17 +4,22 @@
 #include "WidgetCursor.h"
 void UWidgetCursor::SetDefault()
 {
-	cursorImage->SetBrushFromTexture(defaultTexture);
+	cursorImage->SetBrushFromTexture(Default);
 }
 
 void UWidgetCursor::SetDialog()
 {
-	cursorImage->SetBrushFromTexture(dialogTexture);
+	cursorImage->SetBrushFromTexture(Dialog);
 }
 
-void UWidgetCursor::SetInteract()
+void UWidgetCursor::SetTake()
 {
-	cursorImage->SetBrushFromTexture(interactTexture);
+	cursorImage->SetBrushFromTexture(Take);
+}
+
+void UWidgetCursor::SetUse()
+{
+	cursorImage->SetBrushFromTexture(Use);
 }
 
 

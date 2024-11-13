@@ -17,8 +17,7 @@ void APlayerControllerBase::Initialize()
 	auto widget = CreateWidget(this, CursorWidgetType);
 	CursorWidget = Cast<UWidgetCursor>(widget);
 	bShowMouseCursor = true;
-	SetMouseCursorWidget(EMouseCursor::Default, CursorWidget);
-	
+	SetMouseCursorWidget(EMouseCursor::Default, CursorWidget);	
 	//focus game window
 	FInputModeGameOnly mode;
 	mode.SetConsumeCaptureMouseDown(false);
@@ -37,6 +36,7 @@ void APlayerControllerBase::Initialize()
 
 void APlayerControllerBase::Tick(float DeltaSeconds)
 {
+	Super::Tick(DeltaSeconds);
 	if(inputContext)
 	{		
 		FHitResult hit;

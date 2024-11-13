@@ -2,8 +2,8 @@
 
 
 #include "NavigationSubsystem.h"
-#include "FalloutOld/Navigation/GraphBuilder.h"
-#include "FalloutOld/Navigation/PathBuilder.h"
+#include "GraphBuilder.h"
+#include "PathBuilder.h"
 
 void UNavigationSubsystem::SetupGrid(const AGridActor* gridActor)
 {

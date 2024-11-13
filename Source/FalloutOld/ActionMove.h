@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "ActionBase.h"
-#include "Core/NavigationSubsystem.h"
-#include "Navigation/FNavPath.h"
+#include "NavigationSubsystem.h"
+#include "FNavPath.h"
 
 /////////////////////////////////////////////////////////////
 //Move request struct use it to avoid separation of logic by inheritance

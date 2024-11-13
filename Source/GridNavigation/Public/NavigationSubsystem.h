@@ -3,10 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FalloutOld/Navigation/GridActor.h"
-#include "FalloutOld/Navigation/FNavGraph.h"
-#include "FalloutOld/Navigation/FNavPath.h"
-#include "FalloutOld/Navigation/NavObstacleHandler.h"
+#include "GridActor.h"
+#include "FNavGraph.h"
+#include "FNavPath.h"
+#include "NavObstacleHandler.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "NavigationSubsystem.generated.h"
 
@@ -14,7 +14,7 @@
  * 
  */
 UCLASS()
-class FALLOUTOLD_API UNavigationSubsystem : public UGameInstanceSubsystem
+class GRIDNAVIGATION_API UNavigationSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 

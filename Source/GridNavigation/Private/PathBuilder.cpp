@@ -76,7 +76,7 @@ bool PathBuilder::HandleBest()
 			{
 				continue;
 			}*/
-			if(!opened.Contains(cell) && !closed.Contains(cell))
+			if(distanceInfo.Find(cell) == nullptr)
 			{				
 				if(cell == destination)
 				{

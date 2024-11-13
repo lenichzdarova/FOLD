@@ -1,5 +1,4 @@
-﻿
-#include "FNavPath.h"
+﻿#include "FNavPath.h"
 
 FVector FNavPath::PopNextPathPoint()
 {

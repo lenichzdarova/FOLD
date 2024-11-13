@@ -16,7 +16,7 @@ class UNavTargetActor : public UInterface
 /**
  * 
  */
-class FALLOUTOLD_API INavTargetActor
+class GRIDNAVIGATION_API INavTargetActor
 {
 	GENERATED_BODY()
 

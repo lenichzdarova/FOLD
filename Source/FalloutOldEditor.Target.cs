@@ -10,6 +10,6 @@ public class FalloutOldEditorTarget : TargetRules
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V4;
 
-		ExtraModuleNames.AddRange( new string[] { "FalloutOld" } );
+		ExtraModuleNames.AddRange( new string[] { "FalloutOld","GridNavigation" } );
 	}
 }

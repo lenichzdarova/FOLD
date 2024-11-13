@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FalloutOld/Core/PawnBase.h"
 #include "UObject/Interface.h"
 #include "Interactable.generated.h"
 
@@ -24,5 +23,5 @@ class FALLOUTOLD_API IInteractable
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void Interact(APawnBase* interactor);
+	void Interact(AActor* interactor);
 };

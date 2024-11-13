@@ -38,8 +38,7 @@ void APawnBase::Tick(float DeltaTime)
 
 void APawnBase::PossessedBy(AController* NewController)
 {
-	Super::PossessedBy(NewController);
-	GEngine->AddOnScreenDebugMessage(INDEX_NONE,10,FColor::Red, NewController->GetName());
+	Super::PossessedBy(NewController);	
 }
 
 bool APawnBase::IsCellCenterOriented_Implementation()

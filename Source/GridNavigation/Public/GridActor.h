@@ -9,7 +9,7 @@
 #include "GridActor.generated.h"
 
 UCLASS(Blueprintable, BlueprintType)
-class FALLOUTOLD_API AGridActor : public AActor
+class GRIDNAVIGATION_API AGridActor : public AActor
 {
 	GENERATED_BODY()
 

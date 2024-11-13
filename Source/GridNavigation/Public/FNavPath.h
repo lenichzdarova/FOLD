@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "FNavPathQuery.h"
 
-struct FNavPath
+struct GRIDNAVIGATION_API FNavPath
 {
 	FNavPathQuery Query;
 	TArray<FVector> PathPoints;

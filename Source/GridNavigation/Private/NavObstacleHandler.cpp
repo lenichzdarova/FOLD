@@ -3,13 +3,16 @@
 
 NavObstacleHandler::NavObstacleHandler(UWorld* world, FNavGraph* graph): World(world), NavGraph(graph)
 {	
-	for(FActorIterator It(World, APawnBase::StaticClass());It;++It)
+	for(FActorIterator It(World, APawn::StaticClass());It;++It)
 	{		
-		APawnBase* pawn = Cast<APawnBase>(*It);
+		APawn* pawn = Cast<APawn>(*It);
 		FVector PawnGraphLocation = NavGraph->ConvertVectorToCell(pawn->GetActorLocation());
 		FNavVertexData* vertexData = NavGraph->Graph.Find(PawnGraphLocation);
-		vertexData->bIsEmpty = false;
-		pawn->Movement->StartMoving.AddRaw(this, &NavObstacleHandler::OnPawnStartMoving);
+		if(vertexData)
+		{
+			vertexData->bIsEmpty = false;
+		}		
+		//pawn->Movement->StartMoving.AddRaw(this, &NavObstacleHandler::OnPawnStartMoving);
 		//UE_LOG(LogTemp, Warning, TEXT("1"));
 	}	
 }

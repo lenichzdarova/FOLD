@@ -28,7 +28,7 @@ public:
 
 protected:
 	
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UCameraComponent* Camera;
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArm;

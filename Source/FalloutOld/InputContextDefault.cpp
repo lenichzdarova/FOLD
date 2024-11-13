@@ -1,10 +1,10 @@
 ﻿#include "InputContextDefault.h"
 #include "ActionInteract.h"
 #include "ActionMove.h"
-#include "Interfaces/Interactable.h"
+#include "Interactable.h"
 
 void UInputContextDefault::Initialize(IInputProvider* inputProvider, APawnBase* activeCharacter, UWidgetCursor* cursorWidget, UWorld* world
-	, UActionHandler* actionHandler)	
+                                      , UActionHandler* actionHandler)	
 {
 	Super::Initialize(inputProvider, activeCharacter, cursorWidget, world, actionHandler);
 	BindInputEvents(inputProvider);	
@@ -39,12 +39,13 @@ void UInputContextDefault::SetCursorData(FHitResult hit)
 			if(actor != ActiveCharacter)
 			{
 				CursorWidget->SetDialog();				
-				currentAction = new ActionMove(World,ActiveCharacter, FMoveRequest(actor));
-			}				
+				currentAction = new ActionInteract(World,ActiveCharacter, actor);
+				return;
+			}			
 		}
 		else if(actor->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
 		{
-			CursorWidget->SetDefault();
+			CursorWidget->SetUse();
 			currentAction = new ActionInteract(World,ActiveCharacter, actor);									
 		}
 		else

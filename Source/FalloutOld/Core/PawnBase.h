@@ -4,12 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Components/CapsuleComponent.h"
+#include "FalloutOld/Interactable.h"
 #include "FalloutOld/Navigation/Movement.h"
-#include "FalloutOld/Navigation/NavTargetActor.h"
+#include "NavTargetActor.h"
 #include "PawnBase.generated.h"
 
 UCLASS(Blueprintable)
-class FALLOUTOLD_API APawnBase : public APawn, public INavTargetActor
+class FALLOUTOLD_API APawnBase : public APawn, public INavTargetActor, public IInteractable
 {
 	GENERATED_BODY()
 
