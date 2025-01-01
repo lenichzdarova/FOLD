@@ -8,7 +8,7 @@
 
 
 UCLASS(BlueprintType, meta=(BlueprintSpawnableComponent))
-class FALLOUTOLD_API UMovement : public UActorComponent
+class GRIDNAVIGATION_API UMovement : public UActorComponent
 {
 	GENERATED_BODY()
 

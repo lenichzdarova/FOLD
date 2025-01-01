@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/CapsuleComponent.h"
 #include "FalloutOld/Interactable.h"
-#include "FalloutOld/Navigation/Movement.h"
+#include "Movement.h"
 #include "NavTargetActor.h"
 #include "PawnBase.generated.h"
 
