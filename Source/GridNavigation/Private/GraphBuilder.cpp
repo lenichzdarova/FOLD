@@ -23,7 +23,8 @@ bool GraphBuilder::BuildGraph(FNavGraph* navGraph)
 				FVector traceStart = cellOriginLoc + FVector{0, 0, 1000};
 				FVector traceEnd = cellOriginLoc - FVector{0, 0, 1000};
 				TArray<FHitResult> hits;
-				World->LineTraceMultiByChannel(hits,traceStart, traceEnd, ECC_GameTraceChannel2);								
+				//World->LineTraceMultiByChannel(hits,traceStart, traceEnd, ECC_GameTraceChannel2);
+				World->LineTraceMultiByObjectType(hits,traceStart,traceEnd,ECC_WorldStatic);
 				for (auto hit : hits)
 				{					
 					FVector cell = navGraph->ConvertVectorToCell(FVector(posX,posY, hit.Location.Z));
@@ -32,8 +33,8 @@ bool GraphBuilder::BuildGraph(FNavGraph* navGraph)
 				}
 				posY += CellSize;
 			}
-			posX += CellSize;
-		}
+			posX += CellSize;			
+		}		
 		TArray<FVector> allNavVertex;
 		navGraph->Graph.GetKeys(allNavVertex);
 		for (FVector& Key : allNavVertex)
@@ -81,7 +82,7 @@ void GraphBuilder::CheckGraphEdges(FVector& vertex, TMap<FVector, FNavVertexData
 	}
 	if(VertexData->edges.IsEmpty())
 	{
-		graph.Remove(vertex);
+		//graph.Remove(vertex);
 	}
 }
 

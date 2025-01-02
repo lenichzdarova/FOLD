@@ -8,13 +8,13 @@
 #include "FNavPath.h"
 #include "NavObstacleHandler.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "NavigationSubsystem.generated.h"
+#include "GridNavigationSubsystem.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GRIDNAVIGATION_API UNavigationSubsystem : public UGameInstanceSubsystem
+class GRIDNAVIGATION_API UGridNavigationSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 

@@ -1,13 +1,13 @@
 ﻿#include "ActionMove.h"
 
-#include "NavigationSubsystem.h"
+#include "GridNavigationSubsystem.h"
 
 ActionMove::ActionMove(UWorld* world, APawnBase* receiver, FMoveRequest request) : ActionBase(world,receiver)
 {		
 	MovementComponent = Receiver->Movement;
 	MoveRequest = request;
 	UGameInstance* GameInstance = World->GetGameInstance();
-	navSystem = GameInstance->GetSubsystem<UNavigationSubsystem>();	
+	navSystem = GameInstance->GetSubsystem<UGridNavigationSubsystem>();	
 	Path = GetPath(MoveRequest);	
 }
 
@@ -20,11 +20,11 @@ ActionMove::~ActionMove()
 }
 
 void ActionMove::Execute()
-{	
-	DestinationReached = MovementComponent->DestinationReached.AddRaw(this,&ActionMove::OnDestinationReached);
+{		
 	if(Path.IsValid())
 	{
 		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 5,FColor::Green, FString::FromInt(Path.PathPoints.Num()));
+		DestinationReached = MovementComponent->DestinationReached.AddRaw(this,&ActionMove::OnDestinationReached);
 		MoveToNextPathSegment();
 		return;
 	}
@@ -72,12 +72,16 @@ FNavPath ActionMove::GetPath(FMoveRequest request)
 {
 	//set movement component dest as start point if already moving because of navgraph obstacle approach
 	//when character start to move it obstacle move from location to destination
+	if (!MovementComponent.IsValid())
+	{		
+		return FNavPath();
+	}
 	FVector pathStart = MovementComponent->IsMoving()? MovementComponent->GetDestination() : Receiver->GetActorLocation();
 	if(request.IsMoveToActor())
 	{
 		return  navSystem->FindPath(pathStart, request.GetTargetActor());
 	}	
-	return navSystem->FindPath(pathStart, request.GetDestination());		
+	return navSystem->FindPath(pathStart, request.GetDestination());			
 }
 
 void ActionMove::Stop()

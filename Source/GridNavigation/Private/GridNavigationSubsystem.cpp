@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "NavigationSubsystem.h"
+#include "GridNavigationSubsystem.h"
 #include "GraphBuilder.h"
 #include "PathBuilder.h"
 
-void UNavigationSubsystem::SetupGrid(const AGridActor* gridActor)
+void UGridNavigationSubsystem::SetupGrid(const AGridActor* gridActor)
 {
 	Grid = gridActor;
 	FVector bounds, origin;
@@ -20,19 +20,19 @@ void UNavigationSubsystem::SetupGrid(const AGridActor* gridActor)
 	ObstacleHandler = new NavObstacleHandler{GetWorld(), &NavGraph};	
 }
 
-FNavPath UNavigationSubsystem::FindPath(FVector start, FVector destination) const
+FNavPath UGridNavigationSubsystem::FindPath(FVector start, FVector destination) const
 {	
 	PathBuilder builder = PathBuilder(&NavGraph, FNavPathQuery(start,destination));	
 	return builder.GetPath();
 }
 
-FNavPath UNavigationSubsystem::FindPath(FVector start, TWeakObjectPtr<AActor> targetActor) const
+FNavPath UGridNavigationSubsystem::FindPath(FVector start, TWeakObjectPtr<AActor> targetActor) const
 {
 	PathBuilder builder = PathBuilder(&NavGraph, FNavPathQuery(start, targetActor));	
 	return builder.GetPath();
 }
 
-bool UNavigationSubsystem::CheckPath(AActor* actor, FNavPath path) const
+bool UGridNavigationSubsystem::CheckPath(AActor* actor, FNavPath path) const
 {
 	FNavPathQuery query = path.Query;
 	if(query.Actor.IsValid())
@@ -57,10 +57,11 @@ bool UNavigationSubsystem::CheckPath(AActor* actor, FNavPath path) const
 	return true;
 }
 
-void UNavigationSubsystem::ShowTestGrid()
+void UGridNavigationSubsystem::ShowTestGrid()
 {	
 	TArray<FVector> keys;
-	NavGraph.Graph.GetKeys(keys);	
+	NavGraph.Graph.GetKeys(keys);
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE,20,FColor::Green, FString::FromInt(keys.Num()));
 	for (auto key : keys)
 	{			
 		FPlane Plane{0,0,1,key.Z + 5};

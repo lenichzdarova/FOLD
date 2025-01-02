@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "ActionBase.h"
-#include "NavigationSubsystem.h"
+#include "GridNavigationSubsystem.h"
 #include "FNavPath.h"
 
 /////////////////////////////////////////////////////////////
@@ -30,10 +30,10 @@ class ActionMove : public ActionBase
 {
 	int PathSegment = 0;
 protected:	
-	TWeakObjectPtr<UMovement> MovementComponent = nullptr;		
+	TWeakObjectPtr<UMovement> MovementComponent;		
 	FMoveRequest MoveRequest;
 	FNavPath Path;
-	UNavigationSubsystem* navSystem;
+	UGridNavigationSubsystem* navSystem;
 	FDelegateHandle DestinationReached;
 	
 public:
