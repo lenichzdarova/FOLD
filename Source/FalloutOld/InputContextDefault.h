@@ -13,7 +13,7 @@ protected:
 	//virtual void OnLeftMouseButton(FHitResult);
 	
 public:	
-	virtual void Initialize(IInputProvider*, APawnBase*, UWidgetCursor*, UWorld*, UActionHandler*) override;
+	virtual void Initialize(IInputProvider*, ACharacterBase*, UWidgetCursor*, UWorld*, UActionHandler*) override;
 	virtual void SetCursorData(FHitResult) override;	
 	virtual void OnLeftMouseButton() override;
 };

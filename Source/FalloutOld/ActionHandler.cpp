@@ -3,7 +3,7 @@
 
 #include "ActionHandler.h"
 
-void UActionHandler::ExecuteAction(APawnBase* pawn, ActionBase* action)
+void UActionHandler::ExecuteAction(ACharacterBase* pawn, ActionBase* action)
 {		
 	if(auto activeAction = ActiveActions.Find(pawn))
 	{

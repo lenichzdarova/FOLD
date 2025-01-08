@@ -16,17 +16,17 @@ class FALLOUTOLD_API USelector : public UObject
 	GENERATED_BODY()
 
 	UPROPERTY()
-	TArray<APawnBase*> partyMembers;
+	TArray<ACharacterBase*> partyMembers;
 	UPROPERTY()
-	TObjectPtr<APawnBase> focused = nullptr;	
+	TObjectPtr<ACharacterBase> focused = nullptr;	
 
 public:	
-	APawnBase* GetFocusedCharacter() const;
+	ACharacterBase* GetFocusedCharacter() const;
 	void SetFocusedByIndex(int);
-	void SetFocusedByValue(APawnBase*);
+	void SetFocusedByValue(ACharacterBase*);
 	void SetNext();
 	
-	void SetPartyMembers(const TArray<APawnBase*>);
+	void SetPartyMembers(const TArray<ACharacterBase*>);
 
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FFocusedChanged);
 	FFocusedChanged FocusedCharacterChanged;

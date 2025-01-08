@@ -11,7 +11,6 @@ UMovement::UMovement()
 	PrimaryComponentTick.bCanEverTick = true;
 	// ...
 }
-
 // Called when the game starts
 void UMovement::BeginPlay()
 {

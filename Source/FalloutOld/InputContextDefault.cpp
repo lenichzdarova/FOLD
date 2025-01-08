@@ -3,7 +3,7 @@
 #include "ActionMove.h"
 #include "Interactable.h"
 
-void UInputContextDefault::Initialize(IInputProvider* inputProvider, APawnBase* activeCharacter, UWidgetCursor* cursorWidget, UWorld* world
+void UInputContextDefault::Initialize(IInputProvider* inputProvider, ACharacterBase* activeCharacter, UWidgetCursor* cursorWidget, UWorld* world
                                       , UActionHandler* actionHandler)	
 {
 	Super::Initialize(inputProvider, activeCharacter, cursorWidget, world, actionHandler);
@@ -34,7 +34,7 @@ void UInputContextDefault::SetCursorData(FHitResult hit)
 	if(hit.bBlockingHit)
 	{		
 		AActor* actor = hit.GetActor();		
-		if(actor->IsA(APawnBase::StaticClass()))
+		if(actor->IsA(ACharacterBase::StaticClass()))
 		{
 			if(actor != ActiveCharacter)
 			{

@@ -3,10 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GridActor.h"
-#include "FNavGraph.h"
-#include "FNavPath.h"
-#include "NavObstacleHandler.h"
+#include "NavigationSystem.h"
+#include "AI/Navigation/NavigationTypes.h"
+#include "NavigationSystemTypes.h"
+
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "GridNavigationSubsystem.generated.h"
 
@@ -21,19 +21,14 @@ class GRIDNAVIGATION_API UGridNavigationSubsystem : public UGameInstanceSubsyste
 public:
 	UPROPERTY(BlueprintReadWrite)
 	float CellSize = 100.f;
-private:
-	UPROPERTY()
-	TWeakObjectPtr<const AGridActor> Grid;
-	FNavGraph NavGraph;	
-	NavObstacleHandler* ObstacleHandler = nullptr;	
 
-public:
-	UFUNCTION(BlueprintCallable)
-	void SetupGrid(const AGridActor* gridActor);
-	UFUNCTION(BlueprintCallable)
-	void ShowTestGrid();	
-		
-	FNavPath FindPath(FVector, FVector) const;
-	FNavPath FindPath(FVector, TWeakObjectPtr<AActor>) const;	
-	bool CheckPath(AActor*,FNavPath) const;	
+	UFUNCTION(BlueprintCallable) 
+	UNavigationPath* FindPathSync(UObject* WorldContextObject, const FVector& PathEnd, AActor* PathfindingContext, TSubclassOf<UNavigationQueryFilter> FilterClass = NULL);
+
+private:		
+	FVector WorldToGrid(const FVector& WorldLocation) const;
+	UNavigationPath* TransformRegularPathToGrid(FNavPathSharedPtr&);
+	void ReplacePathPoints();
+	int CellCountBresenham(const FVector&, const FVector&);
+	void SegmentToCells(TArray<FVector>&, const FVector& segmentStart, const FVector& segmentEnd);
 };

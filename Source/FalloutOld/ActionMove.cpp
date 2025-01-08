@@ -1,19 +1,27 @@
 ﻿#include "ActionMove.h"
 
 #include "GridNavigationSubsystem.h"
+#include "NavigationPath.h"
+#include "ScreenPass.h"
+#include "AI/AIControllerBase.h"
 
-ActionMove::ActionMove(UWorld* world, APawnBase* receiver, FMoveRequest request) : ActionBase(world,receiver)
-{		
-	MovementComponent = Receiver->Movement;
+ActionMove::ActionMove(UWorld* world, ACharacterBase* receiver, FMoveRequest request) : ActionBase(world,receiver)
+{	
 	MoveRequest = request;
 	UGameInstance* GameInstance = World->GetGameInstance();
 	navSystem = GameInstance->GetSubsystem<UGridNavigationSubsystem>();	
-	Path = GetPath(MoveRequest);	
+	SetPath(MoveRequest);
+
+	for (const auto& pp : Path->PathPoints)
+	{
+		DrawDebugSphere(World, pp, 20 , 10 , FColor::Red, false, 0.1);
+	}
+	
 }
 
 ActionMove::~ActionMove()
 {
-	if(MovementComponent.IsValid())
+	if(MovementComponent)
 	{
 		MovementComponent->DestinationReached.Remove(DestinationReached);
 	}
@@ -21,12 +29,21 @@ ActionMove::~ActionMove()
 
 void ActionMove::Execute()
 {		
-	if(Path.IsValid())
+	if(Path->IsValid())
 	{
-		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 5,FColor::Green, FString::FromInt(Path.PathPoints.Num()));
-		DestinationReached = MovementComponent->DestinationReached.AddRaw(this,&ActionMove::OnDestinationReached);
-		MoveToNextPathSegment();
-		return;
+		AController* Controller = Receiver->GetController();
+		AAIControllerBase* AIController = Cast<AAIControllerBase>(Controller);
+		FAIMoveRequest Request(Request.GetDestination());
+		Request.SetAcceptanceRadius(0);
+		Request.SetReachTestIncludesAgentRadius(false);
+		Request.SetCanStrafe(true);
+		Request.SetAllowPartialPath(false);
+		Request.SetRequireNavigableEndLocation(true);
+		UPathFollowingComponent* pathFollowing = AIController->GetPathFollowingComponent();
+		if(pathFollowing)
+		{			
+			auto requestResult = AIController->RequestMove(Request, Path->GetPath());				
+		}		
 	}
 	Completed.Broadcast(this,EActionResult::Fail);		
 }
@@ -34,7 +51,7 @@ void ActionMove::Execute()
 void ActionMove::OnDestinationReached()
 {
 	//Path.PathPoints.RemoveAt(0);
-	if(!Path.IsValid()) //invalid if path points array is empty
+	if(!Path->IsValid()) //invalid if path points array is empty
 	{
 		Completed.Broadcast(this, EActionResult::Complete);
 		UE_LOG(LogTemp, Log, TEXT("Movement Completed"));
@@ -45,43 +62,22 @@ void ActionMove::OnDestinationReached()
 		Completed.Broadcast(this, EActionResult::Fail);
 		UE_LOG(LogTemp, Log, TEXT("Movement Terminated, target not valid"));
 		return;
-	}	
-	if(!navSystem->CheckPath(Receiver,Path))
-	{
-		Path = GetPath(MoveRequest);
-		if(!Path.IsValid())
-		{
-			Completed.Broadcast(this,EActionResult::Fail);
-			UE_LOG(LogTemp, Log, TEXT("Terminated. Path not valid"));
-			return;
-		}
-	}	
+	}		
 	MoveToNextPathSegment();
 	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 5,FColor::Green, "ActionMove destination reached");
 }
 
 void ActionMove::MoveToNextPathSegment()
 {
-	if(Path.IsValid())
+	if(Path->IsValid())
 	{		
-		MovementComponent->MoveTo(Path.PopNextPathPoint());		
+		//MovementComponent->MoveTo(Path.PopNextPathPoint());		
 	}	
 }
 
-FNavPath ActionMove::GetPath(FMoveRequest request)
-{
-	//set movement component dest as start point if already moving because of navgraph obstacle approach
-	//when character start to move it obstacle move from location to destination
-	if (!MovementComponent.IsValid())
-	{		
-		return FNavPath();
-	}
-	FVector pathStart = MovementComponent->IsMoving()? MovementComponent->GetDestination() : Receiver->GetActorLocation();
-	if(request.IsMoveToActor())
-	{
-		return  navSystem->FindPath(pathStart, request.GetTargetActor());
-	}	
-	return navSystem->FindPath(pathStart, request.GetDestination());			
+void ActionMove::SetPath(FMoveRequest request)
+{	
+	Path = navSystem->FindPathSync(World, request.GetDestination(), Receiver);			
 }
 
 void ActionMove::Stop()

@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Core/PawnBase.h"
+#include "Core/CharacterBase.h"
 
 UENUM(BlueprintType)
 enum class EActionResult: uint8
@@ -11,7 +11,7 @@ enum class EActionResult: uint8
 class ActionBase
 {
 public:
-	ActionBase(UWorld*, APawnBase*);
+	ActionBase(UWorld*, ACharacterBase*);
 	virtual void Execute() = 0;	
 	virtual void Stop() = 0;
 	virtual ~ActionBase(){}
@@ -19,7 +19,7 @@ public:
 	DECLARE_MULTICAST_DELEGATE_TwoParams(FActionChangedDelegate, ActionBase*, EActionResult)	
 	FActionChangedDelegate Completed;
 protected:	
-	APawnBase* Receiver = nullptr;
+	ACharacterBase* Receiver = nullptr;
 	UWorld* World = nullptr;
 	int Cost = 0;
 };

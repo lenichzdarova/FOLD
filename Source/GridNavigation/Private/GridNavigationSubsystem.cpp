@@ -1,77 +1,98 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "GridNavigationSubsystem.h"
-#include "GraphBuilder.h"
-#include "PathBuilder.h"
+#include "NavigationPath.h"
+#include "NavFilters/NavigationQueryFilter.h"
 
-void UGridNavigationSubsystem::SetupGrid(const AGridActor* gridActor)
+
+UNavigationPath* UGridNavigationSubsystem::FindPathSync(UObject* WorldContextObject, const FVector& PathEnd,
+                                                        AActor* PathfindingContext, TSubclassOf<UNavigationQueryFilter> FilterClass)
 {
-	Grid = gridActor;
-	FVector bounds, origin;
-	gridActor->GetActorBounds(false, origin, bounds);
-	NavGraph = FNavGraph(bounds, origin, CellSize);
-	GraphBuilder builder(GetWorld(), gridActor, CellSize);	
-	builder.BuildGraph(&NavGraph);
-	if(ObstacleHandler)
+	UNavigationSystemV1* NavSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+	INavAgentInterface* NavAgent = Cast<INavAgentInterface>(PathfindingContext);
+	const FNavAgentProperties& AgentProperties = NavAgent->GetNavAgentPropertiesRef();		
+	
+	ANavigationData* NavigationData = NavSystem->GetNavDataForProps(AgentProperties, PathfindingContext->GetActorLocation());
+	const FPathFindingQuery Query(PathfindingContext, *NavigationData, PathfindingContext->GetActorLocation(),
+		PathEnd, UNavigationQueryFilter::GetQueryFilter(*NavigationData, PathfindingContext, FilterClass));
+	FPathFindingResult PathFindingResult = NavSystem->FindPathSync(Query);
+
+	for (auto p :PathFindingResult.Path->GetPathPoints())
 	{
-		delete ObstacleHandler;
+		DrawDebugSphere(GetWorld(), p.Location, 30, 20, FColor::Green);
 	}
-	ObstacleHandler = new NavObstacleHandler{GetWorld(), &NavGraph};	
+
+	
+	return TransformRegularPathToGrid(PathFindingResult.Path);
 }
 
-FNavPath UGridNavigationSubsystem::FindPath(FVector start, FVector destination) const
-{	
-	PathBuilder builder = PathBuilder(&NavGraph, FNavPathQuery(start,destination));	
-	return builder.GetPath();
-}
-
-FNavPath UGridNavigationSubsystem::FindPath(FVector start, TWeakObjectPtr<AActor> targetActor) const
+FVector UGridNavigationSubsystem::WorldToGrid(const FVector& WorldLocation) const
 {
-	PathBuilder builder = PathBuilder(&NavGraph, FNavPathQuery(start, targetActor));	
-	return builder.GetPath();
-}
-
-bool UGridNavigationSubsystem::CheckPath(AActor* actor, FNavPath path) const
-{
-	FNavPathQuery query = path.Query;
-	if(query.Actor.IsValid())
+	//TO DO
+	//Remake this in future
+	UNavigationSystemV1* NavSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+	auto& bounds = NavSystem->GetNavigationBounds();
+	FVector minBounds;
+	for (auto bound : bounds)
 	{
-		FVector previousLocation = NavGraph.ConvertVectorToCell(query.Destination);
-		FVector currentLocation = NavGraph.ConvertVectorToCell(query.Actor->GetActorLocation());
-		if(previousLocation != currentLocation)
-		{
-			return false;
-		}
+		minBounds = bound.AreaBox.Min;
 	}
 	
-	for (int i = 0; i < path.PathPoints.Num();++i)
-	{
-		const FNavVertexData* vertexData = NavGraph.Graph.Find(path.PathPoints[i]);
-		if(vertexData->bIsEmpty)
-		{
-			continue;
-		}
-		return false;		
-	}
-	return true;
+	//transform world location to grid cell pivot coord
+	int CellIndexX, CellIndexY, z = 0;
+	CellIndexX = (WorldLocation.X - minBounds.X)/ CellSize;	
+	CellIndexY = (WorldLocation.Y - minBounds.Y)/ CellSize;
+	float xLoc = minBounds.X + CellIndexX * CellSize + CellSize/2;
+	float yLoc = minBounds.Y + CellIndexY * CellSize + CellSize/2;
+	return FVector(xLoc, yLoc,WorldLocation.Z);
 }
 
-void UGridNavigationSubsystem::ShowTestGrid()
-{	
-	TArray<FVector> keys;
-	NavGraph.Graph.GetKeys(keys);
-	GEngine->AddOnScreenDebugMessage(INDEX_NONE,20,FColor::Green, FString::FromInt(keys.Num()));
-	for (auto key : keys)
-	{			
-		FPlane Plane{0,0,1,key.Z + 5};
-		FColor color = FColor::Green.WithAlpha(150);					
-		DrawDebugSolidPlane(GetWorld(), Plane, key, (CellSize/2 -2), color, true);
-		FNavVertexData* edges = NavGraph.Graph.Find(key);		
-		for (auto& edge : edges->edges)
-		{			
-			FVector offset{0, 0,CellSize/10};
-			DrawDebugLine(GetWorld(), key + offset, edge + offset, FColor::Red, true);
-		}
-	}	
+UNavigationPath* UGridNavigationSubsystem::TransformRegularPathToGrid(FNavPathSharedPtr& SourcePath)
+{		
+	auto& sourcePoints = SourcePath->GetPathPoints();	
+	TArray<FVector> pointsLocation;
+	for (int i = 0; i < (sourcePoints.Num() - 1); i++)
+	{		
+		FVector start = sourcePoints[i].Location;
+		FVector end = sourcePoints[i + 1].Location;				
+		SegmentToCells(pointsLocation, start, end);		
+		
+		//беру отрезок, перевожу начало и конец в координатную сетку. Исходя из этого находу длину в ячейках грида.
+		// длину отрезка делим на количество ячеек и вычисляем координаты каждой точки
+		// полученные координаты переводим в систему координат грида	
+	}
+	TArray<FNavPathPoint> gridPathPoints;
+	for (auto& point : pointsLocation)
+	{
+		FNavPathPoint navpoint(point);		
+		gridPathPoints.Add(navpoint);
+	}
+	sourcePoints = gridPathPoints;
+	UNavigationPath* NavPath = NewObject<UNavigationPath>(GetWorld());
+	NavPath->SetPath(SourcePath);	
+	return NavPath;
+}
+
+int UGridNavigationSubsystem::CellCountBresenham(const FVector& start, const FVector& end)
+{
+	FVector startCell = WorldToGrid(start);
+	FVector endCell = WorldToGrid(end);
+	float distanceX = std::fabs(endCell.X - startCell.X)/CellSize;
+	float distanceY = std::fabs(endCell.Y - startCell.Y)/CellSize;	
+	return distanceX>distanceY ? distanceX : distanceY;	
+}
+
+void UGridNavigationSubsystem::SegmentToCells(TArray<FVector>& points, const FVector& segmentStart, const FVector& segmentEnd)
+{
+	int LengthInCells = CellCountBresenham(segmentStart, segmentEnd);	
+	float distance = FVector::Dist(segmentStart, segmentEnd);
+	float distancePerCell = distance/LengthInCells;
+
+	FVector pathVector = segmentEnd - segmentStart;
+	pathVector.Normalize();
+
+	for (int x = 0; x <= LengthInCells; x++)
+	{
+		FVector cellPoint = segmentStart + pathVector * x * distancePerCell;
+		points.AddUnique(WorldToGrid(cellPoint));
+	}		
 }

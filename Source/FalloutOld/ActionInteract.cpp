@@ -5,7 +5,7 @@ void ActionInteract::Execute()
 	ActionMove->Execute();	
 }
 
-ActionInteract::ActionInteract(UWorld* world, APawnBase* performer, TScriptInterface<IInteractable> target) : ActionBase(world, performer)
+ActionInteract::ActionInteract(UWorld* world, ACharacterBase* performer, TScriptInterface<IInteractable> target) : ActionBase(world, performer)
 {	
 	this->target = target;
 	ActionMove = new ::ActionMove(World,Receiver, FMoveRequest(Cast<AActor>(target.GetObject())));

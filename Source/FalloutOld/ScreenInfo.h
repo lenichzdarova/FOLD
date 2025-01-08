@@ -1,13 +1,13 @@
 ﻿#pragma once
 #include "Camera/CameraComponent.h"
-#include "Core/PawnBase.h"
+#include "Core/CharacterBase.h"
 #include "UI/PawnShortInfo.h"
 
 class ScreenInfo
 {
 	UWorld* World = nullptr;
 	UCameraComponent* CameraComponent = nullptr;	
-	TMap<APawnBase*, SPawnShortInfo*> Widgets;
+	TMap<ACharacterBase*, SPawnShortInfo*> Widgets;
 	float TraceDistance = 2000;
 	
 public:

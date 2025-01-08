@@ -14,11 +14,11 @@ class GRIDNAVIGATION_API UMovement : public UActorComponent
 
 public:
 	// Sets default values for this component's properties
-	UMovement();
-
+	UMovement();	
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+	
 
 public:
 	// Called every frame

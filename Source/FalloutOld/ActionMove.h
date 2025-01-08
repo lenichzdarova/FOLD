@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "ActionBase.h"
 #include "GridNavigationSubsystem.h"
-#include "FNavPath.h"
 
 /////////////////////////////////////////////////////////////
 //Move request struct use it to avoid separation of logic by inheritance
@@ -30,14 +29,14 @@ class ActionMove : public ActionBase
 {
 	int PathSegment = 0;
 protected:	
-	TWeakObjectPtr<UMovement> MovementComponent;		
+	UMovement* MovementComponent;		
 	FMoveRequest MoveRequest;
-	FNavPath Path;
+	UNavigationPath* Path;
 	UGridNavigationSubsystem* navSystem;
 	FDelegateHandle DestinationReached;
 	
 public:
-	ActionMove(UWorld*, APawnBase*, FMoveRequest);
+	ActionMove(UWorld*, ACharacterBase*, FMoveRequest);
 	virtual ~ActionMove() override;
 	virtual void Stop() override;
 	virtual void Execute() override;
@@ -45,7 +44,7 @@ public:
 protected:
 	void OnDestinationReached();
 	void MoveToNextPathSegment();
-	FNavPath GetPath(FMoveRequest);
+	void SetPath(FMoveRequest request);
 };
 
 

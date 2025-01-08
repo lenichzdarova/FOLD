@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "FalloutOld/PlayerView.h"
-#include "FalloutOld/Core/PawnBase.h"
+#include "FalloutOld/Core/CharacterBase.h"
 #include "FalloutOld/CursorController.h"
 #include "EnhancedInputSubsystems.h"
 #include "FalloutOld/InputContextBase.h"

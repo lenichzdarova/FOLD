@@ -2,7 +2,7 @@
 
 #include "ActionBase.h"
 #include "Interfaces/InputProvider.h"
-#include "Core/PawnBase.h"
+#include "Core/CharacterBase.h"
 #include "UI/WidgetCursor.h"
 #include "ActionHandler.h"
 #include "InputContextBase.generated.h"
@@ -16,7 +16,7 @@ class UInputContextBase : public UObject
 protected:
 	IInputProvider* InputProvider;
 	UPROPERTY()
-	APawnBase* ActiveCharacter;
+	ACharacterBase* ActiveCharacter;
 	UPROPERTY()
 	UWidgetCursor* CursorWidget;
 	UPROPERTY()
@@ -26,7 +26,7 @@ protected:
 	ActionBase* currentAction = nullptr;
  	
 public:
-	virtual void Initialize(IInputProvider*, APawnBase*, UWidgetCursor*, UWorld*, UActionHandler*);	
+	virtual void Initialize(IInputProvider*, ACharacterBase*, UWidgetCursor*, UWorld*, UActionHandler*);	
 	virtual void SetCursorData(FHitResult){}
 	virtual void OnLeftMouseButton(){};
 

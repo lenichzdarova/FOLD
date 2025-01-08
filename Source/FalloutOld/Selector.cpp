@@ -3,7 +3,7 @@
 
 #include "Selector.h"
 
-APawnBase* USelector::GetFocusedCharacter() const
+ACharacterBase* USelector::GetFocusedCharacter() const
 {
 	return focused;
 }
@@ -12,7 +12,7 @@ void USelector::SetFocusedByIndex(int index)
 {	
 	if(partyMembers.IsValidIndex(index))
 	{
-		APawnBase* selected = partyMembers[index];
+		ACharacterBase* selected = partyMembers[index];
 		if(focused != selected)
 		{
 			SetFocusedByValue(selected);
@@ -20,7 +20,7 @@ void USelector::SetFocusedByIndex(int index)
 	}
 }
 
-void USelector::SetPartyMembers(const TArray<APawnBase*> characters)
+void USelector::SetPartyMembers(const TArray<ACharacterBase*> characters)
 {
 	partyMembers = characters;
 	if(!characters.IsEmpty())
@@ -43,7 +43,7 @@ void USelector::SetPartyMembers(const TArray<APawnBase*> characters)
 	}
 }
 
-void USelector::SetFocusedByValue(APawnBase* character)
+void USelector::SetFocusedByValue(ACharacterBase* character)
 {	
 	if(partyMembers.Contains(character))
 	{		

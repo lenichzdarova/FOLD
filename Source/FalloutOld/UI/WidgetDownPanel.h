@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "FalloutOld/Interfaces/InputReceiver.h"
-#include "FalloutOld/Core/PawnBase.h"
+#include "FalloutOld/Core/CharacterBase.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
 #include "WidgetDownPanel.generated.h"
@@ -31,7 +31,7 @@ protected:
 
 public:
 	UFUNCTION()
-	void Initialize( APawnBase* playerCharacter);
+	void Initialize( ACharacterBase* playerCharacter);
 
 
 	DECLARE_MULTICAST_DELEGATE(FMulticastDelegate)
