@@ -21,7 +21,7 @@
 			"Name": "GridNavigation",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
-		}
+		}		
 	],
 	"Plugins": [
 		{
@@ -30,6 +30,10 @@
 			"TargetAllowList": [
 				"Editor"
 			]
+		},
+		{
+			"Name": "OnlineSubsystemSteam",
+			"Enabled": true
 		}
 	]
 }

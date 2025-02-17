@@ -1,0 +1,67 @@
+﻿#include "InputContextDefault.h"
+#include "ActionInteract.h"
+#include "ActionMove.h"
+#include "Interactable.h"
+
+void UInputContextDefault::Initialize(IInputProvider* inputProvider, ACharacterBase* activeCharacter, UWidgetCursor* cursorWidget, UWorld* world
+                                      , UActionHandler* actionHandler)	
+{
+	Super::Initialize(inputProvider, activeCharacter, cursorWidget, world, actionHandler);
+	BindInputEvents(inputProvider);	
+}
+
+void UInputContextDefault::BindInputEvents(IInputProvider* value)
+{	
+	
+}
+
+void UInputContextDefault::OnLeftMouseButton()
+{
+	if(currentAction)
+	{
+		ActionHandler->ExecuteAction(ActiveCharacter, currentAction);		
+		currentAction = nullptr;
+	}	
+}
+
+void UInputContextDefault::SetCursorData(FHitResult hit)
+{	
+	if(currentAction)
+	{
+		delete currentAction;
+		currentAction = nullptr;
+	}
+	if(hit.bBlockingHit)
+	{		
+		AActor* actor = hit.GetActor();		
+		if(actor->IsA(ACharacterBase::StaticClass()))
+		{
+			if(actor != ActiveCharacter)
+			{
+				CursorWidget->SetDialog();				
+				currentAction = new ActionInteract(World,ActiveCharacter, actor);
+			}
+			GEngine->AddOnScreenDebugMessage(11, 5,FColor::Green, "talk");
+		}
+		else if(actor->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
+		{
+			CursorWidget->SetUse();
+			currentAction = new ActionInteract(World,ActiveCharacter, actor);
+			GEngine->AddOnScreenDebugMessage(11, 5,FColor::Green, "Interact");
+		}
+		else
+		{
+			CursorWidget->SetDefault();
+			currentAction = new ActionMove(World,ActiveCharacter, hit.Location);
+			GEngine->AddOnScreenDebugMessage(11, 5,FColor::Green, "Move");
+		}		
+	}
+	else
+	{
+		CursorWidget->SetDefault();
+	}
+}
+
+
+
+

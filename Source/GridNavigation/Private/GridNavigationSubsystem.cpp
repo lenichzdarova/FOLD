@@ -14,14 +14,7 @@ UNavigationPath* UGridNavigationSubsystem::FindPathSync(UObject* WorldContextObj
 	ANavigationData* NavigationData = NavSystem->GetNavDataForProps(AgentProperties, PathfindingContext->GetActorLocation());
 	const FPathFindingQuery Query(PathfindingContext, *NavigationData, PathfindingContext->GetActorLocation(),
 		PathEnd, UNavigationQueryFilter::GetQueryFilter(*NavigationData, PathfindingContext, FilterClass));
-	FPathFindingResult PathFindingResult = NavSystem->FindPathSync(Query);
-
-	for (auto p :PathFindingResult.Path->GetPathPoints())
-	{
-		DrawDebugSphere(GetWorld(), p.Location, 30, 20, FColor::Green);
-	}
-
-	
+	FPathFindingResult PathFindingResult = NavSystem->FindPathSync(Query);	
 	return TransformRegularPathToGrid(PathFindingResult.Path);
 }
 
