@@ -3,8 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AttributesList.h"
 #include "Health.h"
-#include "SkillSheet.h"
+#include "SkillList.h"
 #include "UObject/Object.h"
 #include "CharacterProfile.generated.h"
 
@@ -16,9 +17,19 @@ class FALLOUTOLD_API UCharacterProfile : public UObject
 {
 	GENERATED_BODY()
 
+	private:
 	UPROPERTY()
 	UHealth* Health;
 
 	UPROPERTY()
-	USkillSheet* SkillSheet;	
+	USkillList* SkillSheet;
+	UPROPERTY()
+	UAttributesList* Attributes;
+
+	UFUNCTION()
+	UHealth* GetHealth() const {return Health;}
+	UFUNCTION()
+	USkillList* GetSkillSheet() const {return SkillSheet;}
+	UFUNCTION()
+	UAttributesList* GetAttributes() const {return Attributes;}
 };

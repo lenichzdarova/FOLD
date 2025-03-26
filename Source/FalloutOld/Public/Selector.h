@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Party.h"
+#include "PlayerParty.h"
 
 #include "Selector.generated.h"
 

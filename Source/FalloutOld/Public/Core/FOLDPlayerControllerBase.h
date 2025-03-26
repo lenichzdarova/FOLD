@@ -8,14 +8,11 @@
 #include "CursorController.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputContextBase.h"
-//#include "InputMapper.h"
 #include "Interfaces/InputReceiver.h"
 #include "Interfaces/InputProvider.h"
-//#include "WorldTravelHandler.h"
-#include "Party.h"
+#include "PlayerParty.h"
 #include "Selector.h"
 #include "GameFramework/PlayerController.h"
-//#include "UI/HUDBase.h"
 #include "FOLDPlayerControllerBase.generated.h"
 
 /**
@@ -35,11 +32,7 @@ protected:
 	APlayerView* PlayerView = nullptr;		
 
 	UPROPERTY()
-	UCursorController* CursorController = nullptr;
-	//UPROPERTY()
-	//UWorldTravelHandler* WorldTravelHandler = nullptr;
-	//UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	//UInputMapper* InputMapper = nullptr;
+	UCursorController* CursorController = nullptr;	
 	UPROPERTY(BlueprintReadWrite)
 	TSubclassOf<UWidgetCursor> CursorWidgetType;
 
@@ -49,7 +42,7 @@ protected:
 	UPROPERTY()
 	UInputContextBase* inputContext = nullptr;
 	UPROPERTY()
-	TObjectPtr<UParty> party = nullptr;
+	TObjectPtr<UPlayerParty> party = nullptr;
 	UPROPERTY()
 	TObjectPtr<USelector> selector = nullptr;
 	UPROPERTY()

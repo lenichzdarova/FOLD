@@ -4,9 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "Party.h"
+#include "PlayerParty.h"
 #include "Selector.h"
 #include "ActionHandler.h"
+#include "SaveGame/WorldPreset.h"
 #include "FOLDGameInstanceBase.generated.h"
 
 /**
@@ -22,11 +23,18 @@ protected:
 	FString PlayerStartTag = "MainMenu";	
 
 public:
+
+	UPROPERTY()
+	TMap<FString, UObject*> ActorsGameplayData;
+	UPROPERTY()
+	TMap<FString, UWorldPreset*> MapInitialData;
+
+	
 	UPROPERTY()
 	FVector2D PlayerWorldPosition;
 	
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<UParty> Party = nullptr;
+	TObjectPtr<UPlayerParty> Party = nullptr;
 	UPROPERTY()
 	TObjectPtr<USelector> characterSelector = nullptr;
 	UPROPERTY()

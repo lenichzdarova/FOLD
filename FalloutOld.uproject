@@ -21,7 +21,12 @@
 			"Name": "GridNavigation",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
-		}		
+		},
+		{
+			"Name": "FOLD_Test",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
 	],
 	"Plugins": [
 		{

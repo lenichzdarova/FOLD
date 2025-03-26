@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "SaveGame/WorldPreset.h"
+#include "SaveGame/FOLDGameplayActorData.h"
 #include "FOLDGameMode.generated.h"
 
 /**
@@ -17,4 +19,7 @@ class FALLOUTOLD_API AFOLDGameMode : public AGameModeBase
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void StartPlay() override;
 	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
+	
+	void SpawnPlayerGroup();	
 };
+

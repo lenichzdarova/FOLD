@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Attribute.h"
+#include "Modificator.h"
 #include "UObject/Object.h"
 #include "Skill.generated.h"
 
@@ -13,20 +15,48 @@
 UENUM(BlueprintType)
 enum ESkillMastery: uint8
 {
+	Denied,
 	Normal,
 	Expert,
 	Master
 };
-
-USTRUCT()
-struct  FALLOUTOLD_API FSkill
+UENUM(BlueprintType)
+enum ESkill: uint8
+{
+	Unarmed,
+	FirstAid,
+	Lockpicking
+};
+UCLASS(Blueprintable)
+class  FALLOUTOLD_API USkill: public UObject
 {
 	GENERATED_BODY()
-
+	
+private:
+	UPROPERTY(SaveGame)
+	FString SkillID;
 	UPROPERTY()
+	UAttribute* AffectingAttribute;
+	UPROPERTY(SaveGame)
 	int BaseValue = 0;
-	UPROPERTY()
-	int Value = 0;
-	UPROPERTY()
+	UPROPERTY(SaveGame)
+	TArray<UModificator*> Modificators;	
+	UPROPERTY(SaveGame)
 	TEnumAsByte<ESkillMastery> MasteryLevel = ESkillMastery::Normal;
+public:
+
+	UFUNCTION()
+	int GetBaseValue() const { return BaseValue; }
+	UFUNCTION()
+	int GetValue() const {return BaseValue + GetModificatorsValue();};
+	int GetModificatorsValue() const;
+
+	UFUNCTION()
+	void AddModificator(UModificator* value);
+	UFUNCTION()
+	void RemoveModificator(UModificator* value);
+
+	DECLARE_DYNAMIC_DELEGATE(FSkillChanged);
+	UPROPERTY()
+	FSkillChanged OnSkillChanged;	
 };

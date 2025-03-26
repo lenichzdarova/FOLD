@@ -5,14 +5,12 @@
 
 UFOLDGameInstanceBase::UFOLDGameInstanceBase(const FObjectInitializer& ObjectInitializer)
 {
-	Party = ObjectInitializer.CreateDefaultSubobject<UParty>(this, "Party");
-	characterSelector = ObjectInitializer.CreateDefaultSubobject<USelector>(this, "Selector");
-	Party->PartyChanged.AddDynamic(this, &UFOLDGameInstanceBase::OnPartyChanged);
-	WorldActions = ObjectInitializer.CreateDefaultSubobject<UActionHandler>(this, "Action handler");
+	Party = ObjectInitializer.CreateDefaultSubobject<UPlayerParty>(this, "Party");
+	characterSelector = ObjectInitializer.CreateDefaultSubobject<USelector>(this, "Selector");	
 }
 
 void UFOLDGameInstanceBase::OnPartyChanged()
 {
-	characterSelector->SetPartyMembers(Party->GetParty());
+	
 }
 

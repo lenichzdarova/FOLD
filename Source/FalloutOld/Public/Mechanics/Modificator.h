@@ -3,16 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
-#include "Components/Button.h"
-#include "WidgetDialog.generated.h"
+#include "UObject/Object.h"
+#include "Modificator.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class FALLOUTOLD_API UWidgetDialog : public UUserWidget
+class FALLOUTOLD_API UModificator : public UObject
 {
 	GENERATED_BODY()
-
 };

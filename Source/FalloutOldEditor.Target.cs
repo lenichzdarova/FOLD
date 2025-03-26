@@ -11,5 +11,11 @@ public class FalloutOldEditorTarget : TargetRules
 		DefaultBuildSettings = BuildSettingsVersion.V4;
 
 		ExtraModuleNames.AddRange( new string[] { "FalloutOld","GridNavigation" } );
+		RegisterModulesCreatedByRider();
+	}
+
+	private void RegisterModulesCreatedByRider()
+	{
+		ExtraModuleNames.AddRange(new string[] { "FOLD_Test" });
 	}
 }

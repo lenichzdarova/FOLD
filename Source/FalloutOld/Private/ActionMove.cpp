@@ -26,6 +26,12 @@ void ActionMove::Execute()
 	if(Path->IsValid())
 	{
 		AController* Controller = Receiver->GetController();
+		if (!Controller)
+		{
+			Completed.Broadcast(this,EActionResult::Fail);
+			UE_LOG(LogTemp,Error,TEXT("No AI controller"));
+			return;
+		}
 		AAIControllerBase* AIController = Cast<AAIControllerBase>(Controller);
 		FAIMoveRequest Request(Request.GetDestination());
 		Request.SetAcceptanceRadius(0);
