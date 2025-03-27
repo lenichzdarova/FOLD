@@ -69,24 +69,25 @@ UWorldPreset* UWorldPresetSubsystem::MakeWorldPreset(UWorld* World)
 	{
 		FActorIterator It(World);
 		for (;It; ++It)
-		{
+		{			
 			AActor* Actor = *It;
 			if (Actor->Implements<UStorableActor>())
-			{
+			{				
 				//ЗАТЫЧКА ВМЕСТО ID
 				FFOLDGameplayActorData data;
 				FString ID = Actor->GetName();
 				IStorableActor* StorableActor = Cast<IStorableActor>(Actor);
 				StorableActor->CollectStorableData(data);
-				ActorsData.Add(ID, data);				
+				ActorsData.Add(ID, data);
+				Preset->AddID(ID);
 			}
 		}
-	}
+	}	
 	return Preset;
 }
 
 UWorldPreset* UWorldPresetSubsystem::GetPresetContainsActor(FString ActorID)
-{
+{	
 	auto iterator = Presets.CreateIterator();
 	for (;iterator; ++iterator)
 	{
