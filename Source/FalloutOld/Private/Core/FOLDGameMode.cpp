@@ -1,10 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 #include "Core/FOLDGameMode.h"
+#include "Core/WorldPresetSubsystem.h"
 
-#include "EngineUtils.h"
-#include "Core/FOLDGameInstanceBase.h"
-#include "SaveGame/WorldPreset.h"
-#include "SaveGame/PersistentDataSubsystem.h"
 
 
 void AFOLDGameMode::PostLogin(APlayerController* NewPlayer)
@@ -16,14 +13,20 @@ void AFOLDGameMode::PostLogin(APlayerController* NewPlayer)
 
 void AFOLDGameMode::StartPlay()
 {
-	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 5, FColor::Red, "Map loaded");
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 5, FColor::Red, "Game mode begin play");
 	Super::StartPlay();		
 }
 
 void AFOLDGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
 {
 	Super::InitGame(MapName, Options, ErrorMessage);
-		
+	UWorldPresetSubsystem* PresetSubsystem = GetGameInstance()->GetSubsystem<UWorldPresetSubsystem>();
+	if (PresetSubsystem)
+	{
+		PresetSubsystem->InitializeWorld(GetWorld());
+	}
+	SpawnPlayerGroup();
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 5, FColor::Red, "Game mode init game");
 }
 
 

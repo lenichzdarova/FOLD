@@ -16,11 +16,15 @@ class FALLOUTOLD_API UWorldPreset : public UObject
 	GENERATED_BODY()
 
 	UPROPERTY(SaveGame)
-	TMap<FString, FFOLDGameplayActorData> ActorsData;
+	TSet<FString> GameplayActorsID;
 
 public:
-	TMap<FString, FFOLDGameplayActorData> GetActorsData() const;	
-	bool IsActorIDValid(const FString ActorID) const;
-	FFOLDGameplayActorData GetActorData(const FString ActorID) const;
-	void SetActorData(const FString ActorID, const FFOLDGameplayActorData& ActorData);	
+	TSet<FString> GetWorldActorsID() const;	
+	bool ContainsID(const FString ActorID) const;	
+	void SetGameplayActors(TSet<FString>);
+	void AddID(const FString ActorID);
+	void RemoveID(const FString ActorID);
+	void Clear();
 };
+
+

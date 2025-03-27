@@ -7,7 +7,7 @@
 #include "PlayerParty.h"
 #include "Selector.h"
 #include "ActionHandler.h"
-#include "SaveGame/WorldPreset.h"
+#include"SaveGame/FOLDGameplayActorData.h"
 #include "FOLDGameInstanceBase.generated.h"
 
 /**
@@ -26,13 +26,10 @@ public:
 
 	UPROPERTY()
 	TMap<FString, UObject*> ActorsGameplayData;
-	UPROPERTY()
-	TMap<FString, UWorldPreset*> MapInitialData;
 
 	
 	UPROPERTY()
-	FVector2D PlayerWorldPosition;
-	
+	FVector2D PlayerWorldPosition;	
 	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UPlayerParty> Party = nullptr;
 	UPROPERTY()

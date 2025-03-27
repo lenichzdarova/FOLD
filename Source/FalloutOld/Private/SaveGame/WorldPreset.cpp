@@ -3,22 +3,33 @@
 
 #include "SaveGame/WorldPreset.h"
 
-TMap<FString, FFOLDGameplayActorData> UWorldPreset::GetActorsData() const
-{
-	return ActorsData;
+
+TSet<FString> UWorldPreset::GetWorldActorsID() const
+{	
+	return GameplayActorsID;
 }
 
-bool UWorldPreset::IsActorIDValid(const FString ActorID) const
+bool UWorldPreset::ContainsID(const FString ActorID) const
 {
-	return ActorsData.Contains(ActorID);
+	return GameplayActorsID.Contains(ActorID);
 }
 
-FFOLDGameplayActorData UWorldPreset::GetActorData(const FString ActorID) const
+void UWorldPreset::SetGameplayActors(TSet<FString> IDs)
 {
-	return *ActorsData.Find(ActorID);
+	GameplayActorsID = IDs;
 }
 
-void UWorldPreset::SetActorData(const FString ActorID, const FFOLDGameplayActorData& ActorData)
+void UWorldPreset::AddID(const FString ActorID)
 {
-	ActorsData.Add(ActorID, ActorData);
+	GameplayActorsID.Add(ActorID);
+}
+
+void UWorldPreset::RemoveID(const FString ActorID)
+{
+	GameplayActorsID.Remove(ActorID);
+}
+
+void UWorldPreset::Clear()
+{
+	GameplayActorsID.Empty();
 }

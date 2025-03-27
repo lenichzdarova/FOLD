@@ -17,9 +17,14 @@ class FALLOUTOLD_API UWorldPresetSubsystem : public UGameInstanceSubsystem
 
 	private:
 	UPROPERTY()
+	TMap<FString, FFOLDGameplayActorData> ActorsData;
+	UPROPERTY()
 	TMap<FString, UWorldPreset*> Presets;
 public:
 	void InitializeWorld(UWorld* World);
 	void ApplyPresetToWorld(UWorld* World, const UWorldPreset* Preset) const;
 	UWorldPreset* MakeWorldPreset(UWorld* World);
+	UWorldPreset* GetPresetContainsActor(FString ActorID);
 };
+
+

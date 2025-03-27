@@ -3,16 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/CapsuleComponent.h"
 #include "Interactable.h"
-#include "Movement.h"
 #include "NavTargetActor.h"
+#include "Movement.h"
 #include "GameFramework/Character.h"
 #include "Mechanics/CharacterProfile.h"
+#include "SaveGame/StorableActor.h"
 #include "CharacterBase.generated.h"
 
 UCLASS(Blueprintable)
-class FALLOUTOLD_API ACharacterBase : public ACharacter, public INavTargetActor, public IInteractable
+class FALLOUTOLD_API ACharacterBase : public ACharacter, public INavTargetActor, public IInteractable, public IStorableActor
 {
 	GENERATED_BODY()
 

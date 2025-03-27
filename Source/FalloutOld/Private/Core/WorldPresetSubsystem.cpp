@@ -21,8 +21,7 @@ void UWorldPresetSubsystem::InitializeWorld(UWorld* World)
 
 void UWorldPresetSubsystem::ApplyPresetToWorld(UWorld* World, const UWorldPreset* Preset) const
 {
-	TSet<FString> StoredActorsID;
-	Preset->GetActorsData().GetKeys(StoredActorsID);
+	TSet<FString> StoredActorsID = Preset->GetWorldActorsID();	
 	if (World)
 	{
 		FActorIterator It(World);
@@ -33,10 +32,14 @@ void UWorldPresetSubsystem::ApplyPresetToWorld(UWorld* World, const UWorldPreset
 			{
 				// ЗАТЫЧКА ПОКА НЕТ ФУНКЦИОНАЛА ID
 				FString ID = Actor->GetName();
-				if (Preset->IsActorIDValid(ID))
+				if (Preset->ContainsID(ID))
 				{
 					IStorableActor* StorableActor = Cast<IStorableActor>(Actor);
-					StorableActor->InitWithStoredData(Preset->GetActorData(ID));
+					if (ActorsData.Contains(ID))
+					{
+						StorableActor->InitWithStoredData(*ActorsData.Find(ID));
+					}
+					
 					StoredActorsID.Remove(ID);
 				}
 				else
@@ -50,7 +53,7 @@ void UWorldPresetSubsystem::ApplyPresetToWorld(UWorld* World, const UWorldPreset
 			auto Iter = StoredActorsID.CreateIterator();
 			for (;Iter; ++Iter)
 			{
-				const FFOLDGameplayActorData& ActorData = Preset->GetActorData(*Iter);				
+				const FFOLDGameplayActorData& ActorData = *ActorsData.Find(*Iter);				
 				AActor* SpawnedActor = World->SpawnActor(ActorData.ActorSubtype);
 				IStorableActor* StorableActor = Cast<IStorableActor>(SpawnedActor);
 				StorableActor->InitWithStoredData(ActorData);
@@ -75,9 +78,25 @@ UWorldPreset* UWorldPresetSubsystem::MakeWorldPreset(UWorld* World)
 				FString ID = Actor->GetName();
 				IStorableActor* StorableActor = Cast<IStorableActor>(Actor);
 				StorableActor->CollectStorableData(data);
-				Preset->SetActorData(ID, data);				
+				ActorsData.Add(ID, data);				
 			}
 		}
 	}
 	return Preset;
 }
+
+UWorldPreset* UWorldPresetSubsystem::GetPresetContainsActor(FString ActorID)
+{
+	auto iterator = Presets.CreateIterator();
+	for (;iterator; ++iterator)
+	{
+		UWorldPreset* Preset = iterator.Value();
+		if (Preset->ContainsID(ActorID))
+		{
+			return Preset;
+		}
+	}
+	return nullptr;
+}
+
+
