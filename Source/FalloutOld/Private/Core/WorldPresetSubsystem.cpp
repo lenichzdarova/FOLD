@@ -12,11 +12,7 @@ void UWorldPresetSubsystem::InitializeWorld(UWorld* World)
 	if (Presets.Contains(Key))
 	{
 		ApplyPresetToWorld(World, *Presets.Find(Key));
-	}
-	else
-	{
-		Presets.Add(Key,MakeWorldPreset(World));
-	}
+	}	
 }
 
 void UWorldPresetSubsystem::ApplyPresetToWorld(UWorld* World, const UWorldPreset* Preset) const

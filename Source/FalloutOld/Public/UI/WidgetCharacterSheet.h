@@ -12,7 +12,7 @@
 /**
  * 
  */
-UCLASS(Blueprintable,BlueprintType)
+UCLASS(Blueprintable,BlueprintType, Abstract)
 class FALLOUTOLD_API UWidgetCharacterSheet : public UUserWidget
 {
 	GENERATED_BODY()

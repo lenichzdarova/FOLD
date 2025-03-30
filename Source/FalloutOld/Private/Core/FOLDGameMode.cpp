@@ -26,7 +26,7 @@ void AFOLDGameMode::InitGame(const FString& MapName, const FString& Options, FSt
 		PresetSubsystem->InitializeWorld(GetWorld());
 	}
 	SpawnPlayerGroup();
-	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 5, FColor::Red, "Game mode init game");
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 5, FColor::Red, "Game mode init game");	
 }
 
 

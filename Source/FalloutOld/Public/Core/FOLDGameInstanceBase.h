@@ -40,5 +40,5 @@ public:
 	UFOLDGameInstanceBase(const FObjectInitializer& ObjectInitializer);
 	
 	UFUNCTION()
-	void OnPartyChanged();
+	void OnPartyChanged();	
 };

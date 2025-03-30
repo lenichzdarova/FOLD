@@ -17,15 +17,21 @@ class FALLOUTOLD_API UCharacterProfile : public UObject
 {
 	GENERATED_BODY()
 
-	private:
+public:
+	UPROPERTY()
+	FSoftObjectPath PortraitAssetPath;
+	UPROPERTY()
+	FString CharacterID;
+	
+protected:	
 	UPROPERTY()
 	UHealth* Health;
-
 	UPROPERTY()
 	USkillList* SkillSheet;
 	UPROPERTY()
 	UAttributesList* Attributes;
-
+	
+public:
 	UFUNCTION()
 	UHealth* GetHealth() const {return Health;}
 	UFUNCTION()
