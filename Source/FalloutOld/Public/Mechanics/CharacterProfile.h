@@ -7,6 +7,7 @@
 #include "Health.h"
 #include "SkillList.h"
 #include "UObject/Object.h"
+#include "Character/CharacterTemplate.h"
 #include "CharacterProfile.generated.h"
 
 /**
@@ -38,4 +39,6 @@ public:
 	USkillList* GetSkillSheet() const {return SkillSheet;}
 	UFUNCTION()
 	UAttributesList* GetAttributes() const {return Attributes;}
+
+	void ApplyTemplate(UCharacterTemplate* Template);
 };

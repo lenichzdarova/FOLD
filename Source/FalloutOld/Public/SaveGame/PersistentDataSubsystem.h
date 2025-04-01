@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "FOLDSaveGame.h"
-#include "ActorsGameplayData.h"
+#include "Core/FOLDActorsDataSubsystem.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "PersistentDataSubsystem.generated.h"
 
@@ -17,8 +17,8 @@ class FALLOUTOLD_API UPersistentDataSubsystem : public UGameInstanceSubsystem
 	GENERATED_BODY()
 	
 public:
-	void SaveGame (FString Name, UActorsGameplayData* DataStorage);
+	void SaveGame (FString Name, UFOLDActorsDataSubsystem* DataStorage);
 	
-	UActorsGameplayData* LoadGame (FString Name);	
+	UFOLDActorsDataSubsystem* LoadGame (FString Name);	
 };
 

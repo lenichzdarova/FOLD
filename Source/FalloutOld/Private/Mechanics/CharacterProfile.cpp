@@ -2,3 +2,8 @@
 
 
 #include "Mechanics/CharacterProfile.h"
+
+void UCharacterProfile::ApplyTemplate(UCharacterTemplate* Template)
+{
+	
+}

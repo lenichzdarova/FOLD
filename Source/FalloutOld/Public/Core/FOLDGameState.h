@@ -19,7 +19,7 @@ class FALLOUTOLD_API AFOLDGameState : public AGameStateBase
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Replicated)
-	UPlayerParty* PlayerParty;
+	UPlayerParty* PlayerParty;	
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual bool ReplicateSubobjects(class UActorChannel* Channel, class FOutBunch* Bunch, FReplicationFlags* RepFlags) override;

@@ -3,7 +3,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Serialization/ObjectAndNameAsStringProxyArchive.h"
 
-UActorsGameplayData* UPersistentDataSubsystem::LoadGame(FString Name)
+UFOLDActorsDataSubsystem* UPersistentDataSubsystem::LoadGame(FString Name)
 {
 	UFOLDSaveGame* SaveFile = nullptr;
 	if (UGameplayStatics::DoesSaveGameExist(Name,0))
@@ -12,10 +12,10 @@ UActorsGameplayData* UPersistentDataSubsystem::LoadGame(FString Name)
 		SaveFile = Cast<UFOLDSaveGame>(save);
 	}
 	
-	return NewObject<UActorsGameplayData>();
+	return NewObject<UFOLDActorsDataSubsystem>();
 }
 
-void UPersistentDataSubsystem::SaveGame(FString Name, UActorsGameplayData* GameData)
+void UPersistentDataSubsystem::SaveGame(FString Name, UFOLDActorsDataSubsystem* GameData)
 {
 	
 }
