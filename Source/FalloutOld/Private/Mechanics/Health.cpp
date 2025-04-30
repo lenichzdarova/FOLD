@@ -18,7 +18,7 @@ void UHealth::RemoveMaxHealth(int Value)
 void UHealth::SetCurrentHealth(int Value)
 {	
 	CurrentHealth = FMath::Clamp(Value, 0, MaxHealth);
-	OnHealthChanged.Execute(CurrentHealth);
+	OnHealthChanged.Broadcast(CurrentHealth);
 }
 
 void UHealth::AddCurrentHealth(int Value)

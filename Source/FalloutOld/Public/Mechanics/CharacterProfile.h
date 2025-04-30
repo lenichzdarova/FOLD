@@ -8,13 +8,16 @@
 #include "SkillList.h"
 #include "UObject/Object.h"
 #include "Character/CharacterTemplate.h"
+#include "Character/GameplayDataObjectBase.h"
 #include "CharacterProfile.generated.h"
 
 /**
  * 
  */
+
+DECLARE_MULTICAST_DELEGATE(FOnCharacterPortraitUpdate);
 UCLASS()
-class FALLOUTOLD_API UCharacterProfile : public UObject
+class FALLOUTOLD_API UCharacterProfile : public UGameplayDataObjectBase
 {
 	GENERATED_BODY()
 
@@ -41,4 +44,6 @@ public:
 	UAttributesList* GetAttributes() const {return Attributes;}
 
 	void ApplyTemplate(UCharacterTemplate* Template);
+
+	FOnCharacterPortraitUpdate OnPortraitUpdate;
 };

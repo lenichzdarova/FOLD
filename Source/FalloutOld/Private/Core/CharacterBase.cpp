@@ -27,7 +27,10 @@ UCharacterProfile* ACharacterBase::GetCharacterProfile() const
 void ACharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	SetupGameplayData();	
+	if (GetLocalRole() == ROLE_Authority)
+	{
+		SetupGameplayData();
+	}		
 }
 
 void ACharacterBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
@@ -57,8 +60,7 @@ inline void ACharacterBase::SetupGameplayData()
 		Profile = Cast<UCharacterProfile>(Data);
 	}
 	else
-	{
-		//Скорее всего не самое лучшее решение, что персонаж при создании профиля знает о том, что овнером		
+	{			
 		Profile = DataSubsystem->GetEmptyDataObject<UCharacterProfile>(ID);		
 		UCharacterTemplate* TemplateData = Cast<UCharacterTemplate>(Template.TryLoad());
 		Profile->ApplyTemplate(TemplateData);		

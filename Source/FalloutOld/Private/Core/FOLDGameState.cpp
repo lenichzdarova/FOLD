@@ -3,28 +3,17 @@
 
 #include "Core/FOLDGameState.h"
 
-#include "Engine/ActorChannel.h"
-#include "Net/UnrealNetwork.h"
-
-AFOLDGameState::AFOLDGameState()
+void AFOLDGameState::AddPlayerState(APlayerState* PlayerState)
 {
-	//bReplicateUsingRegisteredSubObjectList = true;
-	PlayerParty = CreateDefaultSubobject<UPlayerParty>("PlayerParty");
-	AddReplicatedSubObject(PlayerParty);	
+	Super::AddPlayerState(PlayerState);
+	OnPlayersCountChange.Broadcast();
+	UE_LOG(LogTemp, Display, TEXT("Player state added"));
 }
 
-void AFOLDGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+void AFOLDGameState::RemovePlayerState(APlayerState* PlayerState)
 {
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(AFOLDGameState, PlayerParty);
+	Super::RemovePlayerState(PlayerState);
+	OnPlayersCountChange.Broadcast();
+	UE_LOG(LogTemp, Display, TEXT("Player state removed"));
 }
-
-bool AFOLDGameState::ReplicateSubobjects(class UActorChannel* Channel, class FOutBunch* Bunch,
-	FReplicationFlags* RepFlags)
-{
-	bool result = Super::ReplicateSubobjects(Channel, Bunch, RepFlags);
-	if (PlayerParty ) result |= Channel->ReplicateSubobject(PlayerParty , *Bunch, *RepFlags);
-	return result;
-}
-
 

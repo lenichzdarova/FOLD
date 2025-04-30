@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Party.h"
 #include "PlayerParty.h"
 #include "GameFramework/GameStateBase.h"
 #include "FOLDGameState.generated.h"
@@ -10,17 +11,16 @@
 /**
  * 
  */
+DECLARE_MULTICAST_DELEGATE(FOnPlayersCountChange)
 UCLASS()
 class FALLOUTOLD_API AFOLDGameState : public AGameStateBase
 {
 	GENERATED_BODY()
 
-	AFOLDGameState();
+public:	
 
-public:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Replicated)
-	UPlayerParty* PlayerParty;	
+	virtual void AddPlayerState(APlayerState* PlayerState) override;
+	virtual void RemovePlayerState(APlayerState* PlayerState) override;
 
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	virtual bool ReplicateSubobjects(class UActorChannel* Channel, class FOutBunch* Bunch, FReplicationFlags* RepFlags) override;
+	FOnPlayersCountChange OnPlayersCountChange;
 };

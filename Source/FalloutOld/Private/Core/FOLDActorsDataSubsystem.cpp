@@ -10,7 +10,12 @@ void UFOLDActorsDataSubsystem::AddActorGameplayData(FString ID, UObject* Value)
 
 UObject* UFOLDActorsDataSubsystem::GetActorGameplayData(FString ID) const
 {
-	return *ActorsGameplayData.Find(ID);	
+	UObject* Result = nullptr;
+	if (ActorsGameplayData.Contains(ID))
+	{
+		Result = *ActorsGameplayData.Find(ID);
+	}
+	return Result;	
 }
 
 void UFOLDActorsDataSubsystem::RemoveActorGameplayData(FString ID)

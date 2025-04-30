@@ -16,7 +16,7 @@ class FALLOUTOLD_API UPlayerParty : public UObject
 	GENERATED_BODY()
 
 	UPROPERTY(ReplicatedUsing = OnRep_CharactersID)
-	TArray<FString> CharactersID;	
+	TArray<FString> PartyMembersID;	
 
 public:
 	
@@ -31,9 +31,9 @@ public:
 	bool ContainsID(FString CharID) const;
 	
 	UFUNCTION(BlueprintCallable)
-	TArray<FString> GetParty() const;
+	TArray<FString> GetPartyMembersID() const;
 	UFUNCTION(BlueprintCallable)
-	void SetParty(TArray<FString> CharIDs);
+	void SetPartyMembersID(TArray<FString> CharIDs);
 
 	
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
@@ -42,6 +42,6 @@ public:
 	void OnRep_CharactersID();
 
 	//Delegates
-	DECLARE_MULTICAST_DELEGATE_OneParam(FPartyChanged, const TArray<FString>&);	
-	FPartyChanged Changed;	
+	DECLARE_MULTICAST_DELEGATE(FChanged);	
+	FChanged Changed;	
 };

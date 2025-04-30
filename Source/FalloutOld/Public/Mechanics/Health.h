@@ -10,7 +10,8 @@
  * 
  */
 
-DECLARE_DYNAMIC_DELEGATE_OneParam(FHealthChanged, int, modifiedValue);
+DECLARE_MULTICAST_DELEGATE_OneParam(FHealthChanged, int);
+DECLARE_MULTICAST_DELEGATE_OneParam(FMaxHealthChanged, int);
 
 
 UCLASS(BlueprintType)
@@ -44,10 +45,6 @@ public:
 	void RemoveCurrentHealth(int Value);
 	
 	//Delegates
-
-	UPROPERTY()
-	FHealthChanged OnHealthChanged;
-	UPROPERTY()
-	FHealthChanged OnMaxHealthChanged;
-	
+	FHealthChanged OnHealthChanged;	
+	FMaxHealthChanged OnMaxHealthChanged;	
 };

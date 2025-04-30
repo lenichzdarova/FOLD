@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
 #include "concepts"
+#include "Character/GameplayDataObjectBase.h"
 #include "FOLDActorsDataSubsystem.generated.h"
 
 /**
@@ -33,8 +34,16 @@ public:
 	UFUNCTION()
 	void SetGameplayData(TMap<FString, UObject*> Value);
 
-	template <typename T> requires std::derived_from<T, UObject>
-	inline T* GetEmptyDataObject(FString ID)
+	template <class T>
+	T* GetActorGameplayData(FString ID) const
+	{
+		if (!ActorsGameplayData.Contains(ID)) return nullptr;
+		auto GameplayDataUObject = *ActorsGameplayData.Find(ID);		
+		return Cast<T>(GameplayDataUObject);
+	}
+	
+	template <typename T> requires std::derived_from<T, UGameplayDataObjectBase>
+	T* GetEmptyDataObject(FString ID)
 	{
 		T* Object = NewObject<T>(this);
 		AddActorGameplayData(ID, Object);

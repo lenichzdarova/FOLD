@@ -4,36 +4,38 @@
 #include "Core/FOLDPlayerControllerBase.h"
 #include "Core/FOLDGameInstanceBase.h"
 #include "InputContextDefault.h"
+#include "Core/FOLDGameState.h"
 
 
 void AFOLDPlayerControllerBase::Initialize() 
 {
 	//spawn and setup playerView instance
-	auto playerView = GetWorld()->SpawnActor<APlayerView>(FVector::Zero(), FRotator::ZeroRotator);
-	PlayerView = playerView;
-	SetViewTarget(PlayerView);
+	if (IsLocalController())
+	{
+		auto playerView = GetWorld()->SpawnActor<APlayerView>(FVector::Zero(), FRotator::ZeroRotator);
+		PlayerView = playerView;
+		SetViewTarget(PlayerView);		
 
-	//setup cursor
-	auto widget = CreateWidget(this, CursorWidgetType);
-	CursorWidget = Cast<UWidgetCursor>(widget);
-	bShowMouseCursor = true;
-	SetMouseCursorWidget(EMouseCursor::Default, CursorWidget);	
-	//focus game window
-	FInputModeGameOnly mode;
-	mode.SetConsumeCaptureMouseDown(false);
-	SetInputMode(mode);
+		//setup cursor
+		auto widget = CreateWidget(this, CursorWidgetType);
+		CursorWidget = Cast<UWidgetCursor>(widget);
+		bShowMouseCursor = true;
+		SetMouseCursorWidget(EMouseCursor::Default, CursorWidget);	
+		//focus game window
+		FInputModeGameOnly mode;
+		mode.SetConsumeCaptureMouseDown(false);
+		SetInputMode(mode);
+	}
 	
 	//for not reset camera after possess character
 	bAutoManageActiveCameraTarget = false;
 
 	//set party
-	UFOLDGameInstanceBase* gameInstance = Cast<UFOLDGameInstanceBase>(GetGameInstance());
-	if (gameInstance)
+	
+	AFOLDGameState* GameState = Cast<AFOLDGameState>(GetWorld()->GetGameState());
+	if (GameState)
 	{
-		party = gameInstance->Party;
-		selector = gameInstance->characterSelector;
-		selector->FocusedCharacterChanged.AddDynamic(this, &AFOLDPlayerControllerBase::OnFocusedCharacterChanged);
-		ActionHandler = gameInstance->WorldActions;
+		
 	}	
 }
 
@@ -64,16 +66,19 @@ void AFOLDPlayerControllerBase::OnActionInput_Implementation()
 
 void AFOLDPlayerControllerBase::OnCameraMoveInput_Implementation(FVector2D value)
 {
-	FVector moveOffset(0,0,0);
-	moveOffset.X = value.X;
-	moveOffset.Y = value.Y;	
-	PlayerView->Move(moveOffset);
-	CameraMoveInput.Broadcast(value);
+	if (PlayerView)
+	{
+		FVector moveOffset(0,0,0);
+		moveOffset.X = value.X;
+		moveOffset.Y = value.Y;	
+		PlayerView->Move(moveOffset);
+		CameraMoveInput.Broadcast(value);
+	}	
 }
 
 void AFOLDPlayerControllerBase::OnCameraRotateInput_Implementation(float value)
 {
-	GEngine->AddOnScreenDebugMessage(INDEX_NONE,10, FColor::Red, "OnCameraRotateInput");
+	if (PlayerView)
 	PlayerView->SetRotation(value);
 	CameraRotateInput.Broadcast(value);
 }
@@ -144,6 +149,7 @@ void AFOLDPlayerControllerBase::OnFocusedCharacterChanged()
 
 void AFOLDPlayerControllerBase::CycleCharacters()
 {
+	if (selector)
 	selector->SetNext();
 }
 

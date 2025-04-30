@@ -16,9 +16,9 @@ class FALLOUTOLD_API UCharacterConstruction : public UDataAsset
 
 	public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TAssetPtr<UTexture2D> Portrait;
+	TSoftObjectPtr<UTexture2D> Portrait;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TAssetPtr<USkeletalMesh> Mesh;
+	TSoftObjectPtr<USkeletalMesh> Mesh;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText Name;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

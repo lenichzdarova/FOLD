@@ -7,17 +7,17 @@
 
 void UPlayerParty::AddID(FString CharID)
 {	
-	CharactersID.Add(CharID);
+	PartyMembersID.Add(CharID);
 	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 100, FColor::Red, "Add character");
-	Changed.Broadcast(CharactersID);
+	Changed.Broadcast();
 }
 
 void UPlayerParty::RemoveID(FString CharID)
 {
 	if (ContainsID(CharID))
 	{
-		CharactersID.Remove(CharID);
-		Changed.Broadcast(CharactersID);		
+		PartyMembersID.Remove(CharID);
+		Changed.Broadcast();		
 	}
 }
 
@@ -25,43 +25,43 @@ void UPlayerParty::Swap(FString First, FString Second)
 {
 	if (ContainsID(First) && ContainsID(Second))
 	{
-		size_t FirstIndex = CharactersID.Find(First);
-		size_t SecondIndex = CharactersID.Find(Second);
+		size_t FirstIndex = PartyMembersID.Find(First);
+		size_t SecondIndex = PartyMembersID.Find(Second);
 		if (FirstIndex && SecondIndex)
 		{
-			CharactersID.Swap(FirstIndex, SecondIndex);	
+			PartyMembersID.Swap(FirstIndex, SecondIndex);	
 		}
-		Changed.Broadcast(CharactersID);
+		Changed.Broadcast();
 	}	
 }
 
 bool UPlayerParty::ContainsID(FString CharID) const
 {
-	return CharactersID.Contains(CharID);
+	return PartyMembersID.Contains(CharID);
 }
 
-TArray<FString> UPlayerParty::GetParty() const
+TArray<FString> UPlayerParty::GetPartyMembersID() const
 {
-	return CharactersID;
+	return PartyMembersID;
 }
 
-void UPlayerParty::SetParty(TArray<FString> CharIDs)
+void UPlayerParty::SetPartyMembersID(TArray<FString> CharIDs)
 {
-	CharactersID = CharIDs;
-	Changed.Broadcast(CharactersID);
+	PartyMembersID = CharIDs;
+	Changed.Broadcast();
 }
 
 void UPlayerParty::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
 {
 	UObject::GetLifetimeReplicatedProps(OutLifetimeProps);
 	
-	DOREPLIFETIME(UPlayerParty, CharactersID);
+	DOREPLIFETIME(UPlayerParty, PartyMembersID);
 }
 
 void UPlayerParty::OnRep_CharactersID()
 {
 	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 100, FColor::Red, "Add character OnRep_CharactersID");
-	Changed.Broadcast(CharactersID);
+	Changed.Broadcast();
 }
 
 

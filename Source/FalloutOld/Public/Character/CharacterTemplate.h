@@ -13,4 +13,14 @@ UCLASS()
 class FALLOUTOLD_API UCharacterTemplate : public UDataAsset
 {
 	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSoftObjectPtr<UTexture2D> Portrait;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSoftObjectPtr<USkeletalMesh> Mesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FText Name;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FText Description;	
 };
