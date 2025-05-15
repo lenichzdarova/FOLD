@@ -18,16 +18,17 @@ public class FalloutOld : ModuleRules
 			"AIModule",
 			"GridNavigation",
 			"NavigationSystem",
-			"GameplayTags"
+			"GameplayTags",
+			"OnlineSubsystem",
+			"OnlineSubsystemUtils"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] 
 		{ 
-			//"OnlineSubsystemSteam",
-			"OnlineSubsystem" 
+			//"OnlineSubsystemSteam"
 		});
 		
-		DynamicallyLoadedModuleNames.Add("OnlineSubsystemSteam");
+		//DynamicallyLoadedModuleNames.Add("OnlineSubsystemSteam");
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

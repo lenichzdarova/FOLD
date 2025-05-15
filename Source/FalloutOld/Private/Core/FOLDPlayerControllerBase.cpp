@@ -36,7 +36,9 @@ void AFOLDPlayerControllerBase::Initialize()
 	if (GameState)
 	{
 		
-	}	
+	}
+
+	
 }
 
 void AFOLDPlayerControllerBase::Tick(float DeltaSeconds)

@@ -9,8 +9,7 @@
 AFOLDPlayerStateBase::AFOLDPlayerStateBase()
 {
 	bReplicateUsingRegisteredSubObjectList = true;
-	PlayerParty = CreateDefaultSubobject<UPlayerParty>("PlayerParty");
-	AddReplicatedSubObject(PlayerParty);
+	PlayerParty = CreateDefaultSubobject<UPlayerParty>("PlayerParty");	
 }
 
 void AFOLDPlayerStateBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const

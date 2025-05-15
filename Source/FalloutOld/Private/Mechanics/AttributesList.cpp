@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 #include "Mechanics/AttributesList.h"
 
-#include "Types/AttributeStorage.h"
+//#include "Types/AttributeStorage.h"
 
 UAttributesList::UAttributesList()
 {
