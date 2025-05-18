@@ -1,5 +1,8 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 #include "GridNavigationSubsystem.h"
+
+#include <cmath>
+
 #include "NavigationPath.h"
 #include "NavFilters/NavigationQueryFilter.h"
 

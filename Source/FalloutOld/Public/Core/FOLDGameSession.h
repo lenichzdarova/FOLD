@@ -38,10 +38,11 @@ public:
 	FOnFindSessionsCompleteDelegate OnFindSessionsCompleteDelegate;
 	FDelegateHandle OnFindSessionsCompleteDelegateHandle;
 	void OnFindSessionsComplete(bool bWasSuccessful);
+	FOnlineSessionSearch* GetSearchResult(){return SearchSettings.Get();}
 
 	//присоединение к сессии
 public:
-	bool JoinSession(TSharedPtr<const FUniqueNetId> UserId, FName InSessionName, const FOnlineSessionSearchResult& SearchResult);
+	bool JoinSession(const FOnlineSessionSearchResult& SearchResult);
 private:
 	void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
 	FOnJoinSessionCompleteDelegate OnJoinSessionCompleteDelegate;

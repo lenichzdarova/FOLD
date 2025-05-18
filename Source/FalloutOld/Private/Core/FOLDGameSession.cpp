@@ -47,7 +47,7 @@ void AFOLDGameSession::FindSessions()
 			SearchSettings = MakeShareable(new FOnlineSessionSearch());
 			SearchSettings->bIsLanQuery = false;
 			SearchSettings->MaxSearchResults = 100;			
-			SearchSettings->QuerySettings.Set(SEARCH_KEYWORDS, FString("FOLD"), EOnlineComparisonOp::Equals);
+			SearchSettings->QuerySettings.Set(SEARCH_KEYWORDS, FString("FOLD"), EOnlineComparisonOp::Equals);			
 
 			auto LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
 			auto PlayerID = LocalPlayer->GetPreferredUniqueNetId().GetUniqueNetId();
@@ -85,7 +85,7 @@ void AFOLDGameSession::OnFindSessionsComplete(bool bWasSuccessful)
 		}
 	}
 }
-bool AFOLDGameSession::JoinSession(TSharedPtr<const FUniqueNetId> UserId, FName InSessionName, const FOnlineSessionSearchResult& SearchResult)
+bool AFOLDGameSession::JoinSession(const FOnlineSessionSearchResult& InSearchResult)
 {
 	bool bSuccessful = false;	
 	IOnlineSubsystem* OnlineSubsystem = Online::GetSubsystem(GetWorld());    
@@ -93,10 +93,10 @@ bool AFOLDGameSession::JoinSession(TSharedPtr<const FUniqueNetId> UserId, FName 
 	{
 		IOnlineSessionPtr Sessions = OnlineSubsystem->GetSessionInterface();
     
-		if (Sessions.IsValid() && UserId.IsValid())
+		if (Sessions.IsValid())
 		{			
 			OnJoinSessionCompleteDelegateHandle = Sessions->AddOnJoinSessionCompleteDelegate_Handle(OnJoinSessionCompleteDelegate);
-			bSuccessful = Sessions->JoinSession(*UserId, InSessionName, SearchResult);
+			bSuccessful = Sessions->JoinSession(0, NAME_GameSession, InSearchResult);
 		}
 	}
 	return bSuccessful;

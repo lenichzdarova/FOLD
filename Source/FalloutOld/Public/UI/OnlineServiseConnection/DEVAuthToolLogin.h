@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
+#include "Components/ListView.h"
 #include "Components/EditableText.h"
 #include "DEVAuthToolLogin.generated.h"
 
@@ -30,6 +31,8 @@ protected:
 	UButton* FindSessions;
 	UPROPERTY(meta = (BindWidget))
 	UButton* JoinSession;
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
+	UListView* SessionsList;
 
 	UFUNCTION()
 	void OnLoginPressed();
@@ -37,6 +40,9 @@ protected:
 	void OnCreateSessionPressed();
 	UFUNCTION()
 	void OnFindSessionPressed();
+	void OnFindSessionCompleted(bool bWasSuccessful);
 	UFUNCTION()
 	void OnJoinSessionPressed();
+
+	FDelegateHandle OnFindSessionsCompletedDelegateHandle;
 };
