@@ -20,7 +20,9 @@ public class FalloutOld : ModuleRules
 			"NavigationSystem",
 			"GameplayTags",
 			"OnlineSubsystem",
-			"OnlineSubsystemUtils"
+			"OnlineSubsystemUtils", 
+			"GameplayAbilities",
+			"GameplayTasks"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] 
