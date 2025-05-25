@@ -16,7 +16,7 @@ ACharacterBase::ACharacterBase(const FObjectInitializer& ObjectInitializer) : Su
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
-	AbilitySystemComponent = CreateDefaultSubobject<UFOLDAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent = CreateDefaultSubobject<UFOLDAbilitySystemComponent>(TEXT("AbilitySystemComponent"));	
 	AttributeSet = CreateDefaultSubobject<UHealthAttributeSet>(TEXT("AttributeSet"));
 	AbilitySystemComponent->AddAttributeSetSubobject<UHealthAttributeSet>(AttributeSet);
 }

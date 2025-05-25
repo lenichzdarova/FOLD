@@ -47,9 +47,10 @@ protected:
 
 	//ability System
 protected:
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category= "Abilities")
-	UFOLDAbilitySystemComponent* AbilitySystemComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Abilities", meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<UFOLDAbilitySystemComponent> AbilitySystemComponent;
 public:
+	
 	UPROPERTY()
 	UHealthAttributeSet* AttributeSet = nullptr;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;

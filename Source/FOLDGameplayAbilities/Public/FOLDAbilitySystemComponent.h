@@ -7,7 +7,7 @@
 #include "FOLDAbilitySystemComponent.generated.h"
 
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS( BlueprintType, meta=(BlueprintSpawnableComponent))
 class FOLDGAMEPLAYABILITIES_API UFOLDAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()

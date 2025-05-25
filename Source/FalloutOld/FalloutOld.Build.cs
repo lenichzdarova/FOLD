@@ -22,7 +22,8 @@ public class FalloutOld : ModuleRules
 			"OnlineSubsystem",
 			"OnlineSubsystemUtils", 
 			"GameplayAbilities",
-			"GameplayTasks"
+			"GameplayTasks",
+			"FOLDGameplayAbilities"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] 
