@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+//Вспомогательный класс сериализации UObject
 class Serializer
 {
 public:

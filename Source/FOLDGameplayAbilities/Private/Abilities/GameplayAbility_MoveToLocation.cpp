@@ -7,6 +7,7 @@
 #include "AIController.h"
 #include "GameplayTagsManager.h"
 #include "Abilities/Tasks/AbilityTask_MoveToLocation.h"
+#include "Tasks/GameplayTask_Move.h"
 
 UGameplayAbility_MoveToLocation::UGameplayAbility_MoveToLocation()
 {
@@ -30,21 +31,21 @@ void UGameplayAbility_MoveToLocation::ActivateAbility(const FGameplayAbilitySpec
 		EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 		return;
 	}
-
 	
 	if (!IsValid(TriggerEventData->Target))
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "no valid target");	
 		return;
 	}
+	auto MoveTask = UGameplayTask::NewTask<UGameplayTask_Move>(this);
+	MoveTask->OnTaskEnd.AddDynamic(this, &UGameplayAbility_MoveToLocation::OnMoveTaskEnd);
+	MoveTask->SetDestination(TriggerEventData->Target->GetActorLocation());
+	MoveTask->ReadyForActivation();
 	
-	
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, ActorInfo->AvatarActor.Get()->GetName());	
 }
 
-void UGameplayAbility_MoveToLocation::EndAbility(const FGameplayAbilitySpecHandle Handle,
-	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
-	bool bReplicateEndAbility, bool bWasCancelled)
+void UGameplayAbility_MoveToLocation::OnMoveTaskEnd()
 {
-	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Move task completed, ability end");
+	EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfo(), true, false);
 }

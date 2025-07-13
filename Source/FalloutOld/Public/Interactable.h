@@ -3,11 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemInterface.h"
 #include "UObject/Interface.h"
 #include "Interactable.generated.h"
 
 // This class does not need to be modified.
-UINTERFACE(BlueprintType)
+UINTERFACE(MinimalAPI, BlueprintType)
 class UInteractable : public UInterface
 {
 	GENERATED_BODY()
@@ -22,6 +23,6 @@ class FALLOUTOLD_API IInteractable
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void Interact(AActor* interactor);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Interact(const TScriptInterface<IAbilitySystemInterface>& Interactor);	
 };

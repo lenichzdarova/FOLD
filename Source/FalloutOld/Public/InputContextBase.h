@@ -1,10 +1,8 @@
 ﻿#pragma once
 
-#include "ActionBase.h"
 #include "Interfaces/InputProvider.h"
-#include "Core/CharacterBase.h"
+#include "GameplayActors/CharacterBase.h"
 #include "UI/WidgetCursor.h"
-#include "ActionHandler.h"
 #include "InputContextBase.generated.h"
 
 
@@ -20,15 +18,12 @@ protected:
 	UPROPERTY()
 	UWidgetCursor* CursorWidget;
 	UPROPERTY()
-	UWorld* World;
-	UPROPERTY()
-	TObjectPtr<UActionHandler> ActionHandler;
-	ActionBase* currentAction = nullptr;
+	UWorld* World;	
  	
 public:
-	virtual void Initialize(IInputProvider*, ACharacterBase*, UWidgetCursor*, UWorld*, UActionHandler*);	
+	virtual void Initialize(IInputProvider*, ACharacterBase*, UWidgetCursor*, UWorld*);	
 	virtual void SetCursorData(FHitResult){}
-	virtual void OnLeftMouseButton(){};
+	virtual void OnLeftMouseButton(FHitResult InHit){};
 
 protected:	
 	virtual void BindInputEvents(IInputProvider*){}

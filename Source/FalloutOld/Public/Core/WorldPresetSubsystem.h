@@ -8,7 +8,8 @@
 #include "WorldPresetSubsystem.generated.h"
 
 /**
- * 
+ * Подсистема хранящая данные об уровнях
+ * Пресеты уровней и информация об Акторах.
  */
 UCLASS()
 class FALLOUTOLD_API UWorldPresetSubsystem : public UGameInstanceSubsystem

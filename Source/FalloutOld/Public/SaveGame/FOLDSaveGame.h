@@ -8,7 +8,7 @@
 #include "FOLDSaveGame.generated.h"
 
 /**
- * 
+ * Сейв файл
  */
 UCLASS()
 class FALLOUTOLD_API UFOLDSaveGame : public USaveGame

@@ -9,11 +9,10 @@ class UInputContextDefault : public UInputContextBase
 GENERATED_BODY()
 	
 protected:	
-	virtual void BindInputEvents(IInputProvider*) override;
-	//virtual void OnLeftMouseButton(FHitResult);
+	virtual void BindInputEvents(IInputProvider*) override;	
 	
 public:	
-	virtual void Initialize(IInputProvider*, ACharacterBase*, UWidgetCursor*, UWorld*, UActionHandler*) override;
+	virtual void Initialize(IInputProvider*, ACharacterBase*, UWidgetCursor*, UWorld*) override;
 	virtual void SetCursorData(FHitResult) override;	
-	virtual void OnLeftMouseButton() override;
+	virtual void OnLeftMouseButton(FHitResult InHit) override;
 };

@@ -9,7 +9,7 @@
 #include "PersistentDataSubsystem.generated.h"
 
 /**
- * 
+ * система сохранения и загрузки
  */
 UCLASS()
 class FALLOUTOLD_API UPersistentDataSubsystem : public UGameInstanceSubsystem

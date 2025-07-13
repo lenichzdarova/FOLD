@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
-#include "Core/CharacterBase.h"
+#include "GameplayActors/CharacterBase.h"
 #include "Interfaces/InputReceiver.h"
 #include "WidgetCharacterSheet.generated.h"
 

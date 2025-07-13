@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "Camera/CameraComponent.h"
-#include "Core/CharacterBase.h"
+#include "GameplayActors/CharacterBase.h"
 #include "UI/PawnShortInfo.h"
 
 class ScreenInfo

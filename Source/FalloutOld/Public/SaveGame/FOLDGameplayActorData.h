@@ -5,7 +5,7 @@
 #include "FOLDGameplayActorData.generated.h"
 
 
-/** Данные сейва актора */
+/** Сериализованные данные актора */
 USTRUCT(BlueprintType)
 struct FALLOUTOLD_API FFOLDGameplayActorData
 {

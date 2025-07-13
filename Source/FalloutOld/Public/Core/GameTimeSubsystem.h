@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core/CharacterBase.h"
+#include "GameplayActors/CharacterBase.h"
 
 #include "GameTimeSubsystem.generated.h"
 

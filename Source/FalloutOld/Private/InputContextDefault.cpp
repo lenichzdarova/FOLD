@@ -1,12 +1,9 @@
 ﻿#include "InputContextDefault.h"
-#include "ActionInteract.h"
-#include "ActionMove.h"
-#include "Interactable.h"
+#include "AbilitySystemBlueprintLibrary.h"
 
-void UInputContextDefault::Initialize(IInputProvider* inputProvider, ACharacterBase* activeCharacter, UWidgetCursor* cursorWidget, UWorld* world
-                                      , UActionHandler* actionHandler)	
+void UInputContextDefault::Initialize(IInputProvider* inputProvider, ACharacterBase* activeCharacter, UWidgetCursor* cursorWidget, UWorld* world)	
 {
-	Super::Initialize(inputProvider, activeCharacter, cursorWidget, world, actionHandler);
+	Super::Initialize(inputProvider, activeCharacter, cursorWidget, world);
 	BindInputEvents(inputProvider);	
 }
 
@@ -15,45 +12,41 @@ void UInputContextDefault::BindInputEvents(IInputProvider* value)
 	
 }
 
-void UInputContextDefault::OnLeftMouseButton()
+void UInputContextDefault::OnLeftMouseButton(FHitResult InHit)
 {
-	if(currentAction)
+	if (!InHit.bBlockingHit || !ActiveCharacter ) return;	
+	IAbilitySystemInterface* AbilityInterface = Cast<IAbilitySystemInterface>(ActiveCharacter);
+	if (!AbilityInterface) return;
+	UAbilitySystemComponent* AbilityComponent = AbilityInterface->GetAbilitySystemComponent();
+	FGameplayTag AbilityTag;
+	if(InHit.GetActor()->Implements<UAbilitySystemInterface>())
 	{
-		ActionHandler->ExecuteAction(ActiveCharacter, currentAction);		
-		currentAction = nullptr;
-	}	
+		AbilityTag = FGameplayTag::RequestGameplayTag("GameplayAbility.Ability.Interact");
+	}		
+	else
+	{			
+		AbilityTag = FGameplayTag::RequestGameplayTag("GameplayAbility.Ability.Move");	
+	}		
+	
+	FGameplayEventData EventData;
+	EventData.Instigator = ActiveCharacter;
+	EventData.Target = InHit.GetActor();	
+	AbilityComponent->HandleGameplayEvent(AbilityTag, &EventData);
 }
 
 void UInputContextDefault::SetCursorData(FHitResult hit)
-{	
-	if(currentAction)
-	{
-		delete currentAction;
-		currentAction = nullptr;
-	}
+{		
 	if(hit.bBlockingHit)
 	{		
 		AActor* actor = hit.GetActor();		
-		if(actor->IsA(ACharacterBase::StaticClass()))
+		if(actor && actor->Implements<UAbilitySystemInterface>())
 		{
-			if(actor != ActiveCharacter)
-			{
-				CursorWidget->SetDialog();				
-				currentAction = new ActionInteract(World,ActiveCharacter, actor);
-			}
-			GEngine->AddOnScreenDebugMessage(11, 5,FColor::Green, "talk");
-		}
-		else if(actor->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
-		{
-			CursorWidget->SetUse();
-			currentAction = new ActionInteract(World,ActiveCharacter, actor);
-			GEngine->AddOnScreenDebugMessage(11, 5,FColor::Green, "Interact");
-		}
+			//сдесь мы запрашиваем дефолтное действие у актора и меняем курсор под него
+			//CursorWidget->SetDialog();	синтаксис обращения к курсору
+		}		
 		else
-		{
-			CursorWidget->SetDefault();
-			currentAction = new ActionMove(World,ActiveCharacter, hit.Location);
-			GEngine->AddOnScreenDebugMessage(11, 5,FColor::Green, "Move");
+		{			
+			CursorWidget->SetDefault();			
 		}		
 	}
 	else

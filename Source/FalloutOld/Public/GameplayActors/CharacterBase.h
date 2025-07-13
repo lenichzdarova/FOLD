@@ -16,7 +16,7 @@
 #include "CharacterBase.generated.h"
 
 UCLASS(Blueprintable, Abstract)
-class FALLOUTOLD_API ACharacterBase : public ACharacter, public INavTargetActor, public IInteractable, public IStorableActor,
+class FALLOUTOLD_API ACharacterBase : public ACharacter, public IStorableActor, public IInteractable,
 public IAbilitySystemInterface
 {
 	GENERATED_BODY()
@@ -37,7 +37,6 @@ public:
 	UCharacterProfile* GetCharacterProfile() const;	
 	
 	virtual void Tick(float DeltaTime) override;	
-	virtual bool IsCellCenterOriented_Implementation() override;
 
 protected:
 	// Called when the game starts or when spawned
@@ -53,7 +52,7 @@ public:
 	
 	UPROPERTY()
 	UHealthAttributeSet* AttributeSet = nullptr;
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;	
 };
 
 

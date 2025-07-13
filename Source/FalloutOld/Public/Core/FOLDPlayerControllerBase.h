@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "PlayerView.h"
-#include "Core/CharacterBase.h"
+#include "GameplayActors/CharacterBase.h"
 #include "CursorController.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputContextBase.h"
@@ -43,10 +43,6 @@ protected:
 	UInputContextBase* inputContext = nullptr;
 	UPROPERTY()
 	TObjectPtr<UPlayerParty> party = nullptr;
-	UPROPERTY()
-	TObjectPtr<USelector> selector = nullptr;
-	UPROPERTY()
-	TObjectPtr<UActionHandler> ActionHandler;
 		
 	
 #pragma region InputReceiver

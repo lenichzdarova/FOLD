@@ -36,9 +36,7 @@ void AFOLDPlayerControllerBase::Initialize()
 	if (GameState)
 	{
 		
-	}
-
-	
+	}	
 }
 
 void AFOLDPlayerControllerBase::Tick(float DeltaSeconds)
@@ -50,7 +48,7 @@ void AFOLDPlayerControllerBase::Tick(float DeltaSeconds)
 		FVector location, direction;
 		FCollisionQueryParams params;
 		params.AddIgnoredActor(selector->GetFocusedCharacter());		
-		DeprojectMousePositionToWorld(location,direction);
+		DeprojectMousePositionToWorld(location,direction);		
 		GetWorld()->LineTraceSingleByChannel(hit, location, location + direction*10000.f, ECC_Visibility,params);		
 		inputContext->SetCursorData(hit);		
 	}	
@@ -61,8 +59,12 @@ void AFOLDPlayerControllerBase::Tick(float DeltaSeconds)
 void AFOLDPlayerControllerBase::OnActionInput_Implementation()
 {
 	if(inputContext)
-	{
-		inputContext->OnLeftMouseButton();
+	{		
+		FHitResult Hit;		
+		if (GetHitResultUnderCursor(ECC_Visibility, true, Hit))
+		{
+			inputContext->OnLeftMouseButton(Hit);
+		}		
 	}		
 }
 
@@ -125,12 +127,6 @@ UEnhancedInputLocalPlayerSubsystem* AFOLDPlayerControllerBase::GetEnhancedInputS
 	return ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 }
 
-/*
-UWorldTravelHandler* APlayerControllerBase::GetTravelHandler()
-{
-	return WorldTravelHandler;
-}*/
-
 void AFOLDPlayerControllerBase::SetInputContext(UInputContextBase* context)
 {	
 	inputContext = context;	
@@ -139,13 +135,12 @@ void AFOLDPlayerControllerBase::SetInputContext(UInputContextBase* context)
 void AFOLDPlayerControllerBase::SetInputContextDefault()
 {
 	auto context =  NewObject<UInputContextDefault>();
-	context->Initialize(this, selector->GetFocusedCharacter(),CursorWidget, GetWorld(), ActionHandler);	
+	context->Initialize(this, selector->GetFocusedCharacter(),CursorWidget, GetWorld());	
 	SetInputContext(context);
 }
 
 void AFOLDPlayerControllerBase::OnFocusedCharacterChanged()
 {
-	//Possess(selector->GetFocusedCharacter());
 	SetInputContextDefault();	
 }
 

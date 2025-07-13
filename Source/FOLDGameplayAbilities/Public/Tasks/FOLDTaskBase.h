@@ -5,13 +5,13 @@
 #include "CoreMinimal.h"
 #include "GameplayTask.h"
 #include "TaskCostInterface.h"
-#include "GameplayTaskWithCostBase.generated.h"
+#include "FOLDTaskBase.generated.h"
 
 /**
  * 
  */
 UCLASS(Abstract)
-class FOLDGAMEPLAYABILITIES_API UGameplayTaskWithCostBase : public UGameplayTask, public ITaskCostInterface
+class FOLDGAMEPLAYABILITIES_API UFOLDTaskBase : public UGameplayTask, public ITaskCostInterface
 {
 	GENERATED_BODY()
 

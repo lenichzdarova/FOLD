@@ -15,7 +15,7 @@ class UStorableActor : public UInterface
 };
 
 /**
-* 
+* Интерфейс для инициализации игрового актора загруженными данными или получения от него данных для сохранения
 */
 class FALLOUTOLD_API IStorableActor
 {

@@ -8,7 +8,8 @@
 #include "WorldPreset.generated.h"
 
 /**
- * 
+ * Класс данных уровней, содержит список актуальных для уровня акторов.
+ * Используется системой сохранения и загрузки для инициализации уровня.
  */
 UCLASS()
 class FALLOUTOLD_API UWorldPreset : public UObject

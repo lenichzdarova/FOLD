@@ -5,27 +5,33 @@
 #include "CoreMinimal.h"
 #include "AITypes.h"
 #include "GameplayTask.h"
-#include "GameplayTaskWithCostBase.h"
+#include "FOLDTaskBase.h"
 #include "NavigationPath.h"
+#include "Navigation/PathFollowingComponent.h"
 #include "GameplayTask_Move.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class FOLDGAMEPLAYABILITIES_API UGameplayTask_Move : public UGameplayTaskWithCostBase
+class FOLDGAMEPLAYABILITIES_API UGameplayTask_Move : public UFOLDTaskBase
 {
 	GENERATED_BODY()
 
+	UGameplayTask_Move();
 private:
 	UPROPERTY()
 	TObjectPtr<UNavigationPath> Path;
 	FVector Destination;
-	FAIMoveRequest MoveRequest;	
+	FAIMoveRequest MoveRequest;
+
+	void OnMoveComplete(FAIRequestID Request, const FPathFollowingResult& Result);	
 
 public:
 	virtual void Activate() override;
-	void SetDestination(FVector InDestionation);
+	void SetDestination(FVector InDestination);
 	virtual float GetCost_Implementation() override;	
-	virtual bool ApplyCost_Implementation() override;	
+	virtual bool ApplyCost_Implementation() override;
+
+	FGenericGameplayTaskDelegate OnTaskEnd;
 };

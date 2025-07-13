@@ -1,8 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Core/CharacterBase.h"
-#include "ActionHandler.h"
+#include "GameplayActors//CharacterBase.h"
 #include "Core/FOLDActorsDataSubsystem.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Navigation/CrowdFollowingComponent.h"
@@ -48,11 +47,6 @@ void ACharacterBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);	
 }
 
-bool ACharacterBase::IsCellCenterOriented_Implementation()
-{
-	return true;
-}
-
 inline void ACharacterBase::SetupGameplayData()
 {	
 	UGameInstance* GameInstance = GetGameInstance();
@@ -74,6 +68,7 @@ UAbilitySystemComponent* ACharacterBase::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
 }
+
 
 
 

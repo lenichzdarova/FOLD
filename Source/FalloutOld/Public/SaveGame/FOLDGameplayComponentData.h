@@ -7,7 +7,7 @@
 #include "FOLDGameplayComponentData.generated.h"
 
 /**
- * 
+ * сериализованные данные компонента
  */
 USTRUCT()
 struct  FALLOUTOLD_API FFOLDGameplayComponentData
