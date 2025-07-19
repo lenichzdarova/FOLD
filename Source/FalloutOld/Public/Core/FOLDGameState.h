@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Party.h"
 #include "PlayerParty.h"
 #include "GameFramework/GameStateBase.h"
 #include "FOLDGameState.generated.h"
@@ -15,12 +14,5 @@ DECLARE_MULTICAST_DELEGATE(FOnPlayersCountChange)
 UCLASS()
 class FALLOUTOLD_API AFOLDGameState : public AGameStateBase
 {
-	GENERATED_BODY()
-
-public:	
-
-	virtual void AddPlayerState(APlayerState* PlayerState) override;
-	virtual void RemovePlayerState(APlayerState* PlayerState) override;
-
-	FOnPlayersCountChange OnPlayersCountChange;
+	GENERATED_BODY()	
 };

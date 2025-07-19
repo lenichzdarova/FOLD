@@ -3,9 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "PartySidePanel/PartySidePanelView.h"
-#include "WidgetCharacterSheet.h"
 #include "GameFramework/HUD.h"
+#include "PartySidePanel/PartyView.h"
+#include "WidgetCharacterSheet.h"
 #include "HUDBase.generated.h"
 
 /**
@@ -21,5 +21,5 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSubclassOf<UWidgetCharacterSheet> CharacterSheet;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TSubclassOf<UPartySidePanelView> PartyPanel;	
+	TSubclassOf<UPartyView> PartyPanel;	
 };

@@ -65,21 +65,9 @@ protected:
 protected:
 	UEnhancedInputLocalPlayerSubsystem* GetEnhancedInputSubsystem();	
 	
-	//UFUNCTION(BlueprintCallable)
-	//void Initialize(TSubclassOf<UInputMapper> Input);
 	UFUNCTION(BlueprintCallable)
-	void Initialize();
+	void Initialize();	
 	
-	//UFUNCTION()
-	//UWorldTravelHandler* GetTravelHandler();
-	
-	//void HUDInputBridging(TScriptInterface<IHUDStateSwitcher> HUDStateSwitcher, UInputMapper* inputMapper);
 	void SetInputContext(UInputContextBase*);
 	void SetInputContextDefault();	
-
-	UFUNCTION()
-	void OnFocusedCharacterChanged();
-
-	UFUNCTION(BlueprintCallable)
-	void CycleCharacters();
 };

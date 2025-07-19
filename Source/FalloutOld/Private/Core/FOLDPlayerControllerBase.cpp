@@ -14,8 +14,7 @@ void AFOLDPlayerControllerBase::Initialize()
 	{
 		auto playerView = GetWorld()->SpawnActor<APlayerView>(FVector::Zero(), FRotator::ZeroRotator);
 		PlayerView = playerView;
-		SetViewTarget(PlayerView);		
-
+		SetViewTarget(PlayerView);
 		//setup cursor
 		auto widget = CreateWidget(this, CursorWidgetType);
 		CursorWidget = Cast<UWidgetCursor>(widget);
@@ -47,7 +46,7 @@ void AFOLDPlayerControllerBase::Tick(float DeltaSeconds)
 		FHitResult hit;
 		FVector location, direction;
 		FCollisionQueryParams params;
-		params.AddIgnoredActor(selector->GetFocusedCharacter());		
+		//params.AddIgnoredActor(selector->GetFocusedCharacter());		
 		DeprojectMousePositionToWorld(location,direction);		
 		GetWorld()->LineTraceSingleByChannel(hit, location, location + direction*10000.f, ECC_Visibility,params);		
 		inputContext->SetCursorData(hit);		
@@ -134,20 +133,8 @@ void AFOLDPlayerControllerBase::SetInputContext(UInputContextBase* context)
 
 void AFOLDPlayerControllerBase::SetInputContextDefault()
 {
-	auto context =  NewObject<UInputContextDefault>();
-	context->Initialize(this, selector->GetFocusedCharacter(),CursorWidget, GetWorld());	
+	auto context =  NewObject<UInputContextDefault>();		
 	SetInputContext(context);
-}
-
-void AFOLDPlayerControllerBase::OnFocusedCharacterChanged()
-{
-	SetInputContextDefault();	
-}
-
-void AFOLDPlayerControllerBase::CycleCharacters()
-{
-	if (selector)
-	selector->SetNext();
 }
 
 
