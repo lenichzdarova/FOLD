@@ -13,9 +13,7 @@ UCLASS()
 class FALLOUTOLD_API AFOLDGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-
-	virtual void PostLogin(APlayerController* NewPlayer) override;
-	virtual void StartPlay() override;
+	
 	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
 	
 	void SpawnPlayerGroup();	

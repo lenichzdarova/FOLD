@@ -40,22 +40,7 @@
 			"TargetAllowList": [
 				"Editor"
 			]
-		},
-		{
-			"Name": "OnlineSubsystemGooglePlay",
-			"Enabled": false,
-			"SupportedTargetPlatforms": [
-				"Android"
-			]
-		},
-		{
-			"Name": "OnlineSubsystemIOS",
-			"Enabled": false,
-			"SupportedTargetPlatforms": [
-				"IOS",
-				"TVOS"
-			]
-		},
+		},			
 		{
 			"Name": "OnlineSubsystemNull",
 			"Enabled": false
@@ -71,6 +56,11 @@
 		{
 			"Name": "GameplayAbilities",
 			"Enabled": true
+		},
+		{
+			"Name": "GameplayMessageRouter",
+			"Enabled": true
 		}
+		
 	]
 }

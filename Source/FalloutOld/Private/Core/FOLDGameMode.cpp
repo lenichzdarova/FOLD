@@ -4,17 +4,7 @@
 
 
 
-void AFOLDGameMode::PostLogin(APlayerController* NewPlayer)
-{
-	Super::PostLogin(NewPlayer);
-	GEngine->AddOnScreenDebugMessage(-1,20.0f, FColor::Red, "AFOLDGameMode::PostLogin");		
-}
 
-void AFOLDGameMode::StartPlay()
-{
-	Super::StartPlay();
-	GEngine->AddOnScreenDebugMessage(-1,20.0f, FColor::Red, "AFOLDGameMode::StartPlay");	
-}
 
 void AFOLDGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
 {

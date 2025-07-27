@@ -9,7 +9,7 @@
 #include "FOLDActorsDataSubsystem.generated.h"
 
 /**
- * 
+ * Подсистема хранит данные игровых сущностей.
  */
 UCLASS()
 class FALLOUTOLD_API UFOLDActorsDataSubsystem : public UGameInstanceSubsystem
@@ -34,6 +34,9 @@ public:
 	UFUNCTION()
 	void SetGameplayData(TMap<FString, UObject*> Value);
 
+	/*
+	 * Если в хранилище нет данных актора с указанным ID, вернет nullptr
+	*/
 	template <class T>
 	T* GetActorGameplayData(FString ID) const
 	{
@@ -41,7 +44,12 @@ public:
 		auto GameplayDataUObject = *ActorsGameplayData.Find(ID);		
 		return Cast<T>(GameplayDataUObject);
 	}
-	
+
+	/*
+	 * Функция создает объект для хранения данных игровой сущьности
+	 * Подсистема является Outer объекта, чтобы его жизненный цикл не зависел
+	 * от игрового актора и объект не был уничтожен, например, при переходе на другой уровень.
+	*/
 	template <typename T> requires std::derived_from<T, UGameplayDataObjectBase>
 	T* GetEmptyDataObject(FString ID)
 	{
