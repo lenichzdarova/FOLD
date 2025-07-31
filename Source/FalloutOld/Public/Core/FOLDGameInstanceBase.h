@@ -4,8 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "PlayerParty.h"
-#include "SaveGame/FOLDGameplayActorData.h"
 #include "FOLDGameInstanceBase.generated.h"
 
 /**
@@ -14,5 +12,6 @@
 UCLASS()
 class FALLOUTOLD_API UFOLDGameInstanceBase : public UGameInstance
 {
-	GENERATED_BODY()			
+	GENERATED_BODY()
+	
 };

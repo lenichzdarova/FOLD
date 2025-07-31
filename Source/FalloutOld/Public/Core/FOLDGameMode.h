@@ -15,7 +15,8 @@ class FALLOUTOLD_API AFOLDGameMode : public AGameModeBase
 	GENERATED_BODY()
 	
 	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
-	
+	virtual void PostSeamlessTravel() override;
+	void ConfigureLevelAfterLoad();
 	void SpawnPlayerGroup();	
 };
 

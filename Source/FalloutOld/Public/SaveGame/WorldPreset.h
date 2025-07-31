@@ -3,29 +3,22 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FOLDGameplayActorData.h"
 #include "UObject/Object.h"
 #include "WorldPreset.generated.h"
 
 /**
- * Класс данных уровней, содержит список актуальных для уровня акторов.
- * Используется системой сохранения и загрузки для инициализации уровня.
+ * Структура с данными уровня. Содержит данные применяемые при загрузке уровня
  */
-UCLASS()
-class FALLOUTOLD_API UWorldPreset : public UObject
+
+USTRUCT()
+struct FALLOUTOLD_API FWorldPreset
 {
 	GENERATED_BODY()
 
 	UPROPERTY(SaveGame)
-	TSet<FString> GameplayActorsID;
-
-public:
-	TSet<FString> GetWorldActorsID() const;	
-	bool ContainsID(const FString ActorID) const;	
-	void SetGameplayActors(TSet<FString>);
-	void AddID(const FString ActorID);
-	void RemoveID(const FString ActorID);
-	void Clear();
+	FDateTime LastTimeVisited;
+	UPROPERTY(SaveGame)
+	TSet<FString> GameplayActorsID;	
 };
 
 

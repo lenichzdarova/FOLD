@@ -16,7 +16,11 @@ class FALLOUTOLD_API UFOLDSaveGame : public USaveGame
 	GENERATED_BODY()
 
 	UPROPERTY()
-	TMap<FString, UWorldPreset*> MapsData;
+	FName CurrentLevel;
 	UPROPERTY()
-	TMap<FString, UObject*> CharactersData;
+	FDateTime DateTime;	
+	UPROPERTY()
+	TMap<FString, FWorldPreset> MapsData;
+	UPROPERTY()
+	TMap<FString, FFOLDGameplayActorData> ActorsData;
 };

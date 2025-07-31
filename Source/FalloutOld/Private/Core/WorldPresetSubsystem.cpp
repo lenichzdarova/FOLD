@@ -15,41 +15,47 @@ void UWorldPresetSubsystem::InitializeWorld(UWorld* World)
 	}	
 }
 
-void UWorldPresetSubsystem::ApplyPresetToWorld(UWorld* World, const UWorldPreset* Preset) const
+void UWorldPresetSubsystem::ApplyPresetToWorld(UWorld* World, const FWorldPreset& Preset) const
 {
-	TSet<FString> StoredActorsID = Preset->GetWorldActorsID();	
+	TSet<FString> ActorsIDToLoad = Preset.GameplayActorsID;
 	if (World)
 	{
 		FActorIterator It(World);
 		for (;It; ++It)
 		{
 			AActor* Actor = *It;
-			if (Actor->Implements<UStorableActor>())
+			if (IStorableActor* StorableActor = Cast<IStorableActor>(Actor))
 			{
 				// ЗАТЫЧКА ПОКА НЕТ ФУНКЦИОНАЛА ID
 				FString ID = Actor->GetName();
-				if (Preset->ContainsID(ID))
-				{
-					IStorableActor* StorableActor = Cast<IStorableActor>(Actor);
-					if (ActorsData.Contains(ID))
-					{
-						StorableActor->InitWithStoredData(*ActorsData.Find(ID));
+				if (ActorsIDToLoad.Contains(ID))
+				{				
+					if (ActorsLoadConfig.Contains(ID))
+					{						
+						StorableActor->InitWithStoredData(*ActorsLoadConfig.Find(ID));
 					}
-					
-					StoredActorsID.Remove(ID);
+					//удаляем ID, чтобы в конце остался список недефолтных для карты акторов для загрузки
+					ActorsIDToLoad.Remove(ID);
 				}
 				else
 				{
+					/*
+					 *если актора нет в списке, он удаляется с карты. Нужно для очистки карты от акторов
+					 *которые присутствуеют на карте по умолчанию
+					 */
 					Actor->Destroy();
 				}
 			}						
 		}
-		if (!StoredActorsID.IsEmpty())
+		/*
+		 *тут спавним и инициализируем акторов, которые были добавлены на карту динамически в процессе игры
+		 */
+		if (!ActorsIDToLoad.IsEmpty())
 		{
-			auto Iter = StoredActorsID.CreateIterator();
+			auto Iter = ActorsIDToLoad.CreateIterator();
 			for (;Iter; ++Iter)
 			{
-				const FFOLDGameplayActorData& ActorData = *ActorsData.Find(*Iter);				
+				const FFOLDGameplayActorData& ActorData = *ActorsLoadConfig.Find(*Iter);				
 				AActor* SpawnedActor = World->SpawnActor(ActorData.ActorSubtype);
 				IStorableActor* StorableActor = Cast<IStorableActor>(SpawnedActor);
 				StorableActor->InitWithStoredData(ActorData);
@@ -58,9 +64,9 @@ void UWorldPresetSubsystem::ApplyPresetToWorld(UWorld* World, const UWorldPreset
 	}	
 }
 
-UWorldPreset* UWorldPresetSubsystem::MakeWorldPreset(UWorld* World)
+void UWorldPresetSubsystem::MakeWorldPreset(UWorld* World)
 {
-	UWorldPreset* Preset = NewObject<UWorldPreset>(this);
+	FWorldPreset* Preset = NewObject<FWorldPreset>(this);
 	if (World)
 	{
 		FActorIterator It(World);
@@ -82,12 +88,12 @@ UWorldPreset* UWorldPresetSubsystem::MakeWorldPreset(UWorld* World)
 	return Preset;
 }
 
-UWorldPreset* UWorldPresetSubsystem::GetPresetContainsActor(FString ActorID)
+FWorldPreset& UWorldPresetSubsystem::GetPresetContainsActor(FString ActorID)
 {	
 	auto iterator = Presets.CreateIterator();
 	for (;iterator; ++iterator)
 	{
-		UWorldPreset* Preset = iterator.Value();
+		FWorldPreset* Preset = iterator.Value();
 		if (Preset->ContainsID(ActorID))
 		{
 			return Preset;

@@ -16,6 +16,8 @@ struct FALLOUTOLD_API FFOLDGameplayActorData
 	UPROPERTY(SaveGame)
 	FTransform Transform;
 	UPROPERTY(SaveGame)
+	FRotator ControlRotator;
+	UPROPERTY(SaveGame)
 	TArray<uint8> SerializedData;
 	UPROPERTY(SaveGame)
 	TArray<FFOLDGameplayComponentData> Components;	
