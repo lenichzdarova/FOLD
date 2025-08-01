@@ -7,7 +7,6 @@
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"
 #include "Components/ProgressBar.h"
-#include "Mechanics/CharacterProfile.h"
 #include "CharacterPortraitView.generated.h"
 
 /**

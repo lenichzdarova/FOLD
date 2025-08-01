@@ -64,11 +64,11 @@ void UWorldPresetSubsystem::ApplyPresetToWorld(UWorld* World, const FWorldPreset
 	}	
 }
 
-void UWorldPresetSubsystem::MakeWorldPreset(UWorld* World)
-{
-	FWorldPreset* Preset = NewObject<FWorldPreset>(this);
+void UWorldPresetSubsystem::CollectPresetFromWorld(UWorld* World)
+{	
 	if (World)
 	{
+		FWorldPreset Preset;
 		FActorIterator It(World);
 		for (;It; ++It)
 		{			
@@ -76,30 +76,17 @@ void UWorldPresetSubsystem::MakeWorldPreset(UWorld* World)
 			if (Actor->Implements<UStorableActor>())
 			{				
 				//ЗАТЫЧКА ВМЕСТО ID
-				FFOLDGameplayActorData data;
+				FFOLDGameplayActorData data;				
 				FString ID = Actor->GetName();
+				
 				IStorableActor* StorableActor = Cast<IStorableActor>(Actor);
 				StorableActor->CollectStorableData(data);
-				ActorsData.Add(ID, data);
-				Preset->AddID(ID);
+				ActorsLoadConfig.Add(ID, data);
+				Preset.GameplayActorsID.Add(ID);
 			}
 		}
-	}	
-	return Preset;
-}
-
-FWorldPreset& UWorldPresetSubsystem::GetPresetContainsActor(FString ActorID)
-{	
-	auto iterator = Presets.CreateIterator();
-	for (;iterator; ++iterator)
-	{
-		FWorldPreset* Preset = iterator.Value();
-		if (Preset->ContainsID(ActorID))
-		{
-			return Preset;
-		}
-	}
-	return nullptr;
+		Presets.Add(World->GetName(), Preset);
+	}		
 }
 
 

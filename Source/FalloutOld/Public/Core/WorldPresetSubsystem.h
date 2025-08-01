@@ -26,8 +26,7 @@ class FALLOUTOLD_API UWorldPresetSubsystem : public UGameInstanceSubsystem
 public:
 	void InitializeWorld(UWorld* World);				
 	void ApplyPresetToWorld(UWorld* World, const FWorldPreset& Preset) const;
-	void MakeWorldPreset(UWorld* World);
-	FWorldPreset& GetPresetContainsActor(FString ActorID);
+	void CollectPresetFromWorld(UWorld* World);	
 };
 
 

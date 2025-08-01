@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Mechanics/CharacterProfile.h"
 #include "UObject/Object.h"
 #include "CharacterPortraitViewModel.generated.h"
 
@@ -19,8 +18,7 @@ class FALLOUTOLD_API UCharacterPortraitViewModel : public UObject
 
 private:
 	FString ID;
-	UPROPERTY()
-	TWeakObjectPtr<UCharacterProfile> CharacterProfile = nullptr;
+	
 	FDelegateHandle OnPortraitUpdateHandle;
 	FDelegateHandle OnHealthUpdateHandle;
 	FDelegateHandle OnMaxHealthUpdateHandle;

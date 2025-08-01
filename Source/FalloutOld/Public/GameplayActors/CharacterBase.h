@@ -5,13 +5,9 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "Interactable.h"
-#include "NavTargetActor.h"
-#include "Movement.h"
-#include "Character/CharacterTemplate.h"
 #include "GameFramework/Character.h"
 #include "FOLDGameplayAbilities/Public/FOLDAbilitySystemComponent.h"
 #include "FOLDGameplayAbilities/Public/Attributes/HealthAttributeSet.h"
-#include "Mechanics/CharacterProfile.h"
 #include "SaveGame/StorableActor.h"
 #include "CharacterBase.generated.h"
 
@@ -21,9 +17,7 @@ public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
-private:
-	UPROPERTY(Replicated)
-	UCharacterProfile* Profile;
+private:	
 	UPROPERTY()
 	FString ID;
 public:
@@ -32,17 +26,12 @@ public:
 	
 public:
 	// Sets default values for this pawn's properties
-	ACharacterBase(const FObjectInitializer& ObjectInitializer);
-
-	UCharacterProfile* GetCharacterProfile() const;	
-	
+	ACharacterBase(const FObjectInitializer& ObjectInitializer);	
 	virtual void Tick(float DeltaTime) override;	
 
 protected:
 	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
-	void SetupGameplayData();
+	virtual void BeginPlay() override;	
 
 	//ability System
 protected:

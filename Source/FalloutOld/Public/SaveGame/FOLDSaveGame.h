@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/SaveGame.h"
 #include "WorldPreset.h"
+#include "FOLDGameplayActorData.h"
 #include "FOLDSaveGame.generated.h"
 
 /**
