@@ -20,7 +20,11 @@ public:
 	const FGuid& GetID() const {return Guid;};
 	virtual void OnRegister() override;
 
-private:	
+private:
+	//Используется для идентификации и при хранениии даных актора
 	UPROPERTY(EditAnywhere, SaveGame)
 	FGuid Guid;
+	//именование значимых геймплейных акторов.  Является ключом для получения ссылки на такого актора.
+	UPROPERTY(EditAnywhere, SaveGame)
+	FGameplayTag ActorRefName;
 };

@@ -2,7 +2,10 @@
 
 
 #include "FOLDGameInstanceBase.h"
-#include "GameFramework/GameModeBase.h"
-#include "Interfaces/OnlineIdentityInterface.h"
-#include "Kismet/GameplayStatics.h"
+#include "Unsorted/PlayerParty.h"
 
+void UFOLDGameInstanceBase::Init()
+{
+	Super::Init();
+	PlayerParty = MakeShared<UPlayerParty>();
+}

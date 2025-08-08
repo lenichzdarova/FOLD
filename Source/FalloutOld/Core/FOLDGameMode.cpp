@@ -14,24 +14,39 @@ void AFOLDGameMode::InitGame(const FString &MapName, const FString &Options, FSt
 	Super::InitGame(MapName, Options, ErrorMessage);
 	ConfigureLevelAfterLoad();	
 }
-void AFOLDGameMode::PostSeamlessTravel()
-{
-	Super::PostSeamlessTravel();
-	ConfigureLevelAfterLoad();
-}
 
 void AFOLDGameMode::ConfigureLevelAfterLoad()
-{
+{	
 	auto *PresetSubsystem = GetGameInstance()->GetSubsystem<UWorldPresetSubsystem>();
-	if (PresetSubsystem != nullptr)
-	{
-		PresetSubsystem->InitializeWorld(GetWorld());
-	}
-	SpawnPlayerGroup();
-	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, "Level configured");
+	if (!PresetSubsystem) return;	
+	PresetSubsystem->InitializeWorld(GetWorld());
+	HandlePlayerPartySpawn();		
 }
 
-void AFOLDGameMode::SpawnPlayerGroup()
+void AFOLDGameMode::HandlePlayerPartySpawn()
 {
-	
+	const FGameplayTag SpawnZoneTag = ParseSpawnTagFromOptions();
+	if (SpawnZoneTag.IsValid()) 
+	{
+		/*Тут мы запрашиваем из пати айдишники персонажей игрока
+		 * ищем по тагу
+		 */
+	}	
+}
+
+const FGameplayTag AFOLDGameMode::ParseSpawnTagFromOptions() const
+{	
+	TArray<FString> ParsedOptions;
+	FString::ElementType Delimiter = '?';
+	OptionsString.ParseIntoArrayWS(ParsedOptions, &Delimiter , true);
+	for (FString& Option : ParsedOptions)
+	{
+		if (Option.Contains("SpawnTag"))
+		{
+			FString Left, Right;
+			Option.Split("=",&Left, &Right);			
+			return FGameplayTag::RequestGameplayTag(*Right);
+		}
+	}
+	return FGameplayTag();
 }

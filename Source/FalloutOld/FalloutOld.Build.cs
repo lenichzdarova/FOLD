@@ -1,5 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
+using System.IO;
 using UnrealBuildTool;
 
 public class FalloutOld : ModuleRules
@@ -25,20 +25,15 @@ public class FalloutOld : ModuleRules
 			"GameplayTasks",
 			"FOLDGameplayAbilities"
 		});
-
-		PrivateDependencyModuleNames.AddRange(new string[] 
-		{ 
-			//"OnlineSubsystemSteam"
-		});
-		
-		//DynamicallyLoadedModuleNames.Add("OnlineSubsystemSteam");
-
-		// Uncomment if you are using Slate UI
-		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
-		
-		// Uncomment if you are using online features
-		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
-
-		// To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
+        
+		// Добавляем папки, где лежат заголовочные файлы
+		PublicIncludePaths.Add(ModuleDirectory);  // Корень модуля
+		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Core"));
+		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "GameplayActors"));
+		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "SaveGame"));
+		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "UI"));
+        
+		// Если заголовки используются только в приватных файлах (.cpp)
+		// PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "PrivateSubfolder"));
 	}
 }

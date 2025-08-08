@@ -33,15 +33,13 @@ void UGameplayAbility_MoveToLocation::ActivateAbility(const FGameplayAbilitySpec
 	}
 	
 	if (!IsValid(TriggerEventData->Target))
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "no valid target");	
+	{			
 		return;
 	}
 	auto MoveTask = UGameplayTask::NewTask<UGameplayTask_Move>(this);
 	MoveTask->OnTaskEnd.AddDynamic(this, &UGameplayAbility_MoveToLocation::OnMoveTaskEnd);
 	MoveTask->SetDestination(TriggerEventData->Target->GetActorLocation());
-	MoveTask->ReadyForActivation();
-	
+	MoveTask->ReadyForActivation();	
 }
 
 void UGameplayAbility_MoveToLocation::OnMoveTaskEnd()

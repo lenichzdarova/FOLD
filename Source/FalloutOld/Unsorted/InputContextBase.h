@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "FalloutOld/Interfaces/InputProvider.h"
-#include "FalloutOld/GameplayActors/PawnBase.h"
+#include "FalloutOld/GameplayActors/CharacterBase.h"
 #include "FalloutOld/UI/WidgetCursor.h"
 #include "InputContextBase.generated.h"
 
@@ -14,14 +14,14 @@ class UInputContextBase : public UObject
 protected:
 	IInputProvider* InputProvider;
 	UPROPERTY()
-	APawnBase* ActiveCharacter;
+	ACharacterBase* ActiveCharacter;
 	UPROPERTY()
 	UWidgetCursor* CursorWidget;
 	UPROPERTY()
 	UWorld* World;	
  	
 public:
-	virtual void Initialize(IInputProvider*, APawnBase*, UWidgetCursor*, UWorld*);	
+	virtual void Initialize(IInputProvider*, ACharacterBase*, UWidgetCursor*, UWorld*);	
 	virtual void SetCursorData(FHitResult){}
 	virtual void OnLeftMouseButton(FHitResult InHit){};
 

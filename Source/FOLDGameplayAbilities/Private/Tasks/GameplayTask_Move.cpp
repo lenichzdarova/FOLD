@@ -40,7 +40,7 @@ void UGameplayTask_Move::Activate()
 		MoveRequest.SetRequireNavigableEndLocation(true);		
 		PathFollowing->OnRequestFinished.AddUObject(this, &UGameplayTask_Move::OnMoveComplete);		
 		Controller->RequestMove(MoveRequest, Path.Get()->GetPath());		
-	}				
+	}	
 }
 
 void UGameplayTask_Move::SetDestination(FVector InDestination)
@@ -62,7 +62,7 @@ void UGameplayTask_Move::SetDestination(FVector InDestination)
 	{
 		Path = NewObject<UNavigationPath>();
 		Path->SetPath(PathFindingResult.Path);		
-	}
+	}	
 }
 
 float UGameplayTask_Move::GetCost_Implementation()

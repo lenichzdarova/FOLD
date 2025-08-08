@@ -12,7 +12,7 @@ protected:
 	virtual void BindInputEvents(IInputProvider*) override;	
 	
 public:	
-	virtual void Initialize(IInputProvider*, APawnBase*, UWidgetCursor*, UWorld*) override;
+	virtual void Initialize(IInputProvider*, ACharacterBase*, UWidgetCursor*, UWorld*) override;
 	virtual void SetCursorData(FHitResult) override;	
 	virtual void OnLeftMouseButton(FHitResult InHit) override;
 };

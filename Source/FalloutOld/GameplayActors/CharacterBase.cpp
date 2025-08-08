@@ -1,33 +1,32 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "PawnBase.h"
+#include "CharacterBase.h"
 #include "Net/UnrealNetwork.h"
 
 
 // Sets default values
-APawnBase::APawnBase(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+ACharacterBase::ACharacterBase(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {	
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
+	PrimaryActorTick.bCanEverTick = true;	
 	AbilitySystemComponent = CreateDefaultSubobject<UFOLDAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	IDComponent = CreateDefaultSubobject<UIDComponent>(TEXT("IDComponent"));	
 }
 
 // Called when the game starts or when spawned
-void APawnBase::BeginPlay()
+void ACharacterBase::BeginPlay()
 {
 	Super::BeginPlay();	
 }
 
 // Called every frame
-void APawnBase::Tick(float DeltaTime)
+void ACharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);	
 }
 
-UAbilitySystemComponent* APawnBase::GetAbilitySystemComponent() const
+UAbilitySystemComponent* ACharacterBase::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
 }

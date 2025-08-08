@@ -1,7 +1,8 @@
 ﻿#include "InputContextDefault.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "Abilities/GameplayAbility_MoveToLocation.h"
 
-void UInputContextDefault::Initialize(IInputProvider* inputProvider, APawnBase* activeCharacter, UWidgetCursor* cursorWidget, UWorld* world)	
+void UInputContextDefault::Initialize(IInputProvider* inputProvider, ACharacterBase* activeCharacter, UWidgetCursor* cursorWidget, UWorld* world)	
 {
 	Super::Initialize(inputProvider, activeCharacter, cursorWidget, world);
 	BindInputEvents(inputProvider);	
@@ -13,29 +14,31 @@ void UInputContextDefault::BindInputEvents(IInputProvider* value)
 }
 
 void UInputContextDefault::OnLeftMouseButton(FHitResult InHit)
-{
+{	
 	if (!InHit.bBlockingHit || !ActiveCharacter ) return;	
 	IAbilitySystemInterface* AbilityInterface = Cast<IAbilitySystemInterface>(ActiveCharacter);
 	if (!AbilityInterface) return;
 	UAbilitySystemComponent* AbilityComponent = AbilityInterface->GetAbilitySystemComponent();
 	FGameplayTag AbilityTag;
+	
 	if(InHit.GetActor()->Implements<UAbilitySystemInterface>())
-	{
-		AbilityTag = FGameplayTag::RequestGameplayTag("GameplayAbility.Ability.Interact");
+	{		
+		GEngine->AddOnScreenDebugMessage(222, 1, FColor::Red, "request interact");
 	}		
 	else
-	{			
-		AbilityTag = FGameplayTag::RequestGameplayTag("GameplayAbility.Ability.Move");	
-	}		
+	{		
+		AbilityTag = FGameplayTag::RequestGameplayTag("GameplayAbilities.Ability.Move");	
+	}	
 	
 	FGameplayEventData EventData;
 	EventData.Instigator = ActiveCharacter;
 	EventData.Target = InHit.GetActor();	
-	AbilityComponent->HandleGameplayEvent(AbilityTag, &EventData);
+	AbilityComponent->HandleGameplayEvent(AbilityTag, &EventData);		
 }
 
 void UInputContextDefault::SetCursorData(FHitResult hit)
-{		
+{
+	/*
 	if(hit.bBlockingHit)
 	{		
 		AActor* actor = hit.GetActor();		
@@ -52,7 +55,7 @@ void UInputContextDefault::SetCursorData(FHitResult hit)
 	else
 	{
 		CursorWidget->SetDefault();
-	}
+	}*/
 }
 
 

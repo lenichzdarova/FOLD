@@ -2,16 +2,16 @@
 
 #include "FOLDPlayerControllerBase.h"
 #include "FOLDGameInstanceBase.h"
-#include "FOLDGameState.h"
 #include "FalloutOld/Unsorted/InputContextDefault.h"
+#include "Kismet/GameplayStatics.h"
 
 void AFOLDPlayerControllerBase::Initialize()
 {
 	// spawn and setup playerView instance
 	if (IsLocalController())
 	{
-		auto playerView = GetWorld()->SpawnActor<APlayerView>(
-			FVector::Zero(), FRotator::ZeroRotator);
+		FTransform CameraInitTransform = GetPawn()->GetTransform();
+		auto playerView = GetWorld()->SpawnActor<APlayerView>(CameraInitTransform.GetLocation(), CameraInitTransform.Rotator());
 		PlayerView = playerView;
 		SetViewTarget(PlayerView);
 		// setup cursor
@@ -23,17 +23,14 @@ void AFOLDPlayerControllerBase::Initialize()
 		FInputModeGameOnly mode;
 		mode.SetConsumeCaptureMouseDown(false);
 		SetInputMode(mode);
+		//inputcontext
+		SetInputContextDefault();		
+		ACharacterBase* CharacterBase = Cast<ACharacterBase>(GetCharacter());
+		inputContext->Initialize(nullptr, CharacterBase, nullptr, nullptr);
 	}
 
 	// for not reset camera after possess character
 	bAutoManageActiveCameraTarget = false;
-
-	// set party
-
-	AFOLDGameState* GameState = Cast<AFOLDGameState>(GetWorld()->GetGameState());
-	if (GameState)
-	{
-	}
 }
 
 void AFOLDPlayerControllerBase::Tick(float DeltaSeconds)
@@ -44,7 +41,7 @@ void AFOLDPlayerControllerBase::Tick(float DeltaSeconds)
 		FHitResult hit;
 		FVector location, direction;
 		FCollisionQueryParams params;
-		// params.AddIgnoredActor(selector->GetFocusedCharacter());
+		params.AddIgnoredActor(GetPawn());
 		DeprojectMousePositionToWorld(location, direction);
 		GetWorld()->LineTraceSingleByChannel(
 			hit, location, location + direction * 10000.f, ECC_Visibility, params);

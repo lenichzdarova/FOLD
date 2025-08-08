@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FalloutOld/GameplayActors/PawnBase.h"
 #include "PlayerParty.generated.h"
 
 /**

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "FalloutOld/Unsorted/PlayerView.h"
-#include "FalloutOld/GameplayActors/PawnBase.h"
+#include "FalloutOld/GameplayActors/CharacterBase.h"
 #include "FalloutOld/Unsorted/CursorController.h"
 #include "EnhancedInputSubsystems.h"
 #include "FalloutOld/Unsorted/InputContextBase.h"
@@ -24,11 +24,10 @@ class FALLOUTOLD_API AFOLDPlayerControllerBase : public APlayerController, publi
 	GENERATED_BODY()
 	
 protected:
-
-	virtual void Tick(float DeltaSeconds) override;
-	
 	UPROPERTY(BlueprintReadWrite)
-	APlayerView* PlayerView = nullptr;		
+	APlayerView* PlayerView = nullptr;
+	UPROPERTY(EditAnywhere)
+	FGameplayTag PlayerActorTag;
 
 	UPROPERTY()
 	UCursorController* CursorController = nullptr;	
@@ -42,6 +41,12 @@ protected:
 	UInputContextBase* inputContext = nullptr;
 	UPROPERTY()
 	TObjectPtr<UPlayerParty> party = nullptr;
+
+protected:
+
+	virtual void Tick(float DeltaSeconds) override;
+	
+	
 		
 	
 #pragma region InputReceiver

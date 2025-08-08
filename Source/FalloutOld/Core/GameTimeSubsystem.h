@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FalloutOld/GameplayActors/PawnBase.h"
+#include "FalloutOld/GameplayActors/CharacterBase.h"
 
 #include "GameTimeSubsystem.generated.h"
 
@@ -16,5 +16,5 @@ class FALLOUTOLD_API UGameTimeSubsystem : public UGameInstanceSubsystem
 	GENERATED_BODY()
 
 public:
-	void StartCombat(APawnBase*, APawnBase*);		
+	void StartCombat(ACharacterBase*, ACharacterBase*);		
 };

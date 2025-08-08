@@ -1,6 +1,6 @@
 ﻿#include "InputContextBase.h"
 
-void UInputContextBase::Initialize(IInputProvider* inputProvider, APawnBase* activeCharacter, UWidgetCursor* cursor, UWorld* world)
+void UInputContextBase::Initialize(IInputProvider* inputProvider, ACharacterBase* activeCharacter, UWidgetCursor* cursor, UWorld* world)
 {
 	this->InputProvider = inputProvider;
 	this->ActiveCharacter = activeCharacter;

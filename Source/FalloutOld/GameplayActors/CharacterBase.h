@@ -8,10 +8,11 @@
 #include "IDComponent.h"
 #include "FOLDGameplayAbilities/Public/FOLDAbilitySystemComponent.h"
 #include "FalloutOld/SaveGame/StorableActor.h"
-#include "PawnBase.generated.h"
+#include "GameFramework/Character.h"
+#include "CharacterBase.generated.h"
 
 UCLASS(Blueprintable, Abstract)
-class FALLOUTOLD_API APawnBase : public APawn, public IStorableActor, public IAbilitySystemInterface
+class FALLOUTOLD_API ACharacterBase : public ACharacter, public IStorableActor, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -24,7 +25,7 @@ public:
 	
 public:
 	// Sets default values for this pawn's properties
-	APawnBase(const FObjectInitializer& ObjectInitializer);	
+	ACharacterBase(const FObjectInitializer& ObjectInitializer);	
 	virtual void Tick(float DeltaTime) override;	
 
 protected:
@@ -33,8 +34,6 @@ protected:
 
 	//ability System
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
-	TObjectPtr<USkeletalMeshComponent> SkeletalMeshComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Abilities", meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UFOLDAbilitySystemComponent> AbilitySystemComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "ID", meta=(AllowPrivateAccess = "true"))

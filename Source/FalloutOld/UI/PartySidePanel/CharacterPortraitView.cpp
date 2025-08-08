@@ -2,7 +2,6 @@
 
 
 #include "CharacterPortraitView.h"
-#include "FalloutOld/Core/FOLDGameState.h"
 
 void UCharacterPortraitView::NativeConstruct()
 {

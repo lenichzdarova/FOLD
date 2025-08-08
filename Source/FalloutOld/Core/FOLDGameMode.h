@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "GameFramework/GameModeBase.h"
 #include "FOLDGameMode.generated.h"
 
@@ -16,9 +17,9 @@ class FALLOUTOLD_API AFOLDGameMode : public AGameModeBase
 
 	AFOLDGameMode();
 	
-	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
-	virtual void PostSeamlessTravel() override;
+	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;	
 	void ConfigureLevelAfterLoad();
-	void SpawnPlayerGroup();	
+	void HandlePlayerPartySpawn();
+	const FGameplayTag ParseSpawnTagFromOptions() const;	
 };
 
