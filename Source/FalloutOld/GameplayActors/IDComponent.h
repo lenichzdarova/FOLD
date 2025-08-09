@@ -17,14 +17,15 @@ public:
 	// Sets default values for this component's properties
 	UIDComponent();
 
-	const FGuid& GetID() const {return Guid;};
+	const FGuid& GetID() const {return Guid;}
 	virtual void OnRegister() override;
+	virtual void InitializeComponent() override;
 
 private:
 	//Используется для идентификации и при хранениии даных актора
 	UPROPERTY(EditAnywhere, SaveGame)
 	FGuid Guid;
 	//именование значимых геймплейных акторов.  Является ключом для получения ссылки на такого актора.
-	UPROPERTY(EditAnywhere, SaveGame)
-	FGameplayTag ActorRefName;
+	UPROPERTY(EditAnywhere, SaveGame, meta=(Categories = "Actors"))
+	FGameplayTag ID;
 };
