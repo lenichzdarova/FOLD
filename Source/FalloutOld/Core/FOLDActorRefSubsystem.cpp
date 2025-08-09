@@ -20,6 +20,7 @@ void UFOLDActorRefSubsystem::UnregisterActor(const FGameplayTag& Tag)
 
 AActor* UFOLDActorRefSubsystem::GetActorByTag(FGameplayTag ActorTag)
 {
+	if (!ActorRefs.Contains(ActorTag)) return nullptr;
 	return ActorRefs.Find(ActorTag)->Get();
 }
 
