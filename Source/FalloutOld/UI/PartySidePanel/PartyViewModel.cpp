@@ -25,6 +25,7 @@ void UPartyViewModel::BeginDestroy()
 
 void UPartyViewModel::OnPlayerPartyUpdate()
 {
+	/*
 	CharactersID = Party.Get()->GetPartyMembersID();
-	OnPlayerPartyUpdated.Broadcast();
+	OnPlayerPartyUpdated.Broadcast();*/
 }

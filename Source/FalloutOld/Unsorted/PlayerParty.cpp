@@ -3,64 +3,32 @@
 
 #include "PlayerParty.h"
 
-#include "Net/UnrealNetwork.h"
-
-void UPlayerParty::AddID(FString CharID)
+void UPlayerParty::AddID(const FGameplayTag& Tag)
 {	
-	PartyMembersID.Add(CharID);
-	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 100, FColor::Red, "Add character");
+	Tags.AddTag(Tag);
+	UE_LOG(LogTemp, Log, TEXT("%s присоединился к группе"), *Tag.ToString());	
 	Changed.Broadcast();
 }
 
-void UPlayerParty::RemoveID(FString CharID)
+void UPlayerParty::RemoveID(const FGameplayTag& Tag)
 {
-	if (ContainsID(CharID))
-	{
-		PartyMembersID.Remove(CharID);
-		Changed.Broadcast();		
-	}
+	Tags.RemoveTag(Tag);
+	UE_LOG(LogTemp, Log, TEXT("%s покинул группу"), *Tag.ToString());
 }
 
-void UPlayerParty::Swap(FString First, FString Second)
+bool UPlayerParty::ContainsID(const FGameplayTag& Tag) const
 {
-	if (ContainsID(First) && ContainsID(Second))
-	{
-		size_t FirstIndex = PartyMembersID.Find(First);
-		size_t SecondIndex = PartyMembersID.Find(Second);
-		if (FirstIndex && SecondIndex)
-		{
-			PartyMembersID.Swap(FirstIndex, SecondIndex);	
-		}
-		Changed.Broadcast();
-	}	
+	return Tags.HasTag(Tag);
 }
 
-bool UPlayerParty::ContainsID(FString CharID) const
+const TArray<FGameplayTag> UPlayerParty::GetPartyMembersID() const
 {
-	return PartyMembersID.Contains(CharID);
+	return Tags.GetGameplayTagArray();
 }
 
-TArray<FString> UPlayerParty::GetPartyMembersID() const
+void UPlayerParty::SetPartyMembersID(TArray<FGameplayTag> InTags)
 {
-	return PartyMembersID;
-}
-
-void UPlayerParty::SetPartyMembersID(TArray<FString> CharIDs)
-{
-	PartyMembersID = CharIDs;
-	Changed.Broadcast();
-}
-
-void UPlayerParty::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
-{
-	UObject::GetLifetimeReplicatedProps(OutLifetimeProps);
-	
-	DOREPLIFETIME(UPlayerParty, PartyMembersID);
-}
-
-void UPlayerParty::OnRep_CharactersID()
-{
-	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 100, FColor::Red, "Add character OnRep_CharactersID");
+	Tags.CreateFromArray(InTags);
 	Changed.Broadcast();
 }
 

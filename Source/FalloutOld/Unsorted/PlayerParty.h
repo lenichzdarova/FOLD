@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "PlayerParty.generated.h"
 
 /**
@@ -13,31 +14,23 @@ class FALLOUTOLD_API UPlayerParty : public UObject
 {
 	GENERATED_BODY()
 
-	UPROPERTY(ReplicatedUsing = OnRep_CharactersID)
-	TArray<FString> PartyMembersID;	
+	UPROPERTY()
+	FGameplayTagContainer Tags;	
 
 public:
 	
 	UFUNCTION(BlueprintCallable)
-	void AddID(FString CharID);
+	void AddID(const FGameplayTag& Tag);
 	UFUNCTION(BlueprintCallable)
-	void RemoveID(FString CharID);
-	UFUNCTION()
-	void Swap(FString First, FString Second);
+	void RemoveID(const FGameplayTag& Tag);	
 	
 	UFUNCTION(BlueprintCallable)
-	bool ContainsID(FString CharID) const;
+	bool ContainsID(const FGameplayTag& Tag) const;
 	
 	UFUNCTION(BlueprintCallable)
-	TArray<FString> GetPartyMembersID() const;
+	const TArray<FGameplayTag> GetPartyMembersID() const;
 	UFUNCTION(BlueprintCallable)
-	void SetPartyMembersID(TArray<FString> CharIDs);
-
-	
-	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
-	virtual bool IsSupportedForNetworking() const override {return true;};
-	UFUNCTION()
-	void OnRep_CharactersID();
+	void SetPartyMembersID(TArray<FGameplayTag> InTags);	
 
 	//Delegates
 	DECLARE_MULTICAST_DELEGATE(FChanged);	
