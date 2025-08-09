@@ -17,8 +17,9 @@ class FALLOUTOLD_API UFOLDGameInstanceBase : public UGameInstance
 
 	
 private:
-		
-	TSharedPtr<UPlayerParty> PlayerParty;
+
+	UPROPERTY()
+	TObjectPtr<UPlayerParty> PlayerParty;
 
 	public:
 	virtual void Init() override;
