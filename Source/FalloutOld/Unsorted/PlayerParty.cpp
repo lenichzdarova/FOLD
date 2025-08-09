@@ -14,6 +14,7 @@ void UPlayerParty::RemoveID(const FGameplayTag& Tag)
 {
 	Tags.RemoveTag(Tag);
 	UE_LOG(LogTemp, Log, TEXT("%s покинул группу"), *Tag.ToString());
+	Changed.Broadcast();
 }
 
 bool UPlayerParty::ContainsID(const FGameplayTag& Tag) const
