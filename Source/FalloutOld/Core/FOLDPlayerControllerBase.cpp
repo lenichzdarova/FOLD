@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "FOLDPlayerControllerBase.h"
+
+#include "FOLDActorRefSubsystem.h"
 #include "FOLDGameInstanceBase.h"
 #include "FalloutOld/Unsorted/InputContextDefault.h"
 #include "Kismet/GameplayStatics.h"
@@ -9,28 +11,37 @@ void AFOLDPlayerControllerBase::Initialize()
 {
 	// spawn and setup playerView instance
 	if (IsLocalController())
-	{
-		FTransform CameraInitTransform = GetPawn()->GetTransform();
-		auto playerView = GetWorld()->SpawnActor<APlayerView>(CameraInitTransform.GetLocation(), CameraInitTransform.Rotator());
-		PlayerView = playerView;
-		SetViewTarget(PlayerView);
+	{		
 		// setup cursor
 		auto widget = CreateWidget(this, CursorWidgetType);
 		CursorWidget = Cast<UWidgetCursor>(widget);
 		bShowMouseCursor = true;
 		SetMouseCursorWidget(EMouseCursor::Default, CursorWidget);
+		
 		// focus game window
 		FInputModeGameOnly mode;
 		mode.SetConsumeCaptureMouseDown(false);
 		SetInputMode(mode);
+		
 		//inputcontext
-		SetInputContextDefault();		
-		ACharacterBase* CharacterBase = Cast<ACharacterBase>(GetCharacter());
-		inputContext->Initialize(nullptr, CharacterBase, nullptr, nullptr);
+		SetInputContextDefault();
+		UFOLDActorRefSubsystem* ActorRefSubsystem = GetWorld()->GetSubsystem<UFOLDActorRefSubsystem>();
+		if (!ActorRefSubsystem) return;
+		if(AActor* PlayerActor = ActorRefSubsystem->GetActorByTag(FGameplayTag::RequestGameplayTag("Actors.Player")))
+		{
+			ACharacterBase* PlayerCharacter = Cast<ACharacterBase>(PlayerActor);
+			inputContext->Initialize(this, PlayerCharacter, nullptr, nullptr);
+			//SetupCamera
+			FTransform CameraInitTransform = PlayerCharacter->GetTransform();
+			auto playerView = GetWorld()->SpawnActor<APlayerView>(CameraInitTransform.GetLocation(), CameraInitTransform.Rotator());
+			PlayerView = playerView;
+			SetViewTarget(PlayerView);
+		}		
 	}
 
 	// for not reset camera after possess character
 	bAutoManageActiveCameraTarget = false;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "FOLDPlayerControllerBase::Initialize");
 }
 
 void AFOLDPlayerControllerBase::Tick(float DeltaSeconds)
