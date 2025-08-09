@@ -17,12 +17,19 @@ class FALLOUTOLD_API UFOLDActorRefSubsystem : public UWorldSubsystem
 
 private:
 	TMap<FGameplayTag, TSoftObjectPtr<AActor>> ActorRefs;
+	TMap<FGameplayTag, FGuid> ActorGuids;
 
 public:
+	UFUNCTION(BlueprintCallable)
+	void RegisterActor(AActor* Actor, const FGameplayTag& Tag, const FGuid& Guid );
+	UFUNCTION(BlueprintCallable)
+	void UnregisterActor(const FGameplayTag& Tag);
 	UFUNCTION(BlueprintCallable)
 	AActor* GetActorByTag(FGameplayTag ActorTag);
 	UFUNCTION(BlueprintCallable)
 	static AActor* GetActorByTagStatic(const UObject* WorldContext, FGameplayTag ActorTag);
+	UFUNCTION(BlueprintCallable)
+	const FGuid& GetActorGuid(FGameplayTag ActorTag);
 	
 };
 
