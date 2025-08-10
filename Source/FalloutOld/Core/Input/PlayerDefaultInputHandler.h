@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "CharacterBase.h"
 #include "EnhancedInputComponent.h"
 #include "PlayerInputHandlerComponentBase.h"
 #include "Runtime/AIModule/Classes/Navigation/PathFollowingComponent.h"
@@ -30,4 +31,7 @@ private:
 	void OnCancel(const FInputActionValue& InputValue);
 	void OnCameraMove(const FInputActionValue& InputValue);
 	void OnCameraRotate(const FInputActionValue& InputValue);
+
+	FHitResult GetHitResult() const;
+	AActor* GetControlledActor() const;
 };

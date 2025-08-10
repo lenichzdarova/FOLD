@@ -31,7 +31,7 @@ protected:
 	TSubclassOf<UWidgetCursor> CursorWidgetType;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSoftObjectPtr<UInputConfig> DefaultInputConfig;
+	TObjectPtr<UInputConfig> DefaultInputConfig;
 	
 	UPROPERTY(BlueprintReadWrite)
 	UWidgetCursor* CursorWidget;	

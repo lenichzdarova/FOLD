@@ -6,7 +6,6 @@
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
 #include "FalloutOld/GameplayActors/CharacterBase.h"
-#include "FalloutOld/Interfaces/InputReceiver.h"
 #include "WidgetCharacterSheet.generated.h"
 
 /**

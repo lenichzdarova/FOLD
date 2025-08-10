@@ -47,10 +47,11 @@ void APlayerView::Tick(float DeltaTime)
 	}	
 }
 
-void APlayerView::Move(FVector value)
+void APlayerView::Move(FVector2D Value)
 {	
-	value *= MoveSensitivity;	
-	AddActorLocalOffset(value);	
+	Value *= MoveSensitivity;
+	FVector Offset{Value.X, Value.Y, 0};
+	AddActorLocalOffset(Offset);	
 }
 
 void APlayerView::SetRotation(float value)

@@ -21,5 +21,6 @@ public:
 protected:	
 	virtual void BindInputEvents(){}
 	UInputAction* GetInputActionFromConfig(FGameplayTag KeyTag);
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;	
 };

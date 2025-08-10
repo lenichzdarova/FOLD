@@ -43,19 +43,8 @@ void AFOLDPlayerControllerBase::Initialize()
 }
 
 void AFOLDPlayerControllerBase::Tick(float DeltaSeconds)
-{/*
-	Super::Tick(DeltaSeconds);
-	if (inputContext)
-	{
-		FHitResult hit;
-		FVector location, direction;
-		FCollisionQueryParams params;
-		params.AddIgnoredActor(GetPawn());
-		DeprojectMousePositionToWorld(location, direction);
-		GetWorld()->LineTraceSingleByChannel(
-			hit, location, location + direction * 10000.f, ECC_Visibility, params);
-		inputContext->SetCursorData(hit);
-	}*/
+{
+	Super::Tick(DeltaSeconds);	
 }
 
 

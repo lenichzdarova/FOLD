@@ -47,7 +47,7 @@ protected:
 
 public:
 	UFUNCTION(BlueprintCallable)	
-	void Move(FVector value);
+	void Move(FVector2D Value);
 	
 	UFUNCTION(BlueprintCallable)
 	void SetRotation(float value);

@@ -1,31 +1,10 @@
 ﻿#include "PlayerDefaultInputHandler.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputComponent.h"
-#include "Abilities/GameplayAbility_MoveToLocation.h"
-
-/*
-void UInputContextDefault::OnLeftMouseButton(FHitResult InHit)
-{	
-	if (!InHit.bBlockingHit || !ActiveCharacter ) return;	
-	IAbilitySystemInterface* AbilityInterface = Cast<IAbilitySystemInterface>(ActiveCharacter);
-	if (!AbilityInterface) return;
-	UAbilitySystemComponent* AbilityComponent = AbilityInterface->GetAbilitySystemComponent();
-	FGameplayTag AbilityTag;
-	
-	if(InHit.GetActor()->Implements<UAbilitySystemInterface>())
-	{		
-		GEngine->AddOnScreenDebugMessage(222, 1, FColor::Red, "request interact");
-	}		
-	else
-	{		
-		AbilityTag = FGameplayTag::RequestGameplayTag("GameplayAbilities.Ability.Move");	
-	}	
-	
-	FGameplayEventData EventData;
-	EventData.Instigator = ActiveCharacter;
-	EventData.Target = InHit.GetActor();	
-	AbilityComponent->HandleGameplayEvent(AbilityTag, &EventData);		
-}*/
+#include "FOLDActorRefSubsystem.h"
+#include "Kismet/GameplayStatics.h"
+#include "Targeting/FOLDTargetTypes.h"
+#include "Unsorted/PlayerView.h"
 
 /*
 void UInputContextDefault::SetCursorData(FHitResult hit)
@@ -70,7 +49,32 @@ void UPlayerDefaultInputHandler::BindInputEvents()
 
 void UPlayerDefaultInputHandler::OnCursorAction(const FInputActionValue& InputValue)
 {
+	FHitResult HitResult = GetHitResult();
+	if (!HitResult.bBlockingHit) return;
+	if (AActor* ControlledActor = GetControlledActor())
+	{
+		IAbilitySystemInterface* AbilityInterface = Cast<IAbilitySystemInterface>(ControlledActor);
+		if (!AbilityInterface) return;
+		UAbilitySystemComponent* AbilityComponent = AbilityInterface->GetAbilitySystemComponent();
+		FGameplayTag AbilityTag;
 	
+		if(HitResult.GetActor()->Implements<UAbilitySystemInterface>())
+		{		
+			GEngine->AddOnScreenDebugMessage(222, 1, FColor::Red, "request interact");
+		}		
+		else
+		{		
+			AbilityTag = FGameplayTag::RequestGameplayTag("GameplayAbilities.Ability.Move");	
+		}	
+	
+		FGameplayEventData EventData;
+		EventData.Instigator = ControlledActor;
+		EventData.Target = HitResult.GetActor();		
+		FFOLDTargetData* TargetData = new FFOLDTargetData();
+		TargetData->HitResult = HitResult;		
+		EventData.TargetData.Add(TargetData);
+		AbilityComponent->HandleGameplayEvent(AbilityTag, &EventData);
+	}	
 }
 
 void UPlayerDefaultInputHandler::OnCursorContext(const FInputActionValue& InputValue)
@@ -85,7 +89,13 @@ void UPlayerDefaultInputHandler::OnCameraMove(const FInputActionValue& InputValu
 {	
 	if (InputValue.GetValueType() == EInputActionValueType::Axis2D)
 	{
-		FVector2D Value = InputValue.Get<FVector2D>();		
+		FVector2D Value = InputValue.Get<FVector2D>();
+		APlayerCameraManager* CameraManager = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
+		AActor* ViewTarget = CameraManager->GetViewTarget();
+		if (APlayerView* PlayerView = Cast<APlayerView>(ViewTarget))
+		{
+			PlayerView->Move(Value);
+		}
 	}
 }
 
@@ -93,3 +103,19 @@ void UPlayerDefaultInputHandler::OnCameraRotate(const FInputActionValue& InputVa
 {
 	
 }
+
+FHitResult UPlayerDefaultInputHandler::GetHitResult() const
+{
+	FHitResult hit;
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	ETraceTypeQuery Query{ECC_Visibility};	
+	PlayerController->GetHitResultUnderCursorByChannel(Query,true, hit);	
+	return hit;
+}
+
+AActor* UPlayerDefaultInputHandler::GetControlledActor() const
+{	UWorld* World = GetWorld();
+	UFOLDActorRefSubsystem* RefSubsystem = World->GetSubsystem<UFOLDActorRefSubsystem>();	
+	return RefSubsystem->GetActorByTag(FGameplayTag::RequestGameplayTag("Actors.Player"));
+}
+

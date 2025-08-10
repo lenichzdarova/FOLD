@@ -38,7 +38,11 @@ void UGameplayAbility_MoveToLocation::ActivateAbility(const FGameplayAbilitySpec
 	}
 	auto MoveTask = UGameplayTask::NewTask<UGameplayTask_Move>(this);
 	MoveTask->OnTaskEnd.AddDynamic(this, &UGameplayAbility_MoveToLocation::OnMoveTaskEnd);
-	MoveTask->SetDestination(TriggerEventData->Target->GetActorLocation());
+
+	auto TargetData = TriggerEventData->TargetData.Get(0);
+	FVector MoveDestination = TargetData->GetHitResult()->Location;
+	
+	MoveTask->SetDestination(MoveDestination);
 	MoveTask->ReadyForActivation();	
 }
 
