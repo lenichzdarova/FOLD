@@ -4,74 +4,45 @@
 
 #include "CoreMinimal.h"
 #include "FalloutOld/Unsorted/PlayerView.h"
+#include "WidgetCursor.h"
 #include "FalloutOld/GameplayActors/CharacterBase.h"
 #include "FalloutOld/Unsorted/CursorController.h"
-#include "EnhancedInputSubsystems.h"
-#include "FalloutOld/Unsorted/InputContextBase.h"
-#include "FalloutOld/Interfaces/InputReceiver.h"
-#include "FalloutOld/Interfaces/InputProvider.h"
 #include "FalloutOld/Unsorted/PlayerParty.h"
 #include "GameFramework/PlayerController.h"
+#include "Input/InputConfig.h"
 #include "FOLDPlayerControllerBase.generated.h"
 
 /**
  * 
  */
 UCLASS(Blueprintable, Abstract)
-class FALLOUTOLD_API AFOLDPlayerControllerBase : public APlayerController, public IInputReceiver, public IInputProvider
+class FALLOUTOLD_API AFOLDPlayerControllerBase : public APlayerController
 											 
 {
 	GENERATED_BODY()
 	
 protected:
 	UPROPERTY(BlueprintReadWrite)
-	APlayerView* PlayerView = nullptr;
-	UPROPERTY(EditAnywhere)
-	FGameplayTag PlayerActorTag;
+	APlayerView* PlayerView = nullptr;	
 
 	UPROPERTY()
 	UCursorController* CursorController = nullptr;	
 	UPROPERTY(BlueprintReadWrite)
 	TSubclassOf<UWidgetCursor> CursorWidgetType;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSoftObjectPtr<UInputConfig> DefaultInputConfig;
+	
 	UPROPERTY(BlueprintReadWrite)
-	UWidgetCursor* CursorWidget;
-
-	UPROPERTY()
-	UInputContextBase* inputContext = nullptr;
-	UPROPERTY()
-	TObjectPtr<UPlayerParty> party = nullptr;
+	UWidgetCursor* CursorWidget;	
 
 protected:
 
 	virtual void Tick(float DeltaSeconds) override;
 	
-	
-		
-	
-#pragma region InputReceiver
-	
-	virtual void OnCameraRotateInput_Implementation(float value) override;	
-	virtual void OnCameraMoveInput_Implementation(FVector2D value) override;	
-	virtual void OnOpenInventoryInput_Implementation() override;	
-	virtual void OnOpenCharacterSheetInput_Implementation() override;	
-	virtual void OnCursorContextInput_Implementation() override;	
-	virtual void OnCancelInput_Implementation() override;	
-	virtual void OnActionInput_Implementation() override;	
-	virtual void OnEndTurnInput_Implementation() override;
-	virtual void OnBattleInput_Implementation() override;
-	virtual void OnOpenPipBoyInput_Implementation() override;
-	virtual void OnOpenMapInput_Implementation() override;
-	
-#pragma endregion InputReceiver	
-	
 
-protected:
-	UEnhancedInputLocalPlayerSubsystem* GetEnhancedInputSubsystem();	
+protected:		
 	
 	UFUNCTION(BlueprintCallable)
 	void Initialize();	
-	
-	void SetInputContext(UInputContextBase*);
-	void SetInputContextDefault();	
 };
