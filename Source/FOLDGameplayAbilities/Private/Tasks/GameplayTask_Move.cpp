@@ -32,7 +32,7 @@ void UGameplayTask_Move::Activate()
 	UPathFollowingComponent* PathFollowing = Controller->GetPathFollowingComponent();
 	if(PathFollowing)
 	{		
-		MoveRequest.SetAcceptanceRadius(0);
+		MoveRequest.SetAcceptanceRadius(5.f);
 		MoveRequest.SetReachTestIncludesAgentRadius(false);
 		MoveRequest.SetCanStrafe(true);
 		MoveRequest.SetAllowPartialPath(false);
@@ -44,7 +44,7 @@ void UGameplayTask_Move::Activate()
 }
 
 void UGameplayTask_Move::SetDestination(FVector InDestination)
-{
+{	
 	Destination = InDestination;
 	UWorld* World = GetAvatarActor()->GetWorld();
 	if (!World) return;
@@ -56,7 +56,7 @@ void UGameplayTask_Move::SetDestination(FVector InDestination)
 	FPathFindingQuery Query(GetAvatarActor(), *NavigationData, GetAvatarActor()->GetActorLocation(),
 		Destination, UNavigationQueryFilter::GetQueryFilter(*NavigationData, GetAvatarActor(), nullptr));
 	Query.SetAllowPartialPaths(false);
-	Query.SetRequireNavigableEndLocation(true);		
+	Query.SetRequireNavigableEndLocation(true);	
 	FPathFindingResult PathFindingResult = NavSystem->FindPathSync(Query);
 	if (PathFindingResult.IsSuccessful())
 	{
