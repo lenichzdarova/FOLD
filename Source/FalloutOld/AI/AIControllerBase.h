@@ -6,7 +6,7 @@
 #include "AIController.h"
 #include "AIControllerBase.generated.h"
 
-UCLASS()
+UCLASS(BlueprintType)
 class FALLOUTOLD_API AAIControllerBase : public AAIController
 {
 	GENERATED_BODY()

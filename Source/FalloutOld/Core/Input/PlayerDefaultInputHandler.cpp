@@ -6,29 +6,6 @@
 #include "Targeting/FOLDTargetTypes.h"
 #include "Unsorted/PlayerView.h"
 
-/*
-void UInputContextDefault::SetCursorData(FHitResult hit)
-{
-	
-	if(hit.bBlockingHit)
-	{		
-		AActor* actor = hit.GetActor();		
-		if(actor && actor->Implements<UAbilitySystemInterface>())
-		{
-			//сдесь мы запрашиваем дефолтное действие у актора и меняем курсор под него
-			//CursorWidget->SetDialog();	синтаксис обращения к курсору
-		}		
-		else
-		{			
-			CursorWidget->SetDefault();			
-		}		
-	}
-	else
-	{
-		CursorWidget->SetDefault();
-	}
-}*/
-
 
 void UPlayerDefaultInputHandler::BindInputEvents()
 {
@@ -114,8 +91,8 @@ FHitResult UPlayerDefaultInputHandler::GetHitResult() const
 }
 
 AActor* UPlayerDefaultInputHandler::GetControlledActor() const
-{	UWorld* World = GetWorld();
-	UFOLDActorRefSubsystem* RefSubsystem = World->GetSubsystem<UFOLDActorRefSubsystem>();	
-	return RefSubsystem->GetActorByTag(FGameplayTag::RequestGameplayTag("Actors.Player"));
+{
+	UWorld* World = GetWorld();		
+	return UFOLDActorRefSubsystem::GetPlayerActor(World);
 }
 

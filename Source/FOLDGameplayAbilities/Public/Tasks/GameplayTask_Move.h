@@ -7,6 +7,7 @@
 #include "GameplayTask.h"
 #include "FOLDTaskBase.h"
 #include "NavigationPath.h"
+#include "AI/Navigation/NavigationTypes.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "GameplayTask_Move.generated.h"
 
@@ -34,4 +35,6 @@ public:
 	virtual bool ApplyCost_Implementation() override;
 
 	FGenericGameplayTaskDelegate OnTaskEnd;
+		
+	void OnFindPathAsyncResult(uint32 QueryID, ENavigationQueryResult::Type Result,	FNavPathSharedPtr PathPtr);
 };

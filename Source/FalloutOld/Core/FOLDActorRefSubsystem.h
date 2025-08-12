@@ -30,7 +30,8 @@ public:
 	static AActor* GetActorByTagStatic(const UObject* WorldContext, FGameplayTag ActorTag);
 	UFUNCTION(BlueprintCallable)
 	const FGuid& GetActorGuid(FGameplayTag ActorTag);
-	
+	UFUNCTION(BlueprintCallable)
+	static AActor* GetPlayerActor(const UObject* WorldContext);	
 };
 
 

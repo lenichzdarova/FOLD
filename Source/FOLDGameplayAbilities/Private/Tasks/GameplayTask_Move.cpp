@@ -9,7 +9,8 @@
 
 UGameplayTask_Move::UGameplayTask_Move()
 {	
-	Destination = FVector::Zero();	
+	Destination = FVector::Zero();
+	Path = NewObject<UNavigationPath>();
 }
 
 void UGameplayTask_Move::OnMoveComplete(FAIRequestID Request, const FPathFollowingResult& Result)
@@ -21,32 +22,9 @@ void UGameplayTask_Move::OnMoveComplete(FAIRequestID Request, const FPathFollowi
 
 void UGameplayTask_Move::Activate()
 {
-	Super::Activate();	
-	if (!Path) return;	
-	AAIController* Controller = Cast<AAIController>(GetAvatarActor()->GetInstigatorController());
-	if (!Controller)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "no valid AI controller");	
-		return;
-	}
-	UPathFollowingComponent* PathFollowing = Controller->GetPathFollowingComponent();
-	if(PathFollowing)
-	{		
-		MoveRequest.SetAcceptanceRadius(5.f);
-		MoveRequest.SetReachTestIncludesAgentRadius(false);
-		MoveRequest.SetCanStrafe(true);
-		MoveRequest.SetAllowPartialPath(false);
-		MoveRequest.SetUsePathfinding(true);
-		MoveRequest.SetRequireNavigableEndLocation(true);		
-		PathFollowing->OnRequestFinished.AddUObject(this, &UGameplayTask_Move::OnMoveComplete);		
-		Controller->RequestMove(MoveRequest, Path.Get()->GetPath());		
-	}	
-}
+	Super::Activate();
 
-void UGameplayTask_Move::SetDestination(FVector InDestination)
-{	
-	Destination = InDestination;
-	UWorld* World = GetAvatarActor()->GetWorld();
+	UWorld* World = GetAvatarActor()->GetWorld();	
 	if (!World) return;
 	
 	UNavigationSystemV1* NavSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());	
@@ -54,15 +32,15 @@ void UGameplayTask_Move::SetDestination(FVector InDestination)
 	const FNavAgentProperties& AgentProperties = NavAgent->GetNavAgentPropertiesRef();	
 	ANavigationData* NavigationData = NavSystem->GetNavDataForProps(AgentProperties, GetAvatarActor()->GetActorLocation());
 	FPathFindingQuery Query(GetAvatarActor(), *NavigationData, GetAvatarActor()->GetActorLocation(),
-		Destination, UNavigationQueryFilter::GetQueryFilter(*NavigationData, GetAvatarActor(), nullptr));
+		Destination, UNavigationQueryFilter::GetQueryFilter(*NavigationData, GetAvatarActor(), nullptr));	
 	Query.SetAllowPartialPaths(false);
 	Query.SetRequireNavigableEndLocation(true);	
-	FPathFindingResult PathFindingResult = NavSystem->FindPathSync(Query);
-	if (PathFindingResult.IsSuccessful())
-	{
-		Path = NewObject<UNavigationPath>();
-		Path->SetPath(PathFindingResult.Path);		
-	}	
+	NavSystem->FindPathAsync(AgentProperties, Query, FNavPathQueryDelegate::CreateUObject(this, &UGameplayTask_Move::OnFindPathAsyncResult));	
+}
+
+void UGameplayTask_Move::SetDestination(FVector InDestination)
+{	
+	Destination = InDestination;	
 }
 
 float UGameplayTask_Move::GetCost_Implementation()
@@ -73,5 +51,34 @@ float UGameplayTask_Move::GetCost_Implementation()
 bool UGameplayTask_Move::ApplyCost_Implementation()
 {
 	return true;
+}
+
+void UGameplayTask_Move::OnFindPathAsyncResult(uint32 QueryID, ENavigationQueryResult::Type Result,
+	FNavPathSharedPtr PathPtr)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Green, UEnum::GetValueAsString(Result));
+	if (!Path) return;
+	Path->SetPath(PathPtr);
+	AAIController* Controller = Cast<AAIController>(GetAvatarActor()->GetInstigatorController());
+	if (!Controller)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "no valid AI controller");	
+		return;
+	}
+	
+	UPathFollowingComponent* PathFollowing = Controller->GetPathFollowingComponent();
+	if(PathFollowing)
+	{
+		MoveRequest = FAIMoveRequest(Destination);
+		MoveRequest.SetAcceptanceRadius(5.f);
+		MoveRequest.SetReachTestIncludesAgentRadius(false);
+		MoveRequest.SetCanStrafe(true);
+		MoveRequest.SetAllowPartialPath(false);
+		MoveRequest.SetUsePathfinding(true);
+		MoveRequest.SetRequireNavigableEndLocation(true);
+		MoveRequest.SetProjectGoalLocation(false);
+		PathFollowing->OnRequestFinished.AddUObject(this, &UGameplayTask_Move::OnMoveComplete);		
+		Controller->RequestMove(MoveRequest, Path.Get()->GetPath());		
+	}	
 }
 
