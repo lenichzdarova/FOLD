@@ -2,9 +2,10 @@
 
 
 #include "TravelTriggerBase.h"
+#include "FOLD_ActorRefSubsystem.h"
 #include "IDComponent.h"
 #include "LevelTransitionSubsystem.h"
-#include "Kismet/GameplayStatics.h"
+
 
 
 // Sets default values
@@ -20,12 +21,12 @@ void ATravelTriggerBase::NotifyActorBeginOverlap(AActor* OtherActor)
 	Super::NotifyActorBeginOverlap(OtherActor);
 
 	UWorld* World = GetWorld();
-	if (OtherActor == UGameplayStatics::GetPlayerPawn(World, 0))
+	if (OtherActor == UFOLD_ActorRefSubsystem::GetPlayerActor(World))
 	{
 		FString Options = CreateLevelOpenOptions();
 		UGameInstance* GameInstance = World->GetGameInstance();
 		ULevelTransitionSubsystem* TransitionSubsystem = GameInstance->GetSubsystem<ULevelTransitionSubsystem>();
-		TransitionSubsystem->RequestTransitionToGameLevel(MapToLoad, true, Options);
+		TransitionSubsystem->RequestTransitionToGameLevel(MapToLoad, TargetedSpawnZone, true, Options);
 	}	
 }
 

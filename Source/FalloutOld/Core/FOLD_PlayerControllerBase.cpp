@@ -1,14 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "FOLDPlayerControllerBase.h"
+#include "FOLD_PlayerControllerBase.h"
 
 #include "EnhancedInputComponent.h"
-#include "FOLDActorRefSubsystem.h"
-#include "FOLDGameInstanceBase.h"
+#include "FOLD_ActorRefSubsystem.h"
+#include "FOLD_GameInstanceBase.h"
 #include "Input/PlayerDefaultInputHandler.h"
 #include "Kismet/GameplayStatics.h"
 
-void AFOLDPlayerControllerBase::Initialize()
+void AFOLD_PlayerControllerBase::Initialize()
 {
 	// spawn and setup playerView instance
 	if (IsLocalController())
@@ -42,7 +42,7 @@ void AFOLDPlayerControllerBase::Initialize()
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "FOLDPlayerControllerBase::Initialize");
 }
 
-void AFOLDPlayerControllerBase::Tick(float DeltaSeconds)
+void AFOLD_PlayerControllerBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);	
 }

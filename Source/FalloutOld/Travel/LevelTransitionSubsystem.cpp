@@ -6,9 +6,10 @@
 #include "WorldPresetSubsystem.h"
 #include "Kismet/GameplayStatics.h"
 
-void ULevelTransitionSubsystem::RequestTransitionToGameLevel(const TSoftObjectPtr<UWorld> TargetLevelAsset, bool bAbsolute,
-	FString Options)
+void ULevelTransitionSubsystem::RequestTransitionToGameLevel(const TSoftObjectPtr<UWorld> TargetLevelAsset, 
+	const FGameplayTag& InPlayerSpawnTag, bool bAbsolute, FString Options)
 {
+	PlayerSpawnTag = InPlayerSpawnTag;
 	UWorld* World = GetWorld();
 	UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(World);
 	UWorldPresetSubsystem* WorldPresetSubsystem = GameInstance->GetSubsystem<UWorldPresetSubsystem>();

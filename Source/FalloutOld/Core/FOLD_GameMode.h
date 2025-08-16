@@ -5,21 +5,21 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "GameFramework/GameModeBase.h"
-#include "FOLDGameMode.generated.h"
+#include "FOLD_GameMode.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class FALLOUTOLD_API AFOLDGameMode : public AGameModeBase
+class FALLOUTOLD_API AFOLD_GameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
-	AFOLDGameMode();
+	AFOLD_GameMode();
 	
 	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;	
 	void ConfigureLevelAfterLoad();
 	void HandlePlayerPartySpawn();
-	const FGameplayTag ParseSpawnTagFromOptions() const;	
+	const FGameplayTag GetPlayerSpawnTag() const;	
 };
 

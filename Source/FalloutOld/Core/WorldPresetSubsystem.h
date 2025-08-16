@@ -19,14 +19,15 @@ class FALLOUTOLD_API UWorldPresetSubsystem : public UGameInstanceSubsystem
 
 	private:
 	//Сериализованные данные акторов.
-	UPROPERTY()
-	TMap<FGuid, FFOLDGameplayActorData> ActorsLoadConfig;
+	//UPROPERTY()
+	//TMap<FGuid, FFOLDGameplayActorData> ActorsLoadConfig;
 	UPROPERTY()
 	TMap<FString, FWorldPreset> Presets;
 public:
 	void InitializeWorld(UWorld* World);				
 	void ApplyPresetToWorld(UWorld* World, const FWorldPreset& Preset) const;
-	void CollectPresetFromWorld(UWorld* World);	
+	void CollectPresetFromWorld(UWorld* World);
+	//AActor* SpawnStoredActor(FGuid ID) const;	
 };
 
 

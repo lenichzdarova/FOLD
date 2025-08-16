@@ -4,8 +4,10 @@
 #include "WorldPresetSubsystem.h"
 
 #include "EngineUtils.h"
+#include "FOLD_ActorsDataStorage.h"
 #include "FalloutOld/GameplayActors/IDComponent.h"
 #include "FalloutOld/SaveGame/StorableActor.h"
+#include "Runtime/VerseCompiler/Public/uLang/Parser/VerseGrammar.h"
 
 void UWorldPresetSubsystem::InitializeWorld(UWorld* World)
 {
@@ -18,7 +20,10 @@ void UWorldPresetSubsystem::InitializeWorld(UWorld* World)
 
 void UWorldPresetSubsystem::ApplyPresetToWorld(UWorld* World, const FWorldPreset& Preset) const
 {
+	UGameInstance* GameInstance = World->GetGameInstance();
+	UFOLD_ActorsDataStorage* ActorsDataStorage = GameInstance->GetSubsystem<UFOLD_ActorsDataStorage>();
 	TSet<FGuid> ActorsIDToLoad = Preset.GameplayActorsID;
+	
 	if (World)
 	{
 		FActorIterator It(World);
@@ -29,14 +34,9 @@ void UWorldPresetSubsystem::ApplyPresetToWorld(UWorld* World, const FWorldPreset
 			{
 				const FGuid& ID = IDComponent->GetID();
 				if (ActorsIDToLoad.Contains(ID))
-				{				
-					if (ActorsLoadConfig.Contains(ID))
-					{
-						if (IStorableActor* StorableActor = Cast<IStorableActor>(Actor))
-						{				
-							StorableActor->InitWithStoredData(*ActorsLoadConfig.Find(ID));
-						}						
-					}
+				{
+					ActorsDataStorage->RestoreActor(Actor);
+					IDComponent->RegisterActor();
 					//удаляем ID, чтобы в конце остался список недефолтных для карты акторов для загрузки
 					ActorsIDToLoad.Remove(ID);
 				}
@@ -58,18 +58,21 @@ void UWorldPresetSubsystem::ApplyPresetToWorld(UWorld* World, const FWorldPreset
 		{
 			auto Iter = ActorsIDToLoad.CreateIterator();
 			for (;Iter; ++Iter)
-			{
-				const FFOLDGameplayActorData& ActorData = *ActorsLoadConfig.Find(*Iter);				
-				AActor* SpawnedActor = World->SpawnActor(ActorData.ActorSubtype);
-				IStorableActor* StorableActor = Cast<IStorableActor>(SpawnedActor);
-				StorableActor->InitWithStoredData(ActorData);
+			{				
+				AActor* SpawnedActor = ActorsDataStorage->SpawnActorAndRestore(*Iter);
+				if (UIDComponent* IDComponent = SpawnedActor->GetComponentByClass<UIDComponent>())
+				{
+					IDComponent->RegisterActor();
+				}
 			}
 		}
 	}	
 }
 
 void UWorldPresetSubsystem::CollectPresetFromWorld(UWorld* World)
-{	
+{
+	UGameInstance* GameInstance = World->GetGameInstance();
+	UFOLD_ActorsDataStorage* ActorsDataStorage = GameInstance->GetSubsystem<UFOLD_ActorsDataStorage>();
 	if (World)
 	{
 		FWorldPreset Preset;
@@ -79,19 +82,27 @@ void UWorldPresetSubsystem::CollectPresetFromWorld(UWorld* World)
 			AActor* Actor = *It;
 			if (UIDComponent* IDComponent = Actor->GetComponentByClass<UIDComponent>())
 			{
-				const FGuid& ID = IDComponent->GetID();
-
-				if (IStorableActor* StorableActor = Cast<IStorableActor>(Actor))
-				{						
-					FFOLDGameplayActorData data;					
-					StorableActor->CollectStorableData(data);
-					ActorsLoadConfig.Add(ID, data);
-					Preset.GameplayActorsID.Add(ID);
-				}
+				Preset.GameplayActorsID.Add(IDComponent->GetID());
+				ActorsDataStorage->StoreActor(Actor);
 			}			
 		}
 		Presets.Add(World->GetName(), Preset);
 	}		
 }
+/*
+AActor* UWorldPresetSubsystem::SpawnStoredActor(FGuid ID) const
+{
+	AActor* Result = nullptr;
+	UGameInstance* GameInstance = GetWorld()->GetGameInstance();
+	UFOLD_ActorsDataStorage* ActorsDataStorage = GameInstance->GetSubsystem<UFOLD_ActorsDataStorage>();
+	if (ActorsDataStorage->ContainsActorData(ID))
+	{
+		auto StoredData = ActorsDataStorage->GetActorData(ID);
+		UWorld* World = GetWorld();
+		Result = World->SpawnActor(StoredData->ActorSubtype, &StoredData->Transform);
+		ActorsDataStorage->RestoreActor(Result);
+	}
+	return Result;
+}*/
 
 

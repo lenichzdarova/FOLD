@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "FOLDGameInstanceBase.h"
+#include "FOLD_GameInstanceBase.h"
 #include "Unsorted/PlayerParty.h"
 
-void UFOLDGameInstanceBase::Init()
+void UFOLD_GameInstanceBase::Init()
 {
 	Super::Init();
 	PlayerParty = NewObject<UPlayerParty>();

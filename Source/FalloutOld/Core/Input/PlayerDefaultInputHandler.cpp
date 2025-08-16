@@ -1,7 +1,7 @@
 ﻿#include "PlayerDefaultInputHandler.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputComponent.h"
-#include "FOLDActorRefSubsystem.h"
+#include "FOLD_ActorRefSubsystem.h"
 #include "Kismet/GameplayStatics.h"
 #include "Targeting/FOLDTargetTypes.h"
 #include "Unsorted/PlayerView.h"
@@ -26,10 +26,13 @@ void UPlayerDefaultInputHandler::BindInputEvents()
 
 void UPlayerDefaultInputHandler::OnCursorAction(const FInputActionValue& InputValue)
 {
+	
 	FHitResult HitResult = GetHitResult();
 	if (!HitResult.bBlockingHit) return;
+	
 	if (AActor* ControlledActor = GetControlledActor())
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 20, FColor::Red, "1111");
 		IAbilitySystemInterface* AbilityInterface = Cast<IAbilitySystemInterface>(ControlledActor);
 		if (!AbilityInterface) return;
 		UAbilitySystemComponent* AbilityComponent = AbilityInterface->GetAbilitySystemComponent();
@@ -93,6 +96,6 @@ FHitResult UPlayerDefaultInputHandler::GetHitResult() const
 AActor* UPlayerDefaultInputHandler::GetControlledActor() const
 {
 	UWorld* World = GetWorld();		
-	return UFOLDActorRefSubsystem::GetPlayerActor(World);
+	return UFOLD_ActorRefSubsystem::GetPlayerActor(World);
 }
 

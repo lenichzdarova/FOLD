@@ -5,13 +5,13 @@
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "FalloutOld/Unsorted/PlayerParty.h"
-#include "FOLDGameInstanceBase.generated.h"
+#include "FOLD_GameInstanceBase.generated.h"
 
 /**
  *
  */
 UCLASS()
-class FALLOUTOLD_API UFOLDGameInstanceBase : public UGameInstance
+class FALLOUTOLD_API UFOLD_GameInstanceBase : public UGameInstance
 {
 	GENERATED_BODY()
 

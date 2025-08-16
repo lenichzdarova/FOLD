@@ -3,7 +3,7 @@
 
 #include "IDComponent.h"
 
-#include "FOLDActorRefSubsystem.h"
+#include "FOLD_ActorRefSubsystem.h"
 
 
 // Sets default values for this component's properties
@@ -12,9 +12,14 @@ UIDComponent::UIDComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
-	bAutoActivate = true;
-	bWantsInitializeComponent = true;
+	bAutoActivate = true;	
 	// ...	
+}
+
+void UIDComponent::BeginPlay()
+{
+	Super::BeginPlay();
+	RegisterActor();	
 }
 
 void UIDComponent::OnRegister()
@@ -30,14 +35,17 @@ void UIDComponent::OnRegister()
 	}	
 }
 
-void UIDComponent::InitializeComponent()
-{
-	Super::InitializeComponent();	
+void UIDComponent::RegisterActor()
+{	
 	if (ID.IsValid())
 	{
-		UFOLDActorRefSubsystem* RefSubsystem = GetWorld()->GetSubsystem<UFOLDActorRefSubsystem>();
-		RefSubsystem->RegisterActor(GetOwner(), ID, Guid);		
+		UFOLD_ActorRefSubsystem* RefSubsystem = GetWorld()->GetSubsystem<UFOLD_ActorRefSubsystem>();
+		RefSubsystem->RegisterActor(GetOwner(), ID, Guid);				
 	}	
+}
+
+void UIDComponent::UnregisterActor() const
+{
 }
 
 

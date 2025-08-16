@@ -5,13 +5,13 @@
 #include "CoreMinimal.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "GameplayTags.h"
-#include "FOLDActorRefSubsystem.generated.h"
+#include "FOLD_ActorRefSubsystem.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class FALLOUTOLD_API UFOLDActorRefSubsystem : public UWorldSubsystem
+class FALLOUTOLD_API UFOLD_ActorRefSubsystem : public UWorldSubsystem
 {
 	GENERATED_BODY()
 

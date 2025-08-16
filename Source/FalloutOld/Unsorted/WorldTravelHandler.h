@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FalloutOld/Core/FOLDGameInstanceBase.h"
+#include "FalloutOld/Core/FOLD_GameInstanceBase.h"
 #include "UObject/NoExportTypes.h"
 #include "WorldTravelHandler.generated.h"
 

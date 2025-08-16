@@ -70,7 +70,7 @@ void UGameplayTask_Move::OnFindPathAsyncResult(uint32 QueryID, ENavigationQueryR
 	if(PathFollowing)
 	{
 		MoveRequest = FAIMoveRequest(Destination);
-		MoveRequest.SetAcceptanceRadius(5.f);
+		MoveRequest.SetAcceptanceRadius(1.f);
 		MoveRequest.SetReachTestIncludesAgentRadius(false);
 		MoveRequest.SetCanStrafe(true);
 		MoveRequest.SetAllowPartialPath(false);

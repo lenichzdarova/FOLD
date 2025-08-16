@@ -10,13 +10,13 @@
 #include "FalloutOld/Unsorted/PlayerParty.h"
 #include "GameFramework/PlayerController.h"
 #include "Input/InputConfig.h"
-#include "FOLDPlayerControllerBase.generated.h"
+#include "FOLD_PlayerControllerBase.generated.h"
 
 /**
  * 
  */
 UCLASS(Blueprintable, Abstract)
-class FALLOUTOLD_API AFOLDPlayerControllerBase : public APlayerController
+class FALLOUTOLD_API AFOLD_PlayerControllerBase : public APlayerController
 											 
 {
 	GENERATED_BODY()

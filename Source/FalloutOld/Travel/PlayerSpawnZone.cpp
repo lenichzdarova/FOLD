@@ -24,3 +24,8 @@ void APlayerSpawnZone::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void APlayerSpawnZone::MovePlayerActorsToSpawnZone()
+{
+	
+}
+
