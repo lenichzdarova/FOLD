@@ -18,6 +18,7 @@ public:
 	UIDComponent();	
 	
 	const FGuid& GetID() const {return Guid;}
+	const FGameplayTag& GetTag() const {return Tag;}
 	virtual void OnRegister() override;
 	void RegisterActor();
 	void UnregisterActor() const;
@@ -28,5 +29,5 @@ private:
 	FGuid Guid;
 	//именование значимых геймплейных акторов.  Является ключом для получения ссылки на такого актора.
 	UPROPERTY(EditAnywhere, SaveGame, meta=(Categories = "Actors"))
-	FGameplayTag ID;
+	FGameplayTag Tag;
 };

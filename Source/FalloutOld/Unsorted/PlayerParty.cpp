@@ -3,6 +3,22 @@
 
 #include "PlayerParty.h"
 
+UPlayerParty* UPlayerParty::PlayerParty = nullptr;
+
+UPlayerParty* UPlayerParty::GetPlayerParty()
+{
+	if (!PlayerParty)
+	{
+		PlayerParty=NewObject<UPlayerParty>();
+	}
+	return PlayerParty;
+}
+
+const FGameplayTag& UPlayerParty::GetPlayerTag() const
+{
+	return PlayerTag;
+}
+
 void UPlayerParty::AddID(const FGameplayTag& Tag)
 {	
 	Tags.AddTag(Tag);

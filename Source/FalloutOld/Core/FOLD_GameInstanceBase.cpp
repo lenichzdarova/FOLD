@@ -7,5 +7,5 @@
 void UFOLD_GameInstanceBase::Init()
 {
 	Super::Init();
-	PlayerParty = NewObject<UPlayerParty>();
+	//PlayerParty = NewObject<UPlayerParty>();
 }

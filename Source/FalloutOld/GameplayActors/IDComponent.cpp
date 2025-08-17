@@ -30,10 +30,10 @@ void UIDComponent::OnRegister()
 
 void UIDComponent::RegisterActor()
 {	
-	if (ID.IsValid())
+	if (Tag.IsValid())
 	{
 		UFOLD_ActorRefSubsystem* RefSubsystem = GetWorld()->GetSubsystem<UFOLD_ActorRefSubsystem>();
-		RefSubsystem->RegisterActor(GetOwner(), ID, Guid);				
+		RefSubsystem->RegisterActor(GetOwner(), Tag, Guid);				
 	}	
 }
 

@@ -17,17 +17,15 @@ class FALLOUTOLD_API UWorldPresetSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 
-	private:
-	//Сериализованные данные акторов.
-	//UPROPERTY()
-	//TMap<FGuid, FFOLDGameplayActorData> ActorsLoadConfig;
+	private:	
 	UPROPERTY()
 	TMap<FString, FWorldPreset> Presets;
 public:
 	void InitializeWorld(UWorld* World);				
 	void ApplyPresetToWorld(UWorld* World, const FWorldPreset& Preset) const;
-	// булевая переменная определяет надо ли сохранять игрока со спутниками. Если игрок уходит с карты, то false.
-	void CollectPresetFromWorld(UWorld* World, bool bPlayerIsTransient = false);
+	// булевая переменная определяет надо ли сохранять игрока со спутниками. true = eсли игрок уходит с карты, то в пресет его
+	//вносить не надо. 
+	void MakePresetFromWorld(UWorld* World, bool bPlayerIsTransient = false);
 	//AActor* SpawnStoredActor(FGuid ID) const;
 private:
 	void InitDefaultLevelState();

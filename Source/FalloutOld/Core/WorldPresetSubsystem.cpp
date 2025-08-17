@@ -6,6 +6,7 @@
 #include "EngineUtils.h"
 #include "FOLD_ActorsDataStorage.h"
 #include "FalloutOld/GameplayActors/IDComponent.h"
+#include "Unsorted/PlayerParty.h"
 
 void UWorldPresetSubsystem::InitializeWorld(UWorld* World)
 {
@@ -71,7 +72,7 @@ void UWorldPresetSubsystem::ApplyPresetToWorld(UWorld* World, const FWorldPreset
 	}	
 }
 
-void UWorldPresetSubsystem::CollectPresetFromWorld(UWorld* World, bool bPlayerIsTransient)
+void UWorldPresetSubsystem::MakePresetFromWorld(UWorld* World, bool bPlayerIsTransient)
 {
 	UGameInstance* GameInstance = World->GetGameInstance();
 	UFOLD_ActorsDataStorage* ActorsDataStorage = GameInstance->GetSubsystem<UFOLD_ActorsDataStorage>();
@@ -83,9 +84,15 @@ void UWorldPresetSubsystem::CollectPresetFromWorld(UWorld* World, bool bPlayerIs
 		{			
 			AActor* Actor = *It;
 			if (UIDComponent* IDComponent = Actor->GetComponentByClass<UIDComponent>())
-			{
-				Preset.GameplayActorsID.Add(IDComponent->GetID());
+			{				
 				ActorsDataStorage->StoreActor(Actor);
+				UPlayerParty* PlayerParty = UPlayerParty::GetPlayerParty();
+				FGameplayTag ActorTag = IDComponent->GetTag();
+				if (bPlayerIsTransient && PlayerParty->ContainsID(ActorTag))
+				{					
+					continue;
+				}				
+				Preset.GameplayActorsID.Add(IDComponent->GetID());
 			}			
 		}
 		Presets.Add(World->GetName(), Preset);
