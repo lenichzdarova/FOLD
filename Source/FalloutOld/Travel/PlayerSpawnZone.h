@@ -4,9 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "IDComponent.h"
 #include "PlayerSpawnZone.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class FALLOUTOLD_API APlayerSpawnZone : public AActor
 {
 	GENERATED_BODY()
@@ -23,5 +24,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "ID", meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<UIDComponent> IDComponent;
+	
 	void MovePlayerActorsToSpawnZone();
 };

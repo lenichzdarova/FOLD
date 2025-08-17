@@ -15,8 +15,7 @@ class FALLOUTOLD_API UIDComponent : public UActorComponent
 
 public:
 	// Sets default values for this component's properties
-	UIDComponent();
-	virtual void BeginPlay() override;
+	UIDComponent();	
 	
 	const FGuid& GetID() const {return Guid;}
 	virtual void OnRegister() override;

@@ -6,8 +6,6 @@
 #include "EngineUtils.h"
 #include "FOLD_ActorsDataStorage.h"
 #include "FalloutOld/GameplayActors/IDComponent.h"
-#include "FalloutOld/SaveGame/StorableActor.h"
-#include "Runtime/VerseCompiler/Public/uLang/Parser/VerseGrammar.h"
 
 void UWorldPresetSubsystem::InitializeWorld(UWorld* World)
 {
@@ -15,7 +13,11 @@ void UWorldPresetSubsystem::InitializeWorld(UWorld* World)
 	if (Presets.Contains(Key))
 	{
 		ApplyPresetToWorld(World, *Presets.Find(Key));
-	}	
+	}
+	else
+	{
+		InitDefaultLevelState();
+	}
 }
 
 void UWorldPresetSubsystem::ApplyPresetToWorld(UWorld* World, const FWorldPreset& Preset) const
@@ -69,7 +71,7 @@ void UWorldPresetSubsystem::ApplyPresetToWorld(UWorld* World, const FWorldPreset
 	}	
 }
 
-void UWorldPresetSubsystem::CollectPresetFromWorld(UWorld* World)
+void UWorldPresetSubsystem::CollectPresetFromWorld(UWorld* World, bool bPlayerIsTransient)
 {
 	UGameInstance* GameInstance = World->GetGameInstance();
 	UFOLD_ActorsDataStorage* ActorsDataStorage = GameInstance->GetSubsystem<UFOLD_ActorsDataStorage>();
@@ -89,6 +91,24 @@ void UWorldPresetSubsystem::CollectPresetFromWorld(UWorld* World)
 		Presets.Add(World->GetName(), Preset);
 	}		
 }
+
+void UWorldPresetSubsystem::InitDefaultLevelState()
+{
+	UWorld* World = GetWorld();
+	if (World)
+	{		
+		FActorIterator It(World);
+		for (;It; ++It)
+		{			
+			AActor* Actor = *It;
+			if (UIDComponent* IDComponent = Actor->GetComponentByClass<UIDComponent>())
+			{
+				IDComponent->RegisterActor();
+			}			
+		}		
+	}		
+}
+
 /*
 AActor* UWorldPresetSubsystem::SpawnStoredActor(FGuid ID) const
 {

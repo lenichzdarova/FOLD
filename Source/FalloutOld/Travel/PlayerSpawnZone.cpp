@@ -3,12 +3,15 @@
 
 #include "PlayerSpawnZone.h"
 
+#include "FOLD_ActorRefSubsystem.h"
+
 
 // Sets default values
 APlayerSpawnZone::APlayerSpawnZone()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	IDComponent = CreateDefaultSubobject<UIDComponent>(TEXT("IDComponent"));
 }
 
 // Called when the game starts or when spawned
@@ -26,6 +29,13 @@ void APlayerSpawnZone::Tick(float DeltaTime)
 
 void APlayerSpawnZone::MovePlayerActorsToSpawnZone()
 {
-	
+	if (UWorld* World = GetWorld())
+	{
+		UFOLD_ActorRefSubsystem* RefSubsystem = World->GetSubsystem<UFOLD_ActorRefSubsystem>();
+		if (AActor* Actor = RefSubsystem->GetPlayerActor(World))
+		{
+			Actor->SetActorTransform(GetActorTransform());
+		}		
+	}	
 }
 

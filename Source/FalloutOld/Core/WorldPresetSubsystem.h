@@ -26,8 +26,11 @@ class FALLOUTOLD_API UWorldPresetSubsystem : public UGameInstanceSubsystem
 public:
 	void InitializeWorld(UWorld* World);				
 	void ApplyPresetToWorld(UWorld* World, const FWorldPreset& Preset) const;
-	void CollectPresetFromWorld(UWorld* World);
-	//AActor* SpawnStoredActor(FGuid ID) const;	
+	// булевая переменная определяет надо ли сохранять игрока со спутниками. Если игрок уходит с карты, то false.
+	void CollectPresetFromWorld(UWorld* World, bool bPlayerIsTransient = false);
+	//AActor* SpawnStoredActor(FGuid ID) const;
+private:
+	void InitDefaultLevelState();
 };
 
 

@@ -8,15 +8,15 @@
 #include "IDComponent.h"
 #include "TravelTriggerBase.generated.h"
 
-UCLASS(Abstract, Blueprintable)
+UCLASS(Abstract, Blueprintable, Category="FOLD")
 class FALLOUTOLD_API ATravelTriggerBase : public AActor
 {
 	GENERATED_BODY()
 
 	private:
-	UPROPERTY(EditAnywhere, meta=(Categories = "Travel"))
+	UPROPERTY(EditAnywhere, Category="FOLD")
 	FGameplayTag TargetedSpawnZone;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category="FOLD")
 	TSoftObjectPtr<UWorld> MapToLoad;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "ID", meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UIDComponent> IDComponent;

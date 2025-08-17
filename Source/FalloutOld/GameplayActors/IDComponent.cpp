@@ -15,13 +15,6 @@ UIDComponent::UIDComponent()
 	bAutoActivate = true;	
 	// ...	
 }
-
-void UIDComponent::BeginPlay()
-{
-	Super::BeginPlay();
-	RegisterActor();	
-}
-
 void UIDComponent::OnRegister()
 {
 	Super::OnRegister();

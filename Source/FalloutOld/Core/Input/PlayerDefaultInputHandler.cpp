@@ -31,8 +31,7 @@ void UPlayerDefaultInputHandler::OnCursorAction(const FInputActionValue& InputVa
 	if (!HitResult.bBlockingHit) return;
 	
 	if (AActor* ControlledActor = GetControlledActor())
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 20, FColor::Red, "1111");
+	{		
 		IAbilitySystemInterface* AbilityInterface = Cast<IAbilitySystemInterface>(ControlledActor);
 		if (!AbilityInterface) return;
 		UAbilitySystemComponent* AbilityComponent = AbilityInterface->GetAbilitySystemComponent();

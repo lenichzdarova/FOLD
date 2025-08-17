@@ -6,16 +6,16 @@
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Actor.h"
 #include "FOLDAbilitySystemComponent.h"
-#include "GameplayActorBase.generated.h"
+#include "FOLD_ActorBase.generated.h"
 
 UCLASS(Abstract)
-class FALLOUTOLD_API AGameplayActorBase : public AActor, public IAbilitySystemInterface
+class FALLOUTOLD_API AFOLD_ActorBase : public AActor, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	AGameplayActorBase();
+	AFOLD_ActorBase();
 
 protected:
 	// Called when the game starts or when spawned
