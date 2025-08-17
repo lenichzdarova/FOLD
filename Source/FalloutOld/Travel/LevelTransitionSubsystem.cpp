@@ -13,6 +13,6 @@ void ULevelTransitionSubsystem::RequestTransitionToGameLevel(const TSoftObjectPt
 	UWorld* World = GetWorld();
 	UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(World);
 	UWorldPresetSubsystem* WorldPresetSubsystem = GameInstance->GetSubsystem<UWorldPresetSubsystem>();
-	WorldPresetSubsystem->MakePresetFromWorld(World, true);
+	WorldPresetSubsystem->MakePresetFromWorld(World, false);
 	UGameplayStatics::OpenLevelBySoftObjectPtr(World, TargetLevelAsset, bAbsolute, Options);
 }

@@ -55,8 +55,10 @@ void UWorldPresetSubsystem::ApplyPresetToWorld(UWorld* World, const FWorldPreset
 			}						
 		}
 		/*
-		 *тут спавним и инициализируем акторов, которые были добавлены на карту динамически в процессе игры
+		 *тут спавним и инициализируем акторов, которые были добавлены на карту динамически в процессе игры.
+		 *Так же к списку добавляем айдишники не привязанные к присету.
 		 */
+		ActorsIDToLoad.Append(GlobalID);
 		if (!ActorsIDToLoad.IsEmpty())
 		{
 			auto Iter = ActorsIDToLoad.CreateIterator();
@@ -72,8 +74,9 @@ void UWorldPresetSubsystem::ApplyPresetToWorld(UWorld* World, const FWorldPreset
 	}	
 }
 
-void UWorldPresetSubsystem::MakePresetFromWorld(UWorld* World, bool bPlayerIsTransient)
+void UWorldPresetSubsystem::MakePresetFromWorld(UWorld* World, bool bWritePlayerPartyToPreset)
 {
+	GlobalID.Empty();
 	UGameInstance* GameInstance = World->GetGameInstance();
 	UFOLD_ActorsDataStorage* ActorsDataStorage = GameInstance->GetSubsystem<UFOLD_ActorsDataStorage>();
 	if (World)
@@ -88,8 +91,9 @@ void UWorldPresetSubsystem::MakePresetFromWorld(UWorld* World, bool bPlayerIsTra
 				ActorsDataStorage->StoreActor(Actor);
 				UPlayerParty* PlayerParty = UPlayerParty::GetPlayerParty();
 				FGameplayTag ActorTag = IDComponent->GetTag();
-				if (bPlayerIsTransient && PlayerParty->ContainsID(ActorTag))
-				{					
+				if (!bWritePlayerPartyToPreset && PlayerParty->ContainsID(ActorTag))
+				{
+					GlobalID.Add(IDComponent->GetID());
 					continue;
 				}				
 				Preset.GameplayActorsID.Add(IDComponent->GetID());

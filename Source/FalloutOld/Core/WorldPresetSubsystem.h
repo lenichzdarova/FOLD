@@ -20,12 +20,15 @@ class FALLOUTOLD_API UWorldPresetSubsystem : public UGameInstanceSubsystem
 	private:	
 	UPROPERTY()
 	TMap<FString, FWorldPreset> Presets;
+	//Айди не привязанные к присету карты - когда пресет создается в следствие перемещения игрока на другую карту
+	UPROPERTY()
+	TSet<FGuid> GlobalID;
 public:
 	void InitializeWorld(UWorld* World);				
 	void ApplyPresetToWorld(UWorld* World, const FWorldPreset& Preset) const;
 	// булевая переменная определяет надо ли сохранять игрока со спутниками. true = eсли игрок уходит с карты, то в пресет его
 	//вносить не надо. 
-	void MakePresetFromWorld(UWorld* World, bool bPlayerIsTransient = false);
+	void MakePresetFromWorld(UWorld* World, bool bWritePlayerPartyToPreset = false);
 	//AActor* SpawnStoredActor(FGuid ID) const;
 private:
 	void InitDefaultLevelState();
