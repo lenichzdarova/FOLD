@@ -31,7 +31,8 @@ void AFOLD_PlayerControllerBase::Initialize()
 		InputHandler->Initialize(EnhancedInputComponent, DefaultInputConfig);
 		
 		//SetupCamera
-		FTransform CameraInitTransform;// = PlayerCharacter->GetTransform();
+		UFOLD_ActorRefSubsystem* RefSubsystem = GetWorld()->GetSubsystem<UFOLD_ActorRefSubsystem>();
+		FTransform CameraInitTransform = RefSubsystem->GetPlayerActor(GetWorld())->GetActorTransform();
 		auto playerView = GetWorld()->SpawnActor<APlayerView>(CameraInitTransform.GetLocation(), CameraInitTransform.Rotator());
 		PlayerView = playerView;
 		SetViewTarget(PlayerView);
