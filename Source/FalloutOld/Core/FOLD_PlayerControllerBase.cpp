@@ -7,6 +7,7 @@
 #include "FOLD_GameInstanceBase.h"
 #include "Input/PlayerDefaultInputHandler.h"
 #include "Kismet/GameplayStatics.h"
+#include "Misc/FOLD_Statics.h"
 
 void AFOLD_PlayerControllerBase::Initialize()
 {
@@ -34,7 +35,7 @@ void AFOLD_PlayerControllerBase::Initialize()
 		UFOLD_ActorRefSubsystem* RefSubsystem = GetWorld()->GetSubsystem<UFOLD_ActorRefSubsystem>();		
 
 		FTransform CameraInitTransform;
-		if (AActor* PlayerActor = RefSubsystem->GetPlayerActor(GetWorld()))
+		if (AActor* PlayerActor = UFOLD_Statics::GetPlayerCharacter(GetWorld()))
 		{
 			CameraInitTransform = PlayerActor->GetActorTransform();
 		}		

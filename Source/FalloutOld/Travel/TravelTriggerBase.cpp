@@ -5,7 +5,7 @@
 #include "FOLD_ActorRefSubsystem.h"
 #include "IDComponent.h"
 #include "LevelTransitionSubsystem.h"
-
+#include "Misc/FOLD_Statics.h"
 
 
 // Sets default values
@@ -21,7 +21,7 @@ void ATravelTriggerBase::NotifyActorBeginOverlap(AActor* OtherActor)
 	Super::NotifyActorBeginOverlap(OtherActor);
 
 	UWorld* World = GetWorld();
-	if (OtherActor == UFOLD_ActorRefSubsystem::GetPlayerActor(World))
+	if (OtherActor == UFOLD_Statics::GetPlayerCharacter(GetWorld()))
 	{
 		FString Options = CreateLevelOpenOptions();
 		UGameInstance* GameInstance = World->GetGameInstance();

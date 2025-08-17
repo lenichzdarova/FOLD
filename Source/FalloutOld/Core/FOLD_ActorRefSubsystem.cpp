@@ -34,15 +34,3 @@ const FGuid& UFOLD_ActorRefSubsystem::GetActorGuid(FGameplayTag ActorTag)
 	return *ActorGuids.Find(ActorTag);
 }
 
-AActor* UFOLD_ActorRefSubsystem::GetPlayerActor(const UObject* WorldContext)
-{
-	AActor* Result = nullptr;
-	if (UWorld* World = WorldContext->GetWorld())
-	{
-		if (UFOLD_ActorRefSubsystem* RefSubsystem = World->GetSubsystem<UFOLD_ActorRefSubsystem>())
-		{
-			Result = RefSubsystem->GetActorByTag(FGameplayTag::RequestGameplayTag("Actors.Player"));
-		}
-	}
-	return Result;
-}

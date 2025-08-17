@@ -26,7 +26,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static UPlayerParty* GetPlayerParty();
 	UFUNCTION()
-	const FGameplayTag& GetPlayerTag() const;
+	static const FGameplayTag& GetPlayerTag();	
 	
 	UFUNCTION(BlueprintCallable)
 	void AddID(const FGameplayTag& Tag);

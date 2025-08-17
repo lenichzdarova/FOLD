@@ -4,6 +4,7 @@
 #include "PlayerSpawnZone.h"
 
 #include "FOLD_ActorRefSubsystem.h"
+#include "Misc/FOLD_Statics.h"
 
 
 // Sets default values
@@ -32,7 +33,7 @@ void APlayerSpawnZone::MovePlayerActorsToSpawnZone()
 	if (UWorld* World = GetWorld())
 	{
 		UFOLD_ActorRefSubsystem* RefSubsystem = World->GetSubsystem<UFOLD_ActorRefSubsystem>();
-		if (AActor* Actor = RefSubsystem->GetPlayerActor(World))
+		if (AActor* Actor = UFOLD_Statics::GetPlayerCharacter(GetWorld()))
 		{
 			Actor->SetActorTransform(GetActorTransform());
 		}		

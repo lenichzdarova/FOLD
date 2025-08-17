@@ -3,6 +3,7 @@
 #include "EnhancedInputComponent.h"
 #include "FOLD_ActorRefSubsystem.h"
 #include "Kismet/GameplayStatics.h"
+#include "Misc/FOLD_Statics.h"
 #include "Targeting/FOLDTargetTypes.h"
 #include "Unsorted/PlayerView.h"
 
@@ -95,6 +96,6 @@ FHitResult UPlayerDefaultInputHandler::GetHitResult() const
 AActor* UPlayerDefaultInputHandler::GetControlledActor() const
 {
 	UWorld* World = GetWorld();		
-	return UFOLD_ActorRefSubsystem::GetPlayerActor(World);
+	return UFOLD_Statics::GetPlayerCharacter(GetWorld());
 }
 

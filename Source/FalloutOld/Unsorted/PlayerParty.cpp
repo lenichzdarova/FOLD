@@ -14,9 +14,9 @@ UPlayerParty* UPlayerParty::GetPlayerParty()
 	return PlayerParty;
 }
 
-const FGameplayTag& UPlayerParty::GetPlayerTag() const
+const FGameplayTag& UPlayerParty::GetPlayerTag()
 {
-	return PlayerTag;
+	return PlayerParty->PlayerTag;
 }
 
 void UPlayerParty::AddID(const FGameplayTag& Tag)
