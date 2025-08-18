@@ -81,6 +81,8 @@ AActor* UFOLD_ActorsDataStorage::SpawnActorAndRestore(FGuid ID)
 		if (World)
 		{			
 			Result = World->SpawnActor(ActorData.ActorSubtype, &ActorData.Transform);
+
+			Result->GetComponentByClass<UIDComponent>()->SetID(ID);
 			RestoreActor(Result);
 		}
 	}

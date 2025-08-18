@@ -23,14 +23,15 @@ void AFOLD_GameMode::ConfigureLevelAfterLoad()
 {	
 	auto *PresetSubsystem = GetGameInstance()->GetSubsystem<UWorldPresetSubsystem>();
 	if (!PresetSubsystem) return;	
-	PresetSubsystem->InitializeWorld(GetWorld());			
+	PresetSubsystem->InitializeWorld(GetWorld());
+	HandlePlayerPartySpawn();
 }
 
 void AFOLD_GameMode::HandlePlayerPartySpawn()
 {
 	const FGameplayTag SpawnZoneTag = GetPlayerSpawnTag();
 	//если таг не валиден, значит прозошла загрузка игры, а не перемещение по карте и акторы игрока уже загружены
-	//в процессе применения WorldPreset
+	//в процессе применения WorldPreset	
 	if (SpawnZoneTag.IsValid()) 
 	{		
 		UWorld* World = GetWorld();

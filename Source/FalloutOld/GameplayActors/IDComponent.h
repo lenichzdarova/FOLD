@@ -18,7 +18,9 @@ public:
 	UIDComponent();	
 	
 	const FGuid& GetID() const {return Guid;}
+	void SetID(const FGuid& NewID) {Guid = NewID;}
 	const FGameplayTag& GetTag() const {return Tag;}
+	void SetTag(const FGameplayTag& NewTag) {Tag = NewTag;}	
 	virtual void OnRegister() override;
 	void RegisterActor();
 	void UnregisterActor() const;
