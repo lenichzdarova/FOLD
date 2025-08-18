@@ -12,21 +12,17 @@
 UCLASS(BlueprintType)
 class FALLOUTOLD_API UPlayerParty : public UObject
 {
-	GENERATED_BODY()
-	
-	static UPlayerParty* PlayerParty;
+	GENERATED_BODY()	
 
 	UPROPERTY()
 	FGameplayTag PlayerTag = FGameplayTag::RequestGameplayTag("Actors.Player");
 	UPROPERTY()
 	FGameplayTagContainer Tags{PlayerTag};	
 
-public:	
+public:		
 	
-	UFUNCTION(BlueprintCallable)
-	static UPlayerParty* GetPlayerParty();
 	UFUNCTION()
-	static const FGameplayTag& GetPlayerTag();	
+	const FGameplayTag& GetPlayerTag();	
 	
 	UFUNCTION(BlueprintCallable)
 	void AddID(const FGameplayTag& Tag);

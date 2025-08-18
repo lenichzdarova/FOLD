@@ -6,17 +6,18 @@
 #include "EngineUtils.h"
 #include "FOLD_ActorsDataStorage.h"
 #include "FalloutOld/GameplayActors/IDComponent.h"
+#include "Misc/FOLD_Statics.h"
 #include "Unsorted/PlayerParty.h"
 
 void UWorldPresetSubsystem::InitializeWorld(UWorld* World)
 {
 	FString Key = World->GetName();
 	if (Presets.Contains(Key))
-	{
+	{		
 		ApplyPresetToWorld(World, *Presets.Find(Key));
 	}
 	else
-	{
+	{		
 		InitDefaultLevelState();
 	}
 }
@@ -89,7 +90,7 @@ void UWorldPresetSubsystem::MakePresetFromWorld(UWorld* World, bool bWritePlayer
 			if (UIDComponent* IDComponent = Actor->GetComponentByClass<UIDComponent>())
 			{				
 				ActorsDataStorage->StoreActor(Actor);
-				UPlayerParty* PlayerParty = UPlayerParty::GetPlayerParty();
+				UPlayerParty* PlayerParty = UFOLD_Statics::GetPlayerParty(World);
 				FGameplayTag ActorTag = IDComponent->GetTag();
 				if (!bWritePlayerPartyToPreset && PlayerParty->ContainsID(ActorTag))
 				{
@@ -115,6 +116,19 @@ void UWorldPresetSubsystem::InitDefaultLevelState()
 			if (UIDComponent* IDComponent = Actor->GetComponentByClass<UIDComponent>())
 			{
 				IDComponent->RegisterActor();
+			}			
+		}
+		UGameInstance* GameInstance = World->GetGameInstance();
+		UFOLD_ActorsDataStorage* ActorsDataStorage = GameInstance->GetSubsystem<UFOLD_ActorsDataStorage>();		
+		for (const FGuid& ID : GlobalID)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 100.f, FColor::Red, ID.ToString());
+			if (AActor* SpawnedActor = ActorsDataStorage->SpawnActorAndRestore(ID))
+			{
+				if (UIDComponent* IDComponent = SpawnedActor->GetComponentByClass<UIDComponent>())
+				{
+					IDComponent->RegisterActor();
+				}
 			}			
 		}		
 	}		

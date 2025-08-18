@@ -23,8 +23,7 @@ void AFOLD_GameMode::ConfigureLevelAfterLoad()
 {	
 	auto *PresetSubsystem = GetGameInstance()->GetSubsystem<UWorldPresetSubsystem>();
 	if (!PresetSubsystem) return;	
-	PresetSubsystem->InitializeWorld(GetWorld());	
-	HandlePlayerPartySpawn();		
+	PresetSubsystem->InitializeWorld(GetWorld());			
 }
 
 void AFOLD_GameMode::HandlePlayerPartySpawn()

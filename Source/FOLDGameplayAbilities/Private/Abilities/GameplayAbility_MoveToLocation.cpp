@@ -47,7 +47,6 @@ void UGameplayAbility_MoveToLocation::ActivateAbility(const FGameplayAbilitySpec
 }
 
 void UGameplayAbility_MoveToLocation::OnMoveTaskEnd()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Move task completed, ability end");
+{	
 	EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfo(), true, false);
 }

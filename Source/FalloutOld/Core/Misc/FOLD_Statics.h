@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "Unsorted/PlayerParty.h"
 #include "FOLD_Statics.generated.h"
 
 /**
@@ -18,6 +19,7 @@ class FALLOUTOLD_API UFOLD_Statics : public UBlueprintFunctionLibrary
 	public:
 	UFUNCTION(BlueprintCallable)
 	static AActor* GetPlayerCharacter(UObject* WorldContext);
+	static UPlayerParty* GetPlayerParty(UObject* WorldContext);
 
 private:
 	static UWorld* GetWorldFromContext(const UObject* Context);

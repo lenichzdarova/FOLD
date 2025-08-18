@@ -14,8 +14,7 @@ UGameplayTask_Move::UGameplayTask_Move()
 }
 
 void UGameplayTask_Move::OnMoveComplete(FAIRequestID Request, const FPathFollowingResult& Result)
-{	
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, Result.ToString());
+{		
 	EndTask();
 	OnTaskEnd.Broadcast();
 }
@@ -55,8 +54,7 @@ bool UGameplayTask_Move::ApplyCost_Implementation()
 
 void UGameplayTask_Move::OnFindPathAsyncResult(uint32 QueryID, ENavigationQueryResult::Type Result,
 	FNavPathSharedPtr PathPtr)
-{
-	GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Green, UEnum::GetValueAsString(Result));
+{	
 	if (!Path) return;
 	Path->SetPath(PathPtr);
 	AAIController* Controller = Cast<AAIController>(GetAvatarActor()->GetInstigatorController());

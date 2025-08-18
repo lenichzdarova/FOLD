@@ -18,7 +18,7 @@ void UFOLD_ActorsDataStorage::StoreActor(AActor* InActor)
 			Data.ActorSubtype = InActor->GetClass();
 			Serializer::SerializeObject(InActor, Data.SerializedData);
 
-			auto components = InActor->GetComponents();
+			auto components = InActor->GetComponents();			
 			for (auto Component : components)
 			{
 				FFOLDGameplayComponentData ComponentData;
@@ -26,7 +26,8 @@ void UFOLD_ActorsDataStorage::StoreActor(AActor* InActor)
 				Serializer::SerializeObject(Component, ComponentData.SerializedData);
 				Data.Components.Add(ComponentData);
 			}
-		}		
+			ActorsSerializedData.Add(IDComponent->GetID(), Data);
+		}
 	}
 }
 
@@ -44,12 +45,12 @@ void UFOLD_ActorsDataStorage::RestoreActor(AActor* InActor)
 					InActor->SetActorTransform(ActorData.Transform);
 					Serializer::DeserializeObject(InActor, ActorData.SerializedData);
 					if (!ActorData.Components.IsEmpty())
-					{			
+					{						
 						for (auto componentData : ActorData.Components)
-						{								
+						{							
 							if (UActorComponent* Component = InActor->GetComponentByClass(componentData.ComponentSubtype))
 							{
-								Serializer::DeserializeObject(Component, componentData.SerializedData);
+								Serializer::DeserializeObject(Component, componentData.SerializedData);								
 							}
 							else
 							{
