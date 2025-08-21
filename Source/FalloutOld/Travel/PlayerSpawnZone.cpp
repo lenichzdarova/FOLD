@@ -35,7 +35,7 @@ void APlayerSpawnZone::MovePlayerActorsToSpawnZone()
 		UFOLD_ActorRefSubsystem* RefSubsystem = World->GetSubsystem<UFOLD_ActorRefSubsystem>();
 		if (AActor* Actor = UFOLD_Statics::GetPlayerCharacter(GetWorld()))
 		{
-			Actor->SetActorTransform(GetActorTransform());
+			Actor->SetActorLocation(GetActorLocation());
 		}		
 	}	
 }

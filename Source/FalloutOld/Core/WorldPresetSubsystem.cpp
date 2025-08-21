@@ -7,7 +7,7 @@
 #include "FOLD_ActorsDataStorage.h"
 #include "FalloutOld/GameplayActors/IDComponent.h"
 #include "Misc/FOLD_Statics.h"
-#include "Unsorted/PlayerParty.h"
+#include "Misc/PlayerParty.h"
 
 void UWorldPresetSubsystem::InitializeWorld(UWorld* World)
 {

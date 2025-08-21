@@ -32,7 +32,7 @@ public class FalloutOld : ModuleRules
 		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "GameplayActors"));
 		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "SaveGame"));
 		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "UI"));
-        
+		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "PlayerController"));
 		// Если заголовки используются только в приватных файлах (.cpp)
 		// PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "PrivateSubfolder"));
 	}

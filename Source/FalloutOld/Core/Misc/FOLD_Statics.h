@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "Unsorted/PlayerParty.h"
+#include "PlayerParty.h"
 #include "FOLD_Statics.generated.h"
 
 /**

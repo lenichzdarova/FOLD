@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "PlayerControllerConfig.h"
 #include "GameFramework/GameModeBase.h"
 #include "FOLD_GameMode.generated.h"
 
 /**
  * 
  */
-UCLASS()
+UCLASS(Abstract)
 class FALLOUTOLD_API AFOLD_GameMode : public AGameModeBase
 {
 	GENERATED_BODY()

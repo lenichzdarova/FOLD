@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "FalloutOld/Unsorted/PlayerParty.h"
+#include "Misc/PlayerParty.h"
 #include "FOLD_GameInstanceBase.generated.h"
 
 /**

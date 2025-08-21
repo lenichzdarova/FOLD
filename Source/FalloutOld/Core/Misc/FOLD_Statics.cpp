@@ -5,7 +5,7 @@
 
 #include "FOLD_ActorRefSubsystem.h"
 #include "FOLD_GameInstanceBase.h"
-#include "Unsorted/PlayerParty.h"
+#include "Misc/PlayerParty.h"
 
 AActor* UFOLD_Statics::GetPlayerCharacter(UObject* WorldContext)
 {

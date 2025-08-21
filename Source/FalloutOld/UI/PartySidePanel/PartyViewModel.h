@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FalloutOld/Unsorted/PlayerParty.h"
+#include "Misc/PlayerParty.h"
 #include "UObject/Object.h"
 #include "PartyViewModel.generated.h"
 

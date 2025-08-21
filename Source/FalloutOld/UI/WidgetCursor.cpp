@@ -2,24 +2,8 @@
 
 
 #include "WidgetCursor.h"
-void UWidgetCursor::SetDefault()
+
+void UWidgetCursor::SetCursorAppearance(UTexture2D* CursorAppearance)
 {
-	cursorImage->SetBrushFromTexture(Default);
+	cursorImage->SetBrushFromTexture(CursorAppearance);	
 }
-
-void UWidgetCursor::SetDialog()
-{
-	cursorImage->SetBrushFromTexture(Dialog);
-}
-
-void UWidgetCursor::SetTake()
-{
-	cursorImage->SetBrushFromTexture(Take);
-}
-
-void UWidgetCursor::SetUse()
-{
-	cursorImage->SetBrushFromTexture(Use);
-}
-
-
