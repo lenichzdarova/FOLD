@@ -2,6 +2,8 @@
 
 
 #include "CursorContextComponent.h"
+
+#include "CursorController.h"
 #include "InteractableActorComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -19,22 +21,27 @@ UCursorContextComponent::UCursorContextComponent()
 void UCursorContextComponent::TickComponent(float DeltaTime, ELevelTick TickType,
                                             FActorComponentTickFunction* ThisTickFunction)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);		
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	
+	
 	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
 	{
+		FGameplayTag ContextTag;
 		ETraceTypeQuery Query{ECC_Visibility};
-		PlayerController->GetHitResultUnderCursorByChannel(Query, true, HitResult);
+		PlayerController->GetHitResultUnderCursorByChannel(Query, true, HitResult);		
 		if (HitResult.bBlockingHit)
 		{
+			GEngine->AddOnScreenDebugMessage(2222,0.1, FColor::Blue, HitResult.GetActor()->GetName());
 			if (AActor* HitActor = HitResult.GetActor())
 			{
 				if (UInteractableActorComponent* Interactable = HitActor->GetComponentByClass<UInteractableActorComponent>())
-				{
-					FGameplayTag InteractionTypeTag = Interactable->GetInteractionTypeTag();
+				{					
+					ContextTag = Interactable->GetInteractionTypeTag();
 				}				
-			}
-			
+			}			
 		}
-	}
+		auto CursorContext = PlayerController->GetComponentByClass<UCursorController>();
+		CursorContext->SetCursorContextGameplayTag(ContextTag);
+	}	
 }
 

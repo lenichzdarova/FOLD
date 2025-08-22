@@ -26,3 +26,20 @@ void UCursorController::Init(TSubclassOf<UWidgetCursor> WidgetClass, TMap<FGamep
 	Widget->SetCursorAppearance(*TextureMap.Find(FGameplayTag::RequestGameplayTag("Interaction.Type.Default")));	
 }
 
+void UCursorController::SetCursorContextGameplayTag(const FGameplayTag ContextTag)
+{	
+	if (ContextTag == LastContextTag) return;
+	if (ContextTag.IsValid())
+	{
+		LastContextTag = ContextTag;
+	}
+	else
+	{
+		LastContextTag = FGameplayTag::RequestGameplayTag("Interaction.Type.Default");
+	}
+	if (UTexture2D* Texture = *TextureMap.Find(LastContextTag))
+	{
+		Widget->SetCursorAppearance(Texture);
+	}		
+}
+

@@ -23,6 +23,9 @@ protected:
 	TObjectPtr<UWidgetCursor> Widget;
 	UPROPERTY()
 	TMap<FGameplayTag,UTexture2D*> TextureMap;
+	UPROPERTY()
+	FGameplayTag LastContextTag;
 public:
-	void Init(TSubclassOf<UWidgetCursor> WidgetClass, TMap<FGameplayTag, UTexture2D*> InTextureMap);		
+	void Init(TSubclassOf<UWidgetCursor> WidgetClass, TMap<FGameplayTag, UTexture2D*> InTextureMap);
+	void SetCursorContextGameplayTag(const FGameplayTag ContextTag);
 };

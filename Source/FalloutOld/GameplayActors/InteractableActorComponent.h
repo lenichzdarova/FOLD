@@ -8,13 +8,13 @@
 #include "InteractableActorComponent.generated.h"
 
 // This class does not need to be modified.
-UCLASS()
+UCLASS(ClassGroup=(FOLD), meta=(BlueprintSpawnableComponent))
 class UInteractableActorComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 	private:
-	UPROPERTY()
+	UPROPERTY(EditAnywhere)
 	FGameplayTag InteractionContextTag;
 	
 	public:	

@@ -23,7 +23,9 @@ void AFOLD_PlayerControllerBase::Initialize(UPlayerControllerConfig* InConfig)
 	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent);
 	InputHandler->Initialize(EnhancedInputComponent, InConfig->InputConfig);	
 	
-	// setup cursor
+	// setup cursor and context
+	auto CursorContextComponent = NewObject<UCursorContextComponent>(this, InConfig->CursorContextClass);
+	CursorContextComponent->RegisterComponent();	
 	UCursorController* CursorController = NewObject<UCursorController>(this);
 	CursorController->RegisterComponent();		
 	CursorController->Init(InConfig->CursorWidget, InConfig->CursorIcons);
