@@ -16,9 +16,9 @@ protected:
 
 private:
 	UPROPERTY()
-	UInputAction* CursorAction;	
+	UInputAction* Action;	
 	UPROPERTY()
-	UInputAction* CursorContext;
+	UInputAction* RequestContext;
 	UPROPERTY()
 	UInputAction* Cancel;
 	UPROPERTY()
@@ -32,6 +32,6 @@ private:
 	void OnCameraMove(const FInputActionValue& InputValue);
 	void OnCameraRotate(const FInputActionValue& InputValue);
 
-	FHitResult GetHitResult() const;
+	const FHitResult& GetHitResult() const;
 	AActor* GetControlledActor() const;
 };
