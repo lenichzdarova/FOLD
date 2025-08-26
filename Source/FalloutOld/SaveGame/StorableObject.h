@@ -5,11 +5,11 @@
 #include "CoreMinimal.h"
 #include "FOLDGameplayActorData.h"
 #include "UObject/Interface.h"
-#include "StorableActor.generated.h"
+#include "StorableObject.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI, BlueprintType)
-class UStorableActor : public UInterface
+class UStorableObject : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -17,14 +17,13 @@ class UStorableActor : public UInterface
 /**
 * Интерфейс для инициализации игрового актора загруженными данными или получения от него данных для сохранения
 */
-class FALLOUTOLD_API IStorableActor
+class FALLOUTOLD_API IStorableObject
 {
 	GENERATED_BODY()
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:	
 	// Метод, который можно переопределять в Blueprint
-
-	virtual void InitWithStoredData(const FFOLDGameplayActorData& Data);	
-	virtual void CollectStorableData(FFOLDGameplayActorData& Data);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void PostLoadInit();
 };

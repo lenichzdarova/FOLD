@@ -7,12 +7,12 @@
 #include "CharacterTemplate.h"
 #include "IDComponent.h"
 #include "FOLDGameplayAbilities/Public/FOLDAbilitySystemComponent.h"
-#include "FalloutOld/SaveGame/StorableActor.h"
+#include "FalloutOld/SaveGame/StorableObject.h"
 #include "GameFramework/Character.h"
 #include "CharacterBase.generated.h"
 
 UCLASS(Blueprintable, Abstract)
-class FALLOUTOLD_API ACharacterBase : public ACharacter, public IStorableActor, public IAbilitySystemInterface
+class FALLOUTOLD_API ACharacterBase : public ACharacter, public IStorableObject, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 

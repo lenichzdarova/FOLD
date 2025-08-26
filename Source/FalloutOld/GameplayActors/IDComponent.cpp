@@ -4,6 +4,7 @@
 #include "IDComponent.h"
 
 #include "FOLD_ActorRefSubsystem.h"
+#include "StorableObject.h"
 
 
 // Sets default values for this component's properties
@@ -34,7 +35,11 @@ void UIDComponent::RegisterActor()
 	{
 		UFOLD_ActorRefSubsystem* RefSubsystem = GetWorld()->GetSubsystem<UFOLD_ActorRefSubsystem>();
 		RefSubsystem->RegisterActor(GetOwner(), Tag, Guid);				
-	}	
+	}
+	if (GetOwner()->Implements<UStorableObject>())
+	{
+		IStorableObject::Execute_PostLoadInit(GetOwner());
+	}
 }
 
 void UIDComponent::UnregisterActor() const

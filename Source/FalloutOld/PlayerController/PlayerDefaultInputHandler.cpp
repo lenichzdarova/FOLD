@@ -47,8 +47,8 @@ void UPlayerDefaultInputHandler::OnCursorAction(const FInputActionValue& InputVa
 		{		
 			AbilityTag = FGameplayTag::RequestGameplayTag("GameplayAbilities.Ability.Move");	
 		}	
-	
-		FGameplayEventData EventData;
+		
+		FGameplayEventData EventData;		
 		EventData.Instigator = ControlledActor;
 		EventData.Target = HitResult.GetActor();		
 		FFOLDTargetData* TargetData = new FFOLDTargetData();
