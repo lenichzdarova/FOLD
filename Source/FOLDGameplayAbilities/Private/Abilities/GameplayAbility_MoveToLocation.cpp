@@ -26,7 +26,7 @@ void UGameplayAbility_MoveToLocation::ActivateAbility(const FGameplayAbilitySpec
 	
 	if (!CommitAbility(Handle, ActorInfo, ActivationInfo))
 	{			
-		constexpr bool bReplicateEndAbility = true;
+		constexpr bool bReplicateEndAbility = false;
 		constexpr bool bWasCancelled = true;
 		EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 		return;
@@ -48,5 +48,5 @@ void UGameplayAbility_MoveToLocation::ActivateAbility(const FGameplayAbilitySpec
 
 void UGameplayAbility_MoveToLocation::OnMoveTaskEnd()
 {	
-	EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfo(), true, false);
+	EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfo(), false, false);
 }

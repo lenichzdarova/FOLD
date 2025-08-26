@@ -1,0 +1,33 @@
+﻿// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Abilities/GameplayAbility.h"
+#include "FOLD_GameplayAbility.generated.h"
+
+/**
+ * 
+ */
+UCLASS(Abstract)
+class FOLDGAMEPLAYABILITIES_API UFOLD_GameplayAbility : public UGameplayAbility
+{
+	GENERATED_BODY()
+
+protected:
+
+	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+	virtual void ShowAbilityUI();
+	//вызывается при получении 
+	UFUNCTION()
+	virtual void OnConfirmationSucceed();
+	UFUNCTION()
+	virtual void OnConfirmationCancelled();
+	//место входа для имплементации логики абилки
+	virtual void TryExecuteAbility();
+	virtual void ExecuteAbility();
+	//вызывается по окончанию основной логики абилки, которая поидее должна быть инкапсулирована в таск
+	virtual void OnAbilityTaskEnd();
+	
+};
+
