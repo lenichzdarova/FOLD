@@ -50,10 +50,8 @@ void UPlayerDefaultInputHandler::OnCursorAction(const FInputActionValue& InputVa
 		
 		FGameplayEventData EventData;		
 		EventData.Instigator = ControlledActor;
-		EventData.Target = HitResult.GetActor();		
-		FFOLDTargetData* TargetData = new FFOLDTargetData();
-		TargetData->HitResult = HitResult;		
-		EventData.TargetData.Add(TargetData);
+		EventData.Target = HitResult.GetActor();			
+		EventData.TargetData.Add(new FGameplayAbilityTargetData_SingleTargetHit(HitResult));
 		AbilityComponent->HandleGameplayEvent(AbilityTag, &EventData);
 	}	
 }
