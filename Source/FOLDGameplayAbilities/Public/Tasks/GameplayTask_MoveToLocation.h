@@ -9,24 +9,25 @@
 #include "NavigationPath.h"
 #include "AI/Navigation/NavigationTypes.h"
 #include "Navigation/PathFollowingComponent.h"
-#include "GameplayTask_Move.generated.h"
+#include "GameplayTask_MoveToLocation.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class FOLDGAMEPLAYABILITIES_API UGameplayTask_Move : public UFOLDTaskBase
+class FOLDGAMEPLAYABILITIES_API UGameplayTask_MoveToLocation : public UFOLDTaskBase
 {
 	GENERATED_BODY()
 
-	UGameplayTask_Move();
+	UGameplayTask_MoveToLocation();
 private:
 	UPROPERTY()
-	TObjectPtr<UNavigationPath> Path;
+	TObjectPtr<UNavigationPath> Path = nullptr;
 	FVector Destination;
 	FAIMoveRequest MoveRequest;
 
-	void OnMoveComplete(FAIRequestID Request, const FPathFollowingResult& Result);	
+	void OnMoveComplete(FAIRequestID Request, const FPathFollowingResult& Result);
+	void StartMoveToLocation();
 
 public:
 	virtual void Activate() override;
@@ -34,7 +35,6 @@ public:
 	virtual float GetCost_Implementation() override;	
 	virtual bool ApplyCost_Implementation() override;
 
-	FGenericGameplayTaskDelegate OnTaskEnd;
-		
+	FGenericGameplayTaskDelegate OnTaskEnd;		
 	void OnFindPathAsyncResult(uint32 QueryID, ENavigationQueryResult::Type Result,	FNavPathSharedPtr PathPtr);
 };

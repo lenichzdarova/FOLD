@@ -12,22 +12,23 @@
 UCLASS(Abstract)
 class FOLDGAMEPLAYABILITIES_API UFOLD_GameplayAbility : public UGameplayAbility
 {
-	GENERATED_BODY()
-
+	GENERATED_BODY()	
+	
 protected:
 
-	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+		const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override final;	
+	
+	
 	virtual void ShowAbilityUI();
-	//вызывается при получении 
 	UFUNCTION()
-	virtual void OnConfirmationSucceed();
+	void OnConfirmationSucceed();
 	UFUNCTION()
-	virtual void OnConfirmationCancelled();
+	void OnConfirmationCancelled();	
+	void TryExecuteAbility();
 	//место входа для имплементации логики абилки
-	virtual void TryExecuteAbility();
 	virtual void ExecuteAbility();
 	//вызывается по окончанию основной логики абилки, которая поидее должна быть инкапсулирована в таск
-	virtual void OnAbilityTaskEnd();
-	
+	virtual void OnAbilityTaskEnd();		
 };
 

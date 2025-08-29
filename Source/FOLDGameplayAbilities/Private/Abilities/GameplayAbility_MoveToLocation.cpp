@@ -7,43 +7,29 @@
 #include "AIController.h"
 #include "GameplayTagsManager.h"
 #include "Abilities/Tasks/AbilityTask_MoveToLocation.h"
-#include "Tasks/GameplayTask_Move.h"
+#include "Tasks/GameplayTask_MoveToLocation.h"
 
 UGameplayAbility_MoveToLocation::UGameplayAbility_MoveToLocation()
 {
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 	bRetriggerInstancedAbility = true;	
 	FAbilityTriggerData Trigger;
-	Trigger.TriggerTag = UGameplayTagsManager::Get().RequestGameplayTag("GameplayAbilities.Ability.Move", true);	
+	Trigger.TriggerTag = UGameplayTagsManager::Get().RequestGameplayTag("GameplayAbilities.Ability.MoveToLocation", true);	
 	AbilityTriggers.Add(Trigger);
 }
 
-void UGameplayAbility_MoveToLocation::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
-	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
-	const FGameplayEventData* TriggerEventData)
-{	
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);	
-	
-	if (!CommitAbility(Handle, ActorInfo, ActivationInfo))
-	{			
-		constexpr bool bReplicateEndAbility = false;
-		constexpr bool bWasCancelled = true;
-		EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
-		return;
-	}
-	
-	if (!IsValid(TriggerEventData->Target))
-	{			
-		return;
-	}
-	auto MoveTask = UGameplayTask::NewTask<UGameplayTask_Move>(this);
+void UGameplayAbility_MoveToLocation::ExecuteAbility()
+{
+	Super::ExecuteAbility();
+
+	auto MoveTask = UGameplayTask::NewTask<UGameplayTask_MoveToLocation>(this);
 	MoveTask->OnTaskEnd.AddDynamic(this, &UGameplayAbility_MoveToLocation::OnMoveTaskEnd);
 
-	auto TargetData = TriggerEventData->TargetData.Get(0);
+	auto TargetData = CurrentEventData.TargetData.Get(0);
 	FVector MoveDestination = TargetData->GetHitResult()->Location;
 	
 	MoveTask->SetDestination(MoveDestination);
-	MoveTask->ReadyForActivation();	
+	MoveTask->ReadyForActivation();
 }
 
 void UGameplayAbility_MoveToLocation::OnMoveTaskEnd()

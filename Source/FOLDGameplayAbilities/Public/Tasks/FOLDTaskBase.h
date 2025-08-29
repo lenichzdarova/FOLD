@@ -16,7 +16,7 @@ class FOLDGAMEPLAYABILITIES_API UFOLDTaskBase : public UGameplayTask, public ITa
 	GENERATED_BODY()
 
 private:
-	bool bShouldApplyCost = false;
+	bool bShouldApplyCost = false;	
 public:
-	virtual void ShouldApplyCost_Implementation(bool bShouldApply) override;
+	virtual void ShouldApplyCost_Implementation(bool bShouldApply) override;	
 };

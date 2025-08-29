@@ -41,11 +41,11 @@ void UPlayerDefaultInputHandler::OnCursorAction(const FInputActionValue& InputVa
 	
 		if(HitResult.GetActor()->GetComponentByClass<UInteractableActorComponent>())
 		{		
-			GEngine->AddOnScreenDebugMessage(222, 1, FColor::Red, "request interact");
+			AbilityTag = FGameplayTag::RequestGameplayTag("GameplayAbilities.Ability.Interact");
 		}		
 		else
 		{		
-			AbilityTag = FGameplayTag::RequestGameplayTag("GameplayAbilities.Ability.Move");	
+			AbilityTag = FGameplayTag::RequestGameplayTag("GameplayAbilities.Ability.MoveToLocation");	
 		}	
 		
 		FGameplayEventData EventData;		

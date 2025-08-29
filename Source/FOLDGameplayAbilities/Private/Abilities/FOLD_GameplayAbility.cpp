@@ -10,19 +10,18 @@ void UFOLD_GameplayAbility::ActivateAbility(const FGameplayAbilitySpecHandle Han
                                             const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
                                             const FGameplayEventData* TriggerEventData)
 {
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);	
-	if (bool bIsTurnbased = true)
+	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+		
+	if (bool bIsTurnbased = false)
 	{
 		if (bool bIsPlayerControlled = true)
 		{
 			ShowAbilityUI();
 		}
 		UAbilityTask_WaitConfirm* WaitConfirmTask = UAbilityTask_WaitConfirm::WaitConfirm(this);
-		WaitConfirmTask->OnConfirm.AddDynamic(this,&UFOLD_GameplayAbility::OnConfirmationSucceed);		
-		WaitConfirmTask->ReadyForActivation();
+		WaitConfirmTask->OnConfirm.AddDynamic(this,&UFOLD_GameplayAbility::OnConfirmationSucceed);			
 		UAbilityTask_WaitCancel* WaitCancelTask = UAbilityTask_WaitCancel::WaitCancel(this);
-		WaitCancelTask->OnCancel.AddDynamic(this, &UFOLD_GameplayAbility::OnConfirmationCancelled);
-		WaitCancelTask->ReadyForActivation();
+		WaitCancelTask->OnCancel.AddDynamic(this, &UFOLD_GameplayAbility::OnConfirmationCancelled);		
 	}
 	else
 	{
@@ -62,5 +61,6 @@ void UFOLD_GameplayAbility::ExecuteAbility()
 }
 
 void UFOLD_GameplayAbility::OnAbilityTaskEnd()
-{	
+{
+	
 }
