@@ -16,6 +16,6 @@ public class FalloutOldTarget : TargetRules
 
 	private void RegisterModulesCreatedByRider()
 	{
-		ExtraModuleNames.AddRange(new string[] { "FOLD_Test", "FOLDGameplayAbilities" });
+		ExtraModuleNames.AddRange(new string[] { "FOLD_Test" });
 	}
 }

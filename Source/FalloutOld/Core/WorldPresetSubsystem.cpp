@@ -121,8 +121,7 @@ void UWorldPresetSubsystem::InitDefaultLevelState()
 		UGameInstance* GameInstance = World->GetGameInstance();
 		UFOLD_ActorsDataStorage* ActorsDataStorage = GameInstance->GetSubsystem<UFOLD_ActorsDataStorage>();		
 		for (const FGuid& ID : GlobalID)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 100.f, FColor::Red, ID.ToString());
+		{			
 			if (AActor* SpawnedActor = ActorsDataStorage->SpawnActorAndRestore(ID))
 			{
 				if (UIDComponent* IDComponent = SpawnedActor->GetComponentByClass<UIDComponent>())

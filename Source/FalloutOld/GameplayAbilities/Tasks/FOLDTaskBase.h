@@ -11,7 +11,7 @@
  * 
  */
 UCLASS(Abstract)
-class FOLDGAMEPLAYABILITIES_API UFOLDTaskBase : public UGameplayTask, public ITaskCostInterface
+class FALLOUTOLD_API UFOLDTaskBase : public UGameplayTask, public ITaskCostInterface
 {
 	GENERATED_BODY()
 

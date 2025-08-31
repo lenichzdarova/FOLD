@@ -6,7 +6,7 @@
 #include "AbilitySystemInterface.h"
 #include "CharacterTemplate.h"
 #include "IDComponent.h"
-#include "FOLDGameplayAbilities/Public/FOLDAbilitySystemComponent.h"
+#include "FOLDAbilitySystemComponent.h"
 #include "FalloutOld/SaveGame/StorableObject.h"
 #include "GameFramework/Character.h"
 #include "CharacterBase.generated.h"

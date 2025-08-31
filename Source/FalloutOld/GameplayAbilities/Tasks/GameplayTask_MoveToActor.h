@@ -11,7 +11,7 @@
  * 
  */
 UCLASS()
-class FOLDGAMEPLAYABILITIES_API UGameplayTask_MoveToActor : public UFOLDTaskBase
+class FALLOUTOLD_API UGameplayTask_MoveToActor : public UFOLDTaskBase
 {
 	GENERATED_BODY()
 	

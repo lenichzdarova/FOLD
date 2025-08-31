@@ -4,6 +4,7 @@
 #include "Abilities/GameplayAbility_Interaction.h"
 
 #include "GameplayTagsManager.h"
+#include "Interaction/InteractableActorComponent.h"
 #include "Tasks/GameplayTask_MoveToActor.h"
 
 UGameplayAbility_Interaction::UGameplayAbility_Interaction()
@@ -31,5 +32,8 @@ void UGameplayAbility_Interaction::ExecuteAbility()
 
 void UGameplayAbility_Interaction::OnMoveTaskEnd()
 {
-	
+	const AActor* TargetActor = CurrentEventData.Target.Get();
+	UInteractableActorComponent* InteractComponent = TargetActor->GetComponentByClass<UInteractableActorComponent>();
+	if (!InteractComponent) return;
+	InteractComponent->Interact(GetAvatarActorFromActorInfo());
 }

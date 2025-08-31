@@ -7,9 +7,12 @@
 #include "NavigationSystem.h"
 
 void UGameplayTask_MoveToActor::OnMoveComplete(FAIRequestID Request, const FPathFollowingResult& Result)
-{		
-	EndTask();
-	OnTaskEnd.Broadcast();
+{	
+	if (Result.IsSuccess())
+	{
+		EndTask();
+		OnTaskEnd.Broadcast();	
+	}	
 }
 
 void UGameplayTask_MoveToActor::StartMoveToActor()
@@ -25,15 +28,15 @@ void UGameplayTask_MoveToActor::StartMoveToActor()
 	if(PathFollowing)
 	{
 		MoveRequest = FAIMoveRequest(TargetActor.Get());
-		MoveRequest.SetAcceptanceRadius(1.f);
-		MoveRequest.SetReachTestIncludesAgentRadius(false);
+		MoveRequest.SetAcceptanceRadius(50.f);
+		MoveRequest.SetReachTestIncludesAgentRadius(true);
 		MoveRequest.SetCanStrafe(true);
 		MoveRequest.SetAllowPartialPath(false);
 		MoveRequest.SetUsePathfinding(true);
 		MoveRequest.SetRequireNavigableEndLocation(true);
 		MoveRequest.SetProjectGoalLocation(false);
 		PathFollowing->OnRequestFinished.AddUObject(this, &UGameplayTask_MoveToActor::OnMoveComplete);		
-		Controller->RequestMove(MoveRequest, Path.Get()->GetPath());		
+		Controller->RequestMove(MoveRequest, Path.Get()->GetPath());				
 	}	
 }
 
@@ -56,12 +59,23 @@ void UGameplayTask_MoveToActor::SetTargetActor(AActor* InTargetActor)
 	UNavigationSystemV1* NavSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());	
 	INavAgentInterface* NavAgent = Cast<INavAgentInterface>(GetAvatarActor());
 	const FNavAgentProperties& AgentProperties = NavAgent->GetNavAgentPropertiesRef();	
-	ANavigationData* NavigationData = NavSystem->GetNavDataForProps(AgentProperties, GetAvatarActor()->GetActorLocation());	
-	FPathFindingQuery Query(GetAvatarActor(), *NavigationData, GetAvatarActor()->GetActorLocation(),
-		TargetActor.Get()->GetActorLocation(), UNavigationQueryFilter::GetQueryFilter(*NavigationData, GetAvatarActor(), nullptr));	
+	ANavigationData* NavigationData = NavSystem->GetNavDataForProps(AgentProperties, GetAvatarActor()->GetActorLocation());		
+	FPathFindingQuery Query(
+		GetAvatarActor(),
+		*NavigationData,
+		GetAvatarActor()->GetActorLocation(),
+		TargetActor.Get()->GetActorLocation(),
+		UNavigationQueryFilter::GetQueryFilter(*NavigationData, GetAvatarActor(),
+		nullptr));
+	
 	Query.SetAllowPartialPaths(false);
 	Query.SetRequireNavigableEndLocation(false);	
-	NavSystem->FindPathAsync(AgentProperties, Query, FNavPathQueryDelegate::CreateUObject(this, &UGameplayTask_MoveToActor::OnFindPathAsyncResult));
+	Path = NavSystem->FindPathToActorSynchronously(GetWorld(), GetAvatarActor()->GetActorLocation(), TargetActor.Get());	
+	//NavSystem->FindPathAsync(AgentProperties, Query, FNavPathQueryDelegate::CreateUObject(this, &UGameplayTask_MoveToActor::OnFindPathAsyncResult));
+	if (Path)
+	{
+		StartMoveToActor();
+	}
 }
 
 

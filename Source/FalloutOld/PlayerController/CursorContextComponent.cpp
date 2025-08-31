@@ -4,7 +4,7 @@
 #include "CursorContextComponent.h"
 
 #include "CursorController.h"
-#include "InteractableActorComponent.h"
+#include "Mechanics/Interaction/InteractableActorComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 

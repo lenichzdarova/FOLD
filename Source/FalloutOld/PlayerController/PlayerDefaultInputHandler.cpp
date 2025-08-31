@@ -3,10 +3,9 @@
 #include "CursorContextComponent.h"
 #include "EnhancedInputComponent.h"
 #include "FOLD_ActorRefSubsystem.h"
-#include "InteractableActorComponent.h"
+#include "Interaction/InteractableActorComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Misc/FOLD_Statics.h"
-#include "Targeting/FOLDTargetTypes.h"
 #include "Misc/PlayerView.h"
 
 
@@ -37,8 +36,9 @@ void UPlayerDefaultInputHandler::OnCursorAction(const FInputActionValue& InputVa
 		IAbilitySystemInterface* AbilityInterface = Cast<IAbilitySystemInterface>(ControlledActor);
 		if (!AbilityInterface) return;
 		UAbilitySystemComponent* AbilityComponent = AbilityInterface->GetAbilitySystemComponent();
-		FGameplayTag AbilityTag;
-	
+		if(!AbilityComponent) return;
+
+		FGameplayTag AbilityTag;	
 		if(HitResult.GetActor()->GetComponentByClass<UInteractableActorComponent>())
 		{		
 			AbilityTag = FGameplayTag::RequestGameplayTag("GameplayAbilities.Ability.Interact");

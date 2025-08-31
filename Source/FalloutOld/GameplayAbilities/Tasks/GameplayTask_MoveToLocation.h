@@ -15,7 +15,7 @@
  * 
  */
 UCLASS()
-class FOLDGAMEPLAYABILITIES_API UGameplayTask_MoveToLocation : public UFOLDTaskBase
+class FALLOUTOLD_API UGameplayTask_MoveToLocation : public UFOLDTaskBase
 {
 	GENERATED_BODY()
 

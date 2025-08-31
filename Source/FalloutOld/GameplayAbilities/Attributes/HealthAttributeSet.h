@@ -8,7 +8,7 @@
 #include "HealthAttributeSet.generated.h"
 
 UCLASS()
-class FOLDGAMEPLAYABILITIES_API UHealthAttributeSet : public UAttributeSet
+class FALLOUTOLD_API UHealthAttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
 

@@ -17,7 +17,8 @@ class UInteractableActorComponent : public UActorComponent
 	UPROPERTY(EditAnywhere)
 	FGameplayTag InteractionContextTag;
 	
-	public:	
-	void Interact(const AActor* Instigator);	
+	public:
+	UFUNCTION(BlueprintCallable)
+	void Interact(const AActor* InInstigator);	
 	const FGameplayTag& GetInteractionTypeTag() const { return InteractionContextTag; }
 };

@@ -5,10 +5,12 @@
 #include "CoreMinimal.h"
 #include "AActorBase.h"
 #include "DoorBehaviourComponentBase.h"
+#include "Interaction/Interactable.h"
+#include "Interaction/InteractableActorComponent.h"
 #include "DoorBase.generated.h"
 
 UCLASS(Abstract)
-class FALLOUTOLD_API ADoorBase : public AActorBase
+class FALLOUTOLD_API ADoorBase : public AActorBase, public IInteractable
 {
 	GENERATED_BODY()
 
@@ -28,12 +30,17 @@ protected:
 	bool bReverseBehaviour = false;
 	UPROPERTY(SaveGame, EditAnywhere, Category="Door")
 	bool bIsOpened = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Interaction", meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<UInteractableActorComponent> InteractableComponent;
 
 	UFUNCTION()
 	void OnEvaluationCompleted();
-	private:
+	
+private:
 	UPROPERTY()
-	UDoorBehaviourComponentBase* Longest = nullptr;
+	UDoorBehaviourComponentBase* Longest = nullptr;	
+	
 public:
 	virtual void PostLoadInit_Implementation() override;
+	virtual void Interact_Implementation(const AActor* InInstigator) override;
 };

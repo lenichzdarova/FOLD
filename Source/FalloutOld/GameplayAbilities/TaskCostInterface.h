@@ -17,7 +17,7 @@ class UTaskCostInterface : public UInterface
 /**
  * 
  */
-class FOLDGAMEPLAYABILITIES_API ITaskCostInterface
+class FALLOUTOLD_API ITaskCostInterface
 {
 	GENERATED_BODY()
 

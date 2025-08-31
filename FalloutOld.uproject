@@ -26,11 +26,6 @@
 			"Name": "FOLD_Test",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
-		},		
-		{
-			"Name": "FOLDGameplayAbilities",
-			"Type": "Runtime",
-			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [

@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class FOLDGAMEPLAYABILITIES_API UActionPointsAttributeSet : public UAttributeSet
+class FALLOUTOLD_API UActionPointsAttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
 

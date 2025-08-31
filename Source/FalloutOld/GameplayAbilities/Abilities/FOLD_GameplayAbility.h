@@ -10,7 +10,7 @@
  * 
  */
 UCLASS(Abstract)
-class FOLDGAMEPLAYABILITIES_API UFOLD_GameplayAbility : public UGameplayAbility
+class FALLOUTOLD_API UFOLD_GameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()	
 	

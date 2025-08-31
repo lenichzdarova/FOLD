@@ -5,19 +5,20 @@
 #include "CoreMinimal.h"
 #include "FOLD_GameplayAbility.h"
 #include "Abilities/GameplayAbility.h"
-#include "GameplayAbility_Interaction.generated.h"
+#include "GameplayAbility_MoveToLocation.generated.h"
 
 /**
  * 
  */
-UCLASS()
-class FOLDGAMEPLAYABILITIES_API UGameplayAbility_Interaction : public UFOLD_GameplayAbility
+UCLASS(BlueprintType)
+class FALLOUTOLD_API UGameplayAbility_MoveToLocation : public UFOLD_GameplayAbility
 {
 	GENERATED_BODY()
 
 public:
-	UGameplayAbility_Interaction();
-protected:
+	UGameplayAbility_MoveToLocation();
+	
+protected:	
 	virtual void ExecuteAbility() override;
 	UFUNCTION()
 	void OnMoveTaskEnd();

@@ -22,14 +22,15 @@ public class FalloutOld : ModuleRules
 			"OnlineSubsystem",
 			"OnlineSubsystemUtils", 
 			"GameplayAbilities",
-			"GameplayTasks",
-			"FOLDGameplayAbilities"
+			"GameplayTasks"
 		});
         
 		// Добавляем папки, где лежат заголовочные файлы
 		PublicIncludePaths.Add(ModuleDirectory);  // Корень модуля
 		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Core"));
+		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "GameplayAbilities"));
 		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "GameplayActors"));
+		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Mechanics"));
 		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "SaveGame"));
 		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "UI"));
 		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "PlayerController"));

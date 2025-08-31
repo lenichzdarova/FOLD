@@ -11,6 +11,7 @@ ADoorBase::ADoorBase()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	InteractableComponent = CreateDefaultSubobject<UInteractableActorComponent>("Interactable component");
 }
 
 void ADoorBase::Open()
@@ -30,7 +31,8 @@ void ADoorBase::Open()
 			Longest = Component;
 		}		
 	}
-	Longest->OnEvaluationComplete.AddDynamic(this, &ADoorBase::OnEvaluationCompleted);	
+	Longest->OnEvaluationComplete.AddDynamic(this, &ADoorBase::OnEvaluationCompleted);
+	bIsOpened = true;	
 }
 
 void ADoorBase::Close()
@@ -50,7 +52,8 @@ void ADoorBase::Close()
 			Longest = Component;
 		}		
 	}
-	Longest->OnEvaluationComplete.AddDynamic(this, &ADoorBase::OnEvaluationCompleted);	
+	Longest->OnEvaluationComplete.AddDynamic(this, &ADoorBase::OnEvaluationCompleted);
+	bIsOpened = false;	
 }
 
 void ADoorBase::SetDoorState(bool bOpened)
@@ -61,16 +64,30 @@ void ADoorBase::SetDoorState(bool bOpened)
 	{
 		Component->SetCurrentState(bIsOpened);
 	}
+	bIsOpened = bOpened;
 }
 
 void ADoorBase::OnEvaluationCompleted()
 {
-	Longest->OnEvaluationComplete.RemoveAll(this);
+	Longest->OnEvaluationComplete.RemoveAll(this);	
 }
 
 void ADoorBase::PostLoadInit_Implementation()
 {
 	SetDoorState(bIsOpened);
 	Super::PostLoadInit_Implementation();
+}
+
+void ADoorBase::Interact_Implementation(const AActor* InInstigator)
+{	
+	IInteractable::Interact_Implementation(InInstigator);
+	if (bIsOpened)
+	{
+		Close();
+	}
+	else
+	{
+		Open();
+	}		
 }
 

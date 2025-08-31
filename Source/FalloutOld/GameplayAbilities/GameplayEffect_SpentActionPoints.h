@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class FOLDGAMEPLAYABILITIES_API UGameplayEffect_SpentActionPoints : public UGameplayEffect
+class FALLOUTOLD_API UGameplayEffect_SpentActionPoints : public UGameplayEffect
 {
 	GENERATED_BODY()
 };

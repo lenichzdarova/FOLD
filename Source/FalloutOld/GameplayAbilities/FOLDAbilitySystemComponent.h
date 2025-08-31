@@ -8,7 +8,7 @@
 
 
 UCLASS( BlueprintType, meta=(BlueprintSpawnableComponent))
-class FOLDGAMEPLAYABILITIES_API UFOLDAbilitySystemComponent : public UAbilitySystemComponent
+class FALLOUTOLD_API UFOLDAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
 
