@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Attribute.h"
+#include "GameplayTagContainer.h"
 #include "Modificator.h"
 #include "UObject/Object.h"
 #include "Skill.generated.h"
@@ -20,13 +21,6 @@ enum ESkillMastery: uint8
 	Expert,
 	Master
 };
-UENUM(BlueprintType)
-enum ESkill: uint8
-{
-	Unarmed,
-	FirstAid,
-	Lockpicking
-};
 UCLASS(Blueprintable)
 class  FALLOUTOLD_API USkill: public UObject
 {
@@ -34,7 +28,7 @@ class  FALLOUTOLD_API USkill: public UObject
 	
 private:
 	UPROPERTY(SaveGame)
-	FString SkillID;
+	FGameplayTag SkillTag;
 	UPROPERTY()
 	UAttribute* AffectingAttribute;
 	UPROPERTY(SaveGame)
@@ -50,6 +44,8 @@ public:
 	UFUNCTION()
 	int GetValue() const {return BaseValue + GetModificatorsValue();};
 	int GetModificatorsValue() const;
+	UFUNCTION()
+	void SetValue(int InValue);
 
 	UFUNCTION()
 	void AddModificator(UModificator* value);
