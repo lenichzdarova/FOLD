@@ -4,11 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "Attributes/AttributesListComponent.h"
 #include "CharacterTemplate.h"
 #include "IDComponent.h"
 #include "FOLDAbilitySystemComponent.h"
+#include "Skills/SkillListComponent.h"
 #include "FalloutOld/SaveGame/StorableObject.h"
 #include "GameFramework/Character.h"
+#include "Interaction/InteractableActorComponent.h"
 #include "CharacterBase.generated.h"
 
 UCLASS(Blueprintable, Abstract)
@@ -34,10 +37,16 @@ protected:
 
 	//ability System
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Abilities", meta=(AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "FOLD", meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UFOLDAbilitySystemComponent> AbilitySystemComponent;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "ID", meta=(AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "FOLD", meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UIDComponent> IDComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "FOLD", meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<UInteractableActorComponent> Interactable;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "FOLD", meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<UAttributesListComponent> AttributeListComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "FOLD", meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<USkillListComponent> SkillListComponent;
 public:	
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;	
 };

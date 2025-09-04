@@ -5,17 +5,17 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "Engine/DataAsset.h"
-#include "SkillSet.generated.h"
+#include "SkillListConfig.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class FALLOUTOLD_API USkillSet : public UPrimaryDataAsset
+class FALLOUTOLD_API USkillListConfig : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
 
 public:
 	UPROPERTY(EditAnywhere)
-	TMap<FGameplayTag, int > SkillInitialSet;
+	TMap<FGameplayTag, FSkillData > Skills;
 };

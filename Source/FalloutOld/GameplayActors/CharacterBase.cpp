@@ -11,7 +11,10 @@ ACharacterBase::ACharacterBase(const FObjectInitializer& ObjectInitializer) : Su
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;	
 	AbilitySystemComponent = CreateDefaultSubobject<UFOLDAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
-	IDComponent = CreateDefaultSubobject<UIDComponent>(TEXT("IDComponent"));	
+	IDComponent = CreateDefaultSubobject<UIDComponent>(TEXT("IDComponent"));
+	Interactable = CreateDefaultSubobject<UInteractableActorComponent>(TEXT("InteractableComponent"));
+	AttributeListComponent = CreateDefaultSubobject<UAttributesListComponent>(TEXT("AttributesListComponent"));
+	SkillListComponent = CreateDefaultSubobject<USkillListComponent>(TEXT("SkillListComponent"));
 }
 
 // Called when the game starts or when spawned

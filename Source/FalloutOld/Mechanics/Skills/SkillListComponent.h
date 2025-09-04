@@ -4,7 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Skill.h"
-#include "SkillSet.h"
+#include "SkillListConfig.h"
+#include "SkillModificator.h"
 #include "UObject/Object.h"
 #include "SkillListComponent.generated.h"
 
@@ -17,20 +18,18 @@ UCLASS(BlueprintType, meta=(BlueprintSpawnableComponent))
 class FALLOUTOLD_API USkillListComponent : public UActorComponent
 {
 	GENERATED_BODY()
-	
-	private:
+
+public:
+	USkillListComponent();
+private:
 	UPROPERTY()
 	TMap<FGameplayTag, USkill*> Skills;
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<USkillSet> SkillSet;
-
-	public:
-	USkillListComponent();	
+	TObjectPtr<USkillListConfig> Config;
 	
-	UFUNCTION()
-	const TMap<FGameplayTag, USkill*>& GetSkills() const { return Skills; }
+public:	
 	UFUNCTION()
 	USkill* GetSkill(FGameplayTag SkillTag);
 	UFUNCTION()
-	void AddSkill(FGameplayTag SkillTag, int InitialValue);	
+	void SetSkill(FGameplayTag SkillTag, USkill* InValue) {Skills.Add(SkillTag, InValue);}	
 };
