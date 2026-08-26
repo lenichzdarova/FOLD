@@ -28,6 +28,7 @@ void UGameplayTask_MoveToLocation::StartMoveToLocation()
 	}
 	
 	UPathFollowingComponent* PathFollowing = Controller->GetPathFollowingComponent();
+	
 	if(PathFollowing)
 	{
 		MoveRequest = FAIMoveRequest(Destination);
@@ -65,8 +66,9 @@ void UGameplayTask_MoveToLocation::SetDestination(FVector InDestination)
 	FPathFindingQuery Query(GetAvatarActor(), *NavigationData, GetAvatarActor()->GetActorLocation(),
 		Destination, UNavigationQueryFilter::GetQueryFilter(*NavigationData, GetAvatarActor(), nullptr));	
 	Query.SetAllowPartialPaths(false);
-	Query.SetRequireNavigableEndLocation(true);	
-	NavSystem->FindPathAsync(AgentProperties, Query, FNavPathQueryDelegate::CreateUObject(this, &UGameplayTask_MoveToLocation::OnFindPathAsyncResult));
+	Query.SetRequireNavigableEndLocation(true);
+	NavSystem->FindPathSync(AgentProperties, Query);
+	//NavSystem->FindPathAsync(AgentProperties, Query, FNavPathQueryDelegate::CreateUObject(this, &UGameplayTask_MoveToLocation::OnFindPathAsyncResult));
 }
 
 float UGameplayTask_MoveToLocation::GetCost_Implementation()
